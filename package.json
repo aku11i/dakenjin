@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
-    "lint": "turbo lint",
+    "lint": "turbo lint prettier:check",
+    "fix": "turbo fix prettier:fix",
+    "prettier:check": "prettier --check .",
+    "prettier:fix": "prettier --write .",
     "type-check": "turbo type-check",
     "test": "turbo test",
     "ready": "turbo lint type-check test",
@@ -20,6 +23,7 @@
   "author": "aku11i",
   "packageManager": "pnpm@10.6.3",
   "devDependencies": {
+    "prettier": "^3.5.3",
     "turbo": "^2.5.3"
   }
 }

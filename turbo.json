@@ -8,6 +8,15 @@
     "lint": {
       "outputs": []
     },
+    "fix": {
+      "outputs": []
+    },
+    "//#prettier:check": {
+      "outputs": []
+    },
+    "//#prettier:fix": {
+      "outputs": []
+    },
     "type-check": {
       "outputs": ["tsconfig.tsbuildinfo"]
     },
