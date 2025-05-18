@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "type-check": "tsc --noEmit",
-    "test": "pnpm vitest run packages/core"
+    "test": "pnpm --workspace-root run vitest run packages/core"
   },
   "keywords": [
     "typing",
