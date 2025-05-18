@@ -2,7 +2,9 @@
   "name": "@dakenjin/test",
   "version": "0.0.1",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "vitest": "TZ=UTC vitest --root .."
+  },
   "devDependencies": {
     "vitest": "^3.1.3"
   }
