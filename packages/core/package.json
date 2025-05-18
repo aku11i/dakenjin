@@ -1,12 +1,21 @@
 {
   "name": "@dakenjin/core",
+  "private": true,
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Typing core library for dakenjin project",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "type-check": "tsc --noEmit",
+    "test": "pnpm run --filter @dakenjin/test vitest run"
   },
-  "keywords": [],
+  "keywords": [
+    "typing",
+    "keyboard"
+  ],
   "author": "aku11i",
-  "packageManager": "pnpm@10.6.3"
+  "devDependencies": {
+    "typescript": "^5.4.3",
+    "vitest": "^1.4.0"
+  }
 }
+
