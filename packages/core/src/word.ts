@@ -26,16 +26,20 @@ export class Word {
     return this._ruby;
   }
 
-  input(input: string): boolean {
+  input(character: string): boolean {
+    if (character.length !== 1) {
+      throw new Error("Input must be a single character");
+    }
+
     if (this.isCompleted()) {
       throw new Error("Word is already completed");
     }
 
-    if (this.getAvailableInputPatterns(input).length === 0) {
+    if (this.getAvailableInputPatterns(character).length === 0) {
       return false;
     }
 
-    this._inputs += input;
+    this._inputs += character;
     return true;
   }
 
