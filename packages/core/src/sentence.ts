@@ -26,18 +26,4 @@ export class Sentence {
   isCompleted(): boolean {
     return this._words.every((word) => word.isCompleted());
   }
-
-  input(character: string): boolean {
-    if (character.length !== 1) {
-      throw new Error("Input must be a single character");
-    }
-
-    const currentWord = this.currentWord;
-
-    if (!currentWord) {
-      throw new Error("No current word to input into");
-    }
-
-    return currentWord.input(character);
-  }
 }
