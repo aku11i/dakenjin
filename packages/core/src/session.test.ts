@@ -13,7 +13,9 @@ describe("Session", () => {
     });
 
     it("should throw error when initializing with empty array", () => {
-      expect(() => new Session([])).toThrow("Session must have at least one sentence");
+      expect(() => new Session([])).toThrow(
+        "Session must have at least one sentence",
+      );
     });
   });
 
@@ -57,8 +59,15 @@ describe("Session", () => {
       const word3 = new Word({ label: "c", inputPatterns: ["c"] });
       const incompleteSentence = new Sentence([word3]);
 
-      const session = new Session([completedSentence1, completedSentence2, incompleteSentence]);
-      expect(session.completedSentences).toEqual([completedSentence1, completedSentence2]);
+      const session = new Session([
+        completedSentence1,
+        completedSentence2,
+        incompleteSentence,
+      ]);
+      expect(session.completedSentences).toEqual([
+        completedSentence1,
+        completedSentence2,
+      ]);
     });
 
     it("should return empty array when no sentences are completed", () => {
@@ -85,8 +94,15 @@ describe("Session", () => {
       const word3 = new Word({ label: "c", inputPatterns: ["c"] });
       const incompleteSentence2 = new Sentence([word3]);
 
-      const session = new Session([completedSentence, incompleteSentence1, incompleteSentence2]);
-      expect(session.incompletedSentences).toEqual([incompleteSentence1, incompleteSentence2]);
+      const session = new Session([
+        completedSentence,
+        incompleteSentence1,
+        incompleteSentence2,
+      ]);
+      expect(session.incompletedSentences).toEqual([
+        incompleteSentence1,
+        incompleteSentence2,
+      ]);
     });
 
     it("should return empty array when all sentences are completed", () => {

@@ -76,7 +76,9 @@ describe("Word", () => {
         label: "あ",
         inputPatterns: ["a"],
       });
-      expect(() => word.input("ab")).toThrow("Input must be a single character");
+      expect(() => word.input("ab")).toThrow(
+        "Input must be a single character",
+      );
     });
 
     it("should throw error when word is already completed", () => {
