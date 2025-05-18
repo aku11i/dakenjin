@@ -19,7 +19,7 @@ export class Sentence {
     return this._words.filter((word) => word.isCompleted());
   }
 
-  get remainingWords(): Word[] {
+  get incompletedWords(): Word[] {
     return this._words.filter((word) => !word.isCompleted());
   }
 
