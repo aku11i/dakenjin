@@ -30,6 +30,65 @@ describe("Word", () => {
     });
   });
 
+  describe("input", () => {
+    it("should accept valid input character", () => {
+      const word = new Word({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      const result = word.input("a");
+      expect(result).toBe(true);
+    });
+
+    it("should reject invalid input character", () => {
+      const word = new Word({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      const result = word.input("b");
+      expect(result).toBe(false);
+    });
+
+    it("should handle sequential inputs", () => {
+      const word = new Word({
+        label: "しゅ",
+        inputPatterns: ["shu", "syu"],
+      });
+      expect(word.input("s")).toBe(true);
+      expect(word.input("h")).toBe(true);
+      expect(word.input("u")).toBe(true);
+      expect(word.isCompleted()).toBe(true);
+    });
+
+    it("should handle alternative input patterns", () => {
+      const word = new Word({
+        label: "しゅ",
+        inputPatterns: ["shu", "syu"],
+      });
+      expect(word.input("s")).toBe(true);
+      expect(word.input("y")).toBe(true);
+      expect(word.input("u")).toBe(true);
+      expect(word.isCompleted()).toBe(true);
+    });
+
+    it("should throw error when trying to input more than one character", () => {
+      const word = new Word({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      expect(() => word.input("ab")).toThrow("Input must be a single character");
+    });
+
+    it("should throw error when word is already completed", () => {
+      const word = new Word({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      word.input("a");
+      expect(() => word.input("a")).toThrow("Word is already completed");
+    });
+  });
+
   describe("getAvailableInputPatterns", () => {
     it("should return available input patterns", () => {
       const word = new Word({
