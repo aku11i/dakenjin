@@ -1,0 +1,22 @@
+{
+  "name": "@dakenjin/monorepo",
+  "version": "0.0.1",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "clean": "turbo clean && rm -rf node_modules"
+  },
+  "keywords": [
+    "typing",
+    "keyboard"
+  ],
+  "author": "aku11i",
+  "packageManager": "pnpm@10.6.3",
+  "devDependencies": {
+    "turbo": "^2.5.3"
+  }
+}
