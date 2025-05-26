@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef } from "react";
 import { Button } from "@heroui/react";
 import { useWord } from "../utils/use-word";
 
@@ -17,16 +17,10 @@ export function WordInput({
   inputPatterns,
   onComplete,
 }: WordInputProps) {
-  const word = useWord({ label, ruby, inputPatterns });
+  const { input, isCompleted, inputs, suggestions, label: wordLabel, ruby: wordRuby } = useWord({ label, ruby, inputPatterns });
   const [error, setError] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (isFocused) {
-      inputRef.current?.focus();
-    }
-  }, [isFocused]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -35,12 +29,12 @@ export function WordInput({
       }
 
       e.preventDefault();
-      const isValid = word.input(e.key);
+      const isValid = input(e.key);
 
       if (isValid) {
         setError(false);
 
-        if (word.isCompleted && onComplete) {
+        if (isCompleted && onComplete) {
           onComplete();
         }
       } else {
@@ -48,10 +42,10 @@ export function WordInput({
         setTimeout(() => setError(false), 300);
       }
     },
-    [word, onComplete],
+    [input, isCompleted, onComplete],
   );
 
-  const firstSuggestion = word.suggestions[0] || "";
+  const firstSuggestion = suggestions[0] || "";
 
   return (
     <div className="w-full max-w-md">
@@ -59,18 +53,18 @@ export function WordInput({
         <div
           className={`mb-2 text-lg font-mono ${error ? "animate-pulse" : ""}`}
         >
-          <span className="text-green-500">{word.inputs}</span>
+          <span className="text-green-500">{inputs}</span>
           <span className={error ? "text-red-400" : "text-gray-400"}>
             {firstSuggestion}
           </span>
         </div>
-        <h2 className="text-2xl font-bold">{word.label}</h2>
-        {word.ruby && <p className="text-sm text-gray-500">{word.ruby}</p>}
+        <h2 className="text-2xl font-bold">{wordLabel}</h2>
+        {wordRuby && <p className="text-sm text-gray-500">{wordRuby}</p>}
       </div>
 
-      {!isFocused && !word.isCompleted && (
+      {!isCompleted && !isFocused && (
         <Button
-          onPress={() => setIsFocused(true)}
+          onPress={() => inputRef.current?.focus()}
           color="primary"
           variant="flat"
           className="w-full"
@@ -82,17 +76,17 @@ export function WordInput({
       <input
         ref={inputRef}
         type="text"
-        value={word.inputs}
+        value={inputs}
         onKeyDown={handleKeyDown}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        disabled={word.isCompleted}
+        disabled={isCompleted}
         readOnly
         className="sr-only"
         aria-label="タイピング入力"
       />
 
-      {word.isCompleted && (
+      {isCompleted && (
         <div className="text-center text-green-600 font-semibold">完了！</div>
       )}
     </div>
