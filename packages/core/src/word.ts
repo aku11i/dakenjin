@@ -26,6 +26,10 @@ export class Word {
     return this._ruby;
   }
 
+  get inputs(): string {
+    return this._inputs;
+  }
+
   input(character: string): boolean {
     if (character.length !== 1) {
       throw new Error("Input must be a single character");
