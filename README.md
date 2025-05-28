@@ -20,3 +20,59 @@
 - フロントエンド：Next.js（App Router）
 - UIライブラリ：HeroUI（旧 NextUI）
 - デプロイ先：Vercel
+
+## 開発環境のセットアップ
+
+### 必要な環境
+
+- Node.js 24 以上
+- pnpm 10.6.3
+
+### インストール
+
+```bash
+pnpm install
+```
+
+## 開発コマンド
+
+### 開発サーバーの起動
+
+```bash
+pnpm dev
+```
+
+開発サーバーを起動します。Turbo を使用して、モノレポ内のすべてのパッケージで開発サーバーが起動されます。
+
+### コード品質チェック
+
+```bash
+# Lintとフォーマットチェックを実行
+pnpm lint
+```
+
+```bash
+# Lintエラーとフォーマットを自動修正
+pnpm fix
+```
+
+```bash
+# 型チェックを実行
+pnpm type-check
+```
+
+```bash
+# テストを実行
+pnpm test
+```
+
+### コミット前の確認
+
+```bash
+# fix、型チェック、テストをまとめて実行
+pnpm ready
+
+# lint、型チェック、テストをまとめて実行（修正なし）
+pnpm ready:check
+```
+
