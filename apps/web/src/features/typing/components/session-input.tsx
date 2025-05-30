@@ -9,6 +9,7 @@ import { TypingInput } from "./typing-input";
 
 type SessionInputProps = {
   sentences: Array<{
+    label: string;
     characters: Array<{
       label: string;
       inputPatterns: string[];
