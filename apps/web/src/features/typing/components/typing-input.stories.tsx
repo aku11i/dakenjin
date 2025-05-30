@@ -19,7 +19,8 @@ const meta: Meta<typeof TypingInput> = {
       description: "Current input value",
     },
     onInput: {
-      description: "Function called when a character is typed, returns validation result",
+      description:
+        "Function called when a character is typed, returns validation result",
     },
     onComplete: {
       description: "Callback function called when typing is completed",
