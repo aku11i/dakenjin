@@ -1,31 +1,13 @@
 import { useState, useCallback, useMemo } from "react";
-import { Character, Sentence, Session } from "@dakenjin/core";
-
-type UseSentenceData = {
-  label: string;
-  characters: Array<{
-    label: string;
-    inputPatterns: string[];
-  }>;
-};
+import { Sentence, Session } from "@dakenjin/core";
 
 type UseSessionParams = {
-  sentences: UseSentenceData[];
+  sentences: Sentence[];
 };
 
 export function useSession({ sentences }: UseSessionParams) {
   const [session] = useState(() => {
-    const sentenceInstances = sentences.map((sentenceData) => {
-      const characterInstances = sentenceData.characters.map(
-        (character) =>
-          new Character({
-            label: character.label,
-            inputPatterns: character.inputPatterns,
-          }),
-      );
-      return new Sentence(characterInstances, sentenceData.label);
-    });
-    return new Session(sentenceInstances);
+    return new Session(sentences);
   });
 
   const [inputs, setInputs] = useState("");
