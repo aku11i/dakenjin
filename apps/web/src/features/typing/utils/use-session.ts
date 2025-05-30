@@ -1,10 +1,9 @@
 import { useState, useCallback, useMemo } from "react";
-import { Word, Sentence, Session } from "@dakenjin/core";
+import { Character, Sentence, Session } from "@dakenjin/core";
 
 type UseSentenceData = {
-  words: Array<{
+  characters: Array<{
     label: string;
-    ruby?: string;
     inputPatterns: string[];
   }>;
 };
@@ -16,15 +15,14 @@ type UseSessionParams = {
 export function useSession({ sentences }: UseSessionParams) {
   const [session] = useState(() => {
     const sentenceInstances = sentences.map((sentenceData) => {
-      const wordInstances = sentenceData.words.map(
-        (word) =>
-          new Word({
-            label: word.label,
-            ruby: word.ruby,
-            inputPatterns: word.inputPatterns,
+      const characterInstances = sentenceData.characters.map(
+        (character) =>
+          new Character({
+            label: character.label,
+            inputPatterns: character.inputPatterns,
           }),
       );
-      return new Sentence(wordInstances);
+      return new Sentence(characterInstances);
     });
     return new Session(sentenceInstances);
   });
@@ -33,38 +31,38 @@ export function useSession({ sentences }: UseSessionParams) {
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
   const currentSentence = session.currentSentence;
-  const currentWord = currentSentence?.currentWord || null;
+  const currentCharacter = currentSentence?.currentCharacter || null;
   const completedSentences = session.completedSentences;
   const isCompleted = session.isCompleted();
 
   useMemo(() => {
-    if (currentWord) {
-      setSuggestions(currentWord.getSuggestions());
+    if (currentCharacter) {
+      setSuggestions(currentCharacter.getSuggestions());
     }
-  }, [currentWord]);
+  }, [currentCharacter]);
 
   const input = useCallback(
     (character: string): boolean => {
-      if (!currentWord) {
+      if (!currentCharacter) {
         return false;
       }
 
-      const isValid = currentWord.input(character);
+      const isValid = currentCharacter.input(character);
 
       if (isValid) {
-        setInputs(currentWord.inputs);
-        setSuggestions(currentWord.getSuggestions());
+        setInputs(currentCharacter.inputs);
+        setSuggestions(currentCharacter.getSuggestions());
 
-        if (currentWord.isCompleted()) {
+        if (currentCharacter.isCompleted()) {
           setInputs("");
-          const nextWord = currentSentence?.currentWord;
-          if (nextWord) {
-            setSuggestions(nextWord.getSuggestions());
+          const nextCharacter = currentSentence?.currentCharacter;
+          if (nextCharacter) {
+            setSuggestions(nextCharacter.getSuggestions());
           } else {
             const nextSentence = session.currentSentence;
-            const nextSentenceWord = nextSentence?.currentWord;
-            if (nextSentenceWord) {
-              setSuggestions(nextSentenceWord.getSuggestions());
+            const nextSentenceCharacter = nextSentence?.currentCharacter;
+            if (nextSentenceCharacter) {
+              setSuggestions(nextSentenceCharacter.getSuggestions());
             }
           }
         }
@@ -72,15 +70,14 @@ export function useSession({ sentences }: UseSessionParams) {
 
       return isValid;
     },
-    [currentWord, currentSentence, session],
+    [currentCharacter, currentSentence, session],
   );
 
   return {
     currentSentence,
-    currentWord: currentWord
+    currentCharacter: currentCharacter
       ? {
-          label: currentWord.label,
-          ruby: currentWord.ruby,
+          label: currentCharacter.label,
         }
       : null,
     completedSentences,

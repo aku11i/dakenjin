@@ -5,60 +5,50 @@ import { SessionInput } from "../features/typing/components/session-input";
 export default function Home() {
   const sampleSentences = [
     {
-      words: [
-        {
-          label: "こんにちは",
-          ruby: "こんにちは",
-          inputPatterns: ["konnichiha", "konnitiha"],
-        },
-        {
-          label: "世界",
-          ruby: "せかい",
-          inputPatterns: ["sekai"],
-        },
+      characters: [
+        { label: "こ", inputPatterns: ["ko"] },
+        { label: "ん", inputPatterns: ["n", "nn"] },
+        { label: "に", inputPatterns: ["ni"] },
+        { label: "ち", inputPatterns: ["chi", "ti"] },
+        { label: "は", inputPatterns: ["ha", "wa"] },
+        { label: "せ", inputPatterns: ["se"] },
+        { label: "か", inputPatterns: ["ka"] },
+        { label: "い", inputPatterns: ["i"] },
       ],
     },
     {
-      words: [
-        {
-          label: "プログラミング",
-          ruby: "ぷろぐらみんぐ",
-          inputPatterns: ["programming", "puroguramingu"],
-        },
-        {
-          label: "は",
-          ruby: "は",
-          inputPatterns: ["ha", "wa"],
-        },
-        {
-          label: "楽しい",
-          ruby: "たのしい",
-          inputPatterns: ["tanoshii", "tanosii"],
-        },
+      characters: [
+        { label: "プ", inputPatterns: ["pu"] },
+        { label: "ロ", inputPatterns: ["ro"] },
+        { label: "グ", inputPatterns: ["gu"] },
+        { label: "ラ", inputPatterns: ["ra"] },
+        { label: "ミ", inputPatterns: ["mi"] },
+        { label: "ン", inputPatterns: ["n", "nn"] },
+        { label: "グ", inputPatterns: ["gu"] },
+        { label: "は", inputPatterns: ["ha", "wa"] },
+        { label: "た", inputPatterns: ["ta"] },
+        { label: "の", inputPatterns: ["no"] },
+        { label: "し", inputPatterns: ["shi", "si"] },
+        { label: "い", inputPatterns: ["i"] },
       ],
     },
     {
-      words: [
-        {
-          label: "タイピング",
-          ruby: "たいぴんぐ",
-          inputPatterns: ["typing", "taipingu"],
-        },
-        {
-          label: "練習",
-          ruby: "れんしゅう",
-          inputPatterns: ["renshuu", "rensyuu", "renshu"],
-        },
-        {
-          label: "を",
-          ruby: "を",
-          inputPatterns: ["wo", "o"],
-        },
-        {
-          label: "頑張ろう",
-          ruby: "がんばろう",
-          inputPatterns: ["ganbarou", "ganbaro"],
-        },
+      characters: [
+        { label: "タ", inputPatterns: ["ta"] },
+        { label: "イ", inputPatterns: ["i"] },
+        { label: "ピ", inputPatterns: ["pi"] },
+        { label: "ン", inputPatterns: ["n", "nn"] },
+        { label: "グ", inputPatterns: ["gu"] },
+        { label: "れ", inputPatterns: ["re"] },
+        { label: "ん", inputPatterns: ["n", "nn"] },
+        { label: "しゅ", inputPatterns: ["shu", "syu"] },
+        { label: "う", inputPatterns: ["u"] },
+        { label: "を", inputPatterns: ["wo", "o"] },
+        { label: "が", inputPatterns: ["ga"] },
+        { label: "ん", inputPatterns: ["n", "nn"] },
+        { label: "ば", inputPatterns: ["ba"] },
+        { label: "ろ", inputPatterns: ["ro"] },
+        { label: "う", inputPatterns: ["u"] },
       ],
     },
   ];
