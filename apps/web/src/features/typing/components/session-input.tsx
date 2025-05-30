@@ -2,19 +2,14 @@
 
 import { useState, useCallback } from "react";
 import { Progress } from "@heroui/react";
+import { Sentence } from "@dakenjin/core";
 import { useSession } from "../utils/use-session";
 import { TypingDisplay } from "./typing-display";
 import { SentenceDisplay } from "./sentence-display";
 import { TypingInput } from "./typing-input";
 
 type SessionInputProps = {
-  sentences: Array<{
-    label: string;
-    characters: Array<{
-      label: string;
-      inputPatterns: string[];
-    }>;
-  }>;
+  sentences: Sentence[];
   onComplete?: () => void;
 };
 
