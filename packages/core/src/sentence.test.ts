@@ -9,7 +9,7 @@ describe("Sentence", () => {
         new Character({ label: "a", inputPatterns: ["a"] }),
         new Character({ label: "b", inputPatterns: ["b"] }),
       ];
-      const sentence = new Sentence(characters);
+      const sentence = new Sentence(characters, "test sentence");
       expect(sentence.characters).toEqual(characters);
     });
   });
@@ -28,7 +28,7 @@ describe("Sentence", () => {
       });
 
       const characters = [completedCharacter, incompleteCharacter];
-      const sentence = new Sentence(characters);
+      const sentence = new Sentence(characters, "test sentence");
       expect(sentence.currentCharacter).toBe(incompleteCharacter);
     });
 
@@ -39,12 +39,12 @@ describe("Sentence", () => {
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
       character2.input("b");
 
-      const sentence = new Sentence([character1, character2]);
+      const sentence = new Sentence([character1, character2], "test sentence");
       expect(sentence.currentCharacter).toBeNull();
     });
 
     it("should return null if there are no characters", () => {
-      const sentence = new Sentence([]);
+      const sentence = new Sentence([], "empty sentence");
       expect(sentence.currentCharacter).toBeNull();
     });
   });
@@ -59,7 +59,10 @@ describe("Sentence", () => {
 
       const character3 = new Character({ label: "c", inputPatterns: ["c"] });
 
-      const sentence = new Sentence([character1, character2, character3]);
+      const sentence = new Sentence(
+        [character1, character2, character3],
+        "test sentence",
+      );
       expect(sentence.completedCharacters).toEqual([character1, character2]);
     });
 
@@ -67,7 +70,7 @@ describe("Sentence", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
 
-      const sentence = new Sentence([character1, character2]);
+      const sentence = new Sentence([character1, character2], "test sentence");
       expect(sentence.completedCharacters).toEqual([]);
     });
   });
@@ -83,12 +86,10 @@ describe("Sentence", () => {
       const character3 = new Character({ label: "c", inputPatterns: ["c"] });
       const character4 = new Character({ label: "d", inputPatterns: ["d"] });
 
-      const sentence = new Sentence([
-        character1,
-        character2,
-        character3,
-        character4,
-      ]);
+      const sentence = new Sentence(
+        [character1, character2, character3, character4],
+        "test sentence",
+      );
       expect(sentence.incompletedCharacters).toEqual([character3, character4]);
     });
 
@@ -99,7 +100,7 @@ describe("Sentence", () => {
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
       character2.input("b");
 
-      const sentence = new Sentence([character1, character2]);
+      const sentence = new Sentence([character1, character2], "test sentence");
       expect(sentence.incompletedCharacters).toEqual([]);
     });
   });
@@ -112,7 +113,7 @@ describe("Sentence", () => {
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
       character2.input("b");
 
-      const sentence = new Sentence([character1, character2]);
+      const sentence = new Sentence([character1, character2], "test sentence");
       expect(sentence.isCompleted()).toBe(true);
     });
 
@@ -122,12 +123,12 @@ describe("Sentence", () => {
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
 
-      const sentence = new Sentence([character1, character2]);
+      const sentence = new Sentence([character1, character2], "test sentence");
       expect(sentence.isCompleted()).toBe(false);
     });
 
     it("should return true for an empty sentence", () => {
-      const sentence = new Sentence([]);
+      const sentence = new Sentence([], "empty sentence");
       expect(sentence.isCompleted()).toBe(true);
     });
   });

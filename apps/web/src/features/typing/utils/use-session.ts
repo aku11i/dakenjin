@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from "react";
 import { Character, Sentence, Session } from "@dakenjin/core";
 
 type UseSentenceData = {
+  label: string;
   characters: Array<{
     label: string;
     inputPatterns: string[];
@@ -22,7 +23,7 @@ export function useSession({ sentences }: UseSessionParams) {
             inputPatterns: character.inputPatterns,
           }),
       );
-      return new Sentence(characterInstances);
+      return new Sentence(characterInstances, sentenceData.label);
     });
     return new Session(sentenceInstances);
   });

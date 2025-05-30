@@ -2,13 +2,19 @@ import { Character } from "./character";
 
 export class Sentence {
   private _characters: Character[];
+  private _label: string;
 
-  constructor(characters: Character[]) {
+  constructor(characters: Character[], label: string) {
     this._characters = characters;
+    this._label = label;
   }
 
   get characters(): Character[] {
     return this._characters;
+  }
+
+  get label(): string {
+    return this._label;
   }
 
   get currentCharacter(): Character | null {

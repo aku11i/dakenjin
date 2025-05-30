@@ -5,6 +5,7 @@ import { SessionInput } from "../features/typing/components/session-input";
 export default function Home() {
   const sampleSentences = [
     {
+      label: "こんにちは世界",
       characters: [
         { label: "こ", inputPatterns: ["ko"] },
         { label: "ん", inputPatterns: ["n", "nn"] },
@@ -17,6 +18,7 @@ export default function Home() {
       ],
     },
     {
+      label: "プログラミングは楽しい",
       characters: [
         { label: "プ", inputPatterns: ["pu"] },
         { label: "ロ", inputPatterns: ["ro"] },
@@ -33,6 +35,7 @@ export default function Home() {
       ],
     },
     {
+      label: "タイピング練習を頑張ろう",
       characters: [
         { label: "タ", inputPatterns: ["ta"] },
         { label: "イ", inputPatterns: ["i"] },
@@ -43,7 +46,7 @@ export default function Home() {
         { label: "ん", inputPatterns: ["n", "nn"] },
         { label: "しゅ", inputPatterns: ["shu", "syu"] },
         { label: "う", inputPatterns: ["u"] },
-        { label: "を", inputPatterns: ["wo", "o"] },
+        { label: "を", inputPatterns: ["wo"] },
         { label: "が", inputPatterns: ["ga"] },
         { label: "ん", inputPatterns: ["n", "nn"] },
         { label: "ば", inputPatterns: ["ba"] },

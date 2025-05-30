@@ -7,7 +7,7 @@ describe("Session", () => {
   describe("constructor", () => {
     it("should initialize with an array of Sentences", () => {
       const character = new Character({ label: "a", inputPatterns: ["a"] });
-      const sentence = new Sentence([character]);
+      const sentence = new Sentence([character], "test sentence");
       const session = new Session([sentence]);
       expect(session.sentences).toEqual([sentence]);
     });
@@ -23,10 +23,16 @@ describe("Session", () => {
     it("should return the first incomplete sentence", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       character1.input("a");
-      const completedSentence = new Sentence([character1]);
+      const completedSentence = new Sentence(
+        [character1],
+        "completed sentence",
+      );
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
-      const incompleteSentence = new Sentence([character2]);
+      const incompleteSentence = new Sentence(
+        [character2],
+        "incomplete sentence",
+      );
 
       const session = new Session([completedSentence, incompleteSentence]);
       expect(session.currentSentence).toBe(incompleteSentence);
@@ -35,11 +41,11 @@ describe("Session", () => {
     it("should return null when all sentences are completed", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       character1.input("a");
-      const sentence1 = new Sentence([character1]);
+      const sentence1 = new Sentence([character1], "sentence 1");
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
       character2.input("b");
-      const sentence2 = new Sentence([character2]);
+      const sentence2 = new Sentence([character2], "sentence 2");
 
       const session = new Session([sentence1, sentence2]);
       expect(session.currentSentence).toBeNull();
@@ -50,14 +56,23 @@ describe("Session", () => {
     it("should return all completed sentences", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       character1.input("a");
-      const completedSentence1 = new Sentence([character1]);
+      const completedSentence1 = new Sentence(
+        [character1],
+        "completed sentence 1",
+      );
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
       character2.input("b");
-      const completedSentence2 = new Sentence([character2]);
+      const completedSentence2 = new Sentence(
+        [character2],
+        "completed sentence 2",
+      );
 
       const character3 = new Character({ label: "c", inputPatterns: ["c"] });
-      const incompleteSentence = new Sentence([character3]);
+      const incompleteSentence = new Sentence(
+        [character3],
+        "incomplete sentence",
+      );
 
       const session = new Session([
         completedSentence1,
@@ -72,10 +87,10 @@ describe("Session", () => {
 
     it("should return empty array when no sentences are completed", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
-      const sentence1 = new Sentence([character1]);
+      const sentence1 = new Sentence([character1], "sentence 1");
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
-      const sentence2 = new Sentence([character2]);
+      const sentence2 = new Sentence([character2], "sentence 2");
 
       const session = new Session([sentence1, sentence2]);
       expect(session.completedSentences).toEqual([]);
@@ -86,13 +101,22 @@ describe("Session", () => {
     it("should return all incomplete sentences", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       character1.input("a");
-      const completedSentence = new Sentence([character1]);
+      const completedSentence = new Sentence(
+        [character1],
+        "completed sentence",
+      );
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
-      const incompleteSentence1 = new Sentence([character2]);
+      const incompleteSentence1 = new Sentence(
+        [character2],
+        "incomplete sentence 1",
+      );
 
       const character3 = new Character({ label: "c", inputPatterns: ["c"] });
-      const incompleteSentence2 = new Sentence([character3]);
+      const incompleteSentence2 = new Sentence(
+        [character3],
+        "incomplete sentence 2",
+      );
 
       const session = new Session([
         completedSentence,
@@ -108,11 +132,11 @@ describe("Session", () => {
     it("should return empty array when all sentences are completed", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       character1.input("a");
-      const sentence1 = new Sentence([character1]);
+      const sentence1 = new Sentence([character1], "sentence 1");
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
       character2.input("b");
-      const sentence2 = new Sentence([character2]);
+      const sentence2 = new Sentence([character2], "sentence 2");
 
       const session = new Session([sentence1, sentence2]);
       expect(session.incompletedSentences).toEqual([]);
@@ -123,11 +147,11 @@ describe("Session", () => {
     it("should return true when all sentences are completed", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       character1.input("a");
-      const sentence1 = new Sentence([character1]);
+      const sentence1 = new Sentence([character1], "sentence 1");
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
       character2.input("b");
-      const sentence2 = new Sentence([character2]);
+      const sentence2 = new Sentence([character2], "sentence 2");
 
       const session = new Session([sentence1, sentence2]);
       expect(session.isCompleted()).toBe(true);
@@ -136,10 +160,16 @@ describe("Session", () => {
     it("should return false when at least one sentence is incomplete", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       character1.input("a");
-      const completedSentence = new Sentence([character1]);
+      const completedSentence = new Sentence(
+        [character1],
+        "completed sentence",
+      );
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
-      const incompleteSentence = new Sentence([character2]);
+      const incompleteSentence = new Sentence(
+        [character2],
+        "incomplete sentence",
+      );
 
       const session = new Session([completedSentence, incompleteSentence]);
       expect(session.isCompleted()).toBe(false);
