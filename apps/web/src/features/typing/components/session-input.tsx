@@ -62,7 +62,7 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
                 currentCharacter ? 1 : 0,
               )}
             />
-            <SentenceDisplay characters={currentSentence.characters} />
+            <SentenceDisplay sentence={currentSentence} />
           </div>
         </div>
       )}

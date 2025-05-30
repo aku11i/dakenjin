@@ -1,24 +1,9 @@
-type SentenceCharacter = {
-  label: string;
-};
+import type { Sentence } from "@dakenjin/core";
 
 type SentenceDisplayProps = {
-  characters: SentenceCharacter[];
+  sentence: Sentence;
 };
 
-export function SentenceDisplay({ characters }: SentenceDisplayProps) {
-  return (
-    <div className="space-y-1">
-      <div className="text-2xl text-gray-800">
-        {characters.map((character, index) => (
-          <span key={index}>{character.label}</span>
-        ))}
-      </div>
-      <div className="text-sm text-gray-500">
-        {characters.map((character, index) => (
-          <span key={index}>{character.label}</span>
-        ))}
-      </div>
-    </div>
-  );
+export function SentenceDisplay({ sentence }: SentenceDisplayProps) {
+  return <div className="text-2xl text-gray-800">{sentence.label}</div>;
 }
