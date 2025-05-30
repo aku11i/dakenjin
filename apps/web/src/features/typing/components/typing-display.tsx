@@ -4,7 +4,6 @@ type CompletedCharacter = {
 
 type CurrentCharacter = {
   label: string;
-  ruby?: string;
 };
 
 type TypingDisplayProps = {

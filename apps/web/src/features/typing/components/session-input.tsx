@@ -11,7 +11,6 @@ type SessionInputProps = {
   sentences: Array<{
     characters: Array<{
       label: string;
-      ruby?: string;
       inputPatterns: string[];
     }>;
   }>;

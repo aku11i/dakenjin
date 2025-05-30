@@ -4,7 +4,6 @@ import { Character, Sentence, Session } from "@dakenjin/core";
 type UseSentenceData = {
   characters: Array<{
     label: string;
-    ruby?: string;
     inputPatterns: string[];
   }>;
 };
@@ -20,7 +19,6 @@ export function useSession({ sentences }: UseSessionParams) {
         (character) =>
           new Character({
             label: character.label,
-            ruby: character.ruby,
             inputPatterns: character.inputPatterns,
           }),
       );
@@ -80,7 +78,6 @@ export function useSession({ sentences }: UseSessionParams) {
     currentCharacter: currentCharacter
       ? {
           label: currentCharacter.label,
-          ruby: currentCharacter.ruby,
         }
       : null,
     completedSentences,

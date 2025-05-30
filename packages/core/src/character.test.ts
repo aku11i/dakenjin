@@ -39,15 +39,6 @@ describe("Character", () => {
       expect(character.inputPatterns).toEqual(["shu", "syu"]);
     });
 
-    it("should initialize with ruby", () => {
-      const character = new Character({
-        label: "漢",
-        ruby: "かん",
-        inputPatterns: ["kan"],
-      });
-      expect(character.label).toBe("漢");
-      expect(character.ruby).toBe("かん");
-    });
 
     it("should throw error when label is empty", () => {
       expect(() => new Character({

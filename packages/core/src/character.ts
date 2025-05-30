@@ -1,16 +1,13 @@
 export class Character {
   private _label: string;
-  private _ruby: string;
   private _inputPatterns: string[];
   private _inputs: string = "";
 
   constructor({
     label,
-    ruby,
     inputPatterns,
   }: {
     label: string;
-    ruby?: string;
     inputPatterns: string[];
   }) {
     if (label.length === 0) {
@@ -20,16 +17,11 @@ export class Character {
       throw new Error("At least one input pattern is required");
     }
     this._label = label;
-    this._ruby = ruby || "";
     this._inputPatterns = inputPatterns;
   }
 
   get label(): string {
     return this._label;
-  }
-
-  get ruby(): string {
-    return this._ruby;
   }
 
   get inputPatterns(): string[] {

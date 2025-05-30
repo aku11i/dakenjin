@@ -1,6 +1,5 @@
 type SentenceCharacter = {
   label: string;
-  ruby?: string;
 };
 
 type SentenceDisplayProps = {
@@ -17,7 +16,7 @@ export function SentenceDisplay({ characters }: SentenceDisplayProps) {
       </div>
       <div className="text-sm text-gray-500">
         {characters.map((character, index) => (
-          <span key={index}>{character.ruby || character.label}</span>
+          <span key={index}>{character.label}</span>
         ))}
       </div>
     </div>
