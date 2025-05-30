@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "turbo dev",
+    "storybook": "turbo storybook",
     "build": "turbo build",
     "lint": "turbo lint prettier:check",
     "fix": "turbo fix prettier:fix",
