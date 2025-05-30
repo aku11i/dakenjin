@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import { Sentence } from "@dakenjin/core";
-import { fromText } from "@dakenjin/core/src/characters/japanese";
+import { Sentence, fromJapaneseText } from "@dakenjin/core";
 import { SessionInput } from "./session-input";
 
 const meta: Meta<typeof SessionInput> = {
@@ -31,7 +30,7 @@ type Story = StoryObj<typeof meta>;
 
 export const SingleSentence: Story = {
   args: {
-    sentences: [new Sentence(fromText("こんにちは"), "こんにちは")],
+    sentences: [new Sentence(fromJapaneseText("こんにちは"), "こんにちは")],
     onComplete: () => console.log("Session completed!"),
   },
 };
@@ -39,9 +38,9 @@ export const SingleSentence: Story = {
 export const MultipleSentences: Story = {
   args: {
     sentences: [
-      new Sentence(fromText("こんにちは"), "こんにちは"),
-      new Sentence(fromText("ありがとう"), "ありがとう"),
-      new Sentence(fromText("さようなら"), "さようなら"),
+      new Sentence(fromJapaneseText("こんにちは"), "こんにちは"),
+      new Sentence(fromJapaneseText("ありがとう"), "ありがとう"),
+      new Sentence(fromJapaneseText("さようなら"), "さようなら"),
     ],
     onComplete: () => console.log("All sentences completed!"),
   },
@@ -51,7 +50,7 @@ export const LongSentence: Story = {
   args: {
     sentences: [
       new Sentence(
-        fromText("わたしはにほんごをよみます"),
+        fromJapaneseText("わたしはにほんごをよみます"),
         "わたしはにほんごをよみます",
       ),
     ],

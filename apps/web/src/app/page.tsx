@@ -1,18 +1,17 @@
 "use client";
 
-import { Sentence } from "@dakenjin/core";
-import { fromText } from "@dakenjin/core/src/characters/japanese";
+import { Sentence, fromJapaneseText } from "@dakenjin/core";
 import { SessionInput } from "../features/typing/components/session-input";
 
 export default function Home() {
   const sampleSentences = [
-    new Sentence(fromText("こんにちはせかい"), "こんにちは世界"),
+    new Sentence(fromJapaneseText("こんにちはせかい"), "こんにちは世界"),
     new Sentence(
-      fromText("プログラミングはたのしい"),
+      fromJapaneseText("プログラミングはたのしい"),
       "プログラミングは楽しい",
     ),
     new Sentence(
-      fromText("タイピングれんしゅうをがんばろう"),
+      fromJapaneseText("タイピングれんしゅうをがんばろう"),
       "タイピング練習を頑張ろう",
     ),
   ];

@@ -235,7 +235,7 @@ export type HiraganaCharacter = (typeof HIRAGANA_CHARACTERS)[number];
 export type KatakanaCharacter = (typeof KATAKANA_CHARACTERS)[number];
 export type JapaneseCharacter = (typeof JAPANESE_CHARACTERS)[number];
 
-export function fromText(text: string): Character[] {
+export function fromJapaneseText(text: string): Character[] {
   const characters: Character[] = [];
   let i = 0;
 

@@ -1,23 +1,23 @@
 import { describe, test, expect } from "vitest";
-import { fromText } from "./japanese";
+import { fromJapaneseText } from "./japanese";
 
-describe("fromText", () => {
+describe("fromJapaneseText", () => {
   test("単一のひらがなを変換する", () => {
-    const result = fromText("あ");
+    const result = fromJapaneseText("あ");
     expect(result).toHaveLength(1);
     expect(result[0].label).toBe("あ");
     expect(result[0].inputPatterns).toEqual(["a"]);
   });
 
   test("単一のカタカナを変換する", () => {
-    const result = fromText("ア");
+    const result = fromJapaneseText("ア");
     expect(result).toHaveLength(1);
     expect(result[0].label).toBe("ア");
     expect(result[0].inputPatterns).toEqual(["a"]);
   });
 
   test("複数文字のひらがなを変換する", () => {
-    const result = fromText("こんにちは");
+    const result = fromJapaneseText("こんにちは");
     expect(result).toHaveLength(5);
     expect(result[0].label).toBe("こ");
     expect(result[1].label).toBe("ん");
@@ -27,14 +27,14 @@ describe("fromText", () => {
   });
 
   test("拗音（2文字組み合わせ）を正しく変換する", () => {
-    const result = fromText("しゃ");
+    const result = fromJapaneseText("しゃ");
     expect(result).toHaveLength(1);
     expect(result[0].label).toBe("しゃ");
     expect(result[0].inputPatterns).toEqual(["sha", "sya"]);
   });
 
   test("拗音を含む文字列を変換する", () => {
-    const result = fromText("きょう");
+    const result = fromJapaneseText("きょう");
     expect(result).toHaveLength(2);
     expect(result[0].label).toBe("きょ");
     expect(result[0].inputPatterns).toEqual(["kyo"]);
@@ -43,7 +43,7 @@ describe("fromText", () => {
   });
 
   test("ひらがなとカタカナが混在する文字列を変換する", () => {
-    const result = fromText("ひらがなカタカナ");
+    const result = fromJapaneseText("ひらがなカタカナ");
     expect(result).toHaveLength(8);
     expect(result[0].label).toBe("ひ");
     expect(result[1].label).toBe("ら");
@@ -56,38 +56,38 @@ describe("fromText", () => {
   });
 
   test("複数の入力パターンを持つ文字を変換する", () => {
-    const result = fromText("し");
+    const result = fromJapaneseText("し");
     expect(result).toHaveLength(1);
     expect(result[0].label).toBe("し");
     expect(result[0].inputPatterns).toEqual(["shi", "si"]);
   });
 
   test("小さいつを変換する", () => {
-    const result = fromText("っ");
+    const result = fromJapaneseText("っ");
     expect(result).toHaveLength(1);
     expect(result[0].label).toBe("っ");
     expect(result[0].inputPatterns).toEqual(["xtu", "ltu", "xtsu", "ltsu"]);
   });
 
   test("サポートされていない文字でエラーを投げる", () => {
-    expect(() => fromText("hello")).toThrow(
+    expect(() => fromJapaneseText("hello")).toThrow(
       "Unsupported character: h at position 0",
     );
-    expect(() => fromText("あa")).toThrow(
+    expect(() => fromJapaneseText("あa")).toThrow(
       "Unsupported character: a at position 1",
     );
-    expect(() => fromText("123")).toThrow(
+    expect(() => fromJapaneseText("123")).toThrow(
       "Unsupported character: 1 at position 0",
     );
   });
 
   test("空文字列を変換する", () => {
-    const result = fromText("");
+    const result = fromJapaneseText("");
     expect(result).toHaveLength(0);
   });
 
   test("長い拗音を含む複雑な文字列を変換する", () => {
-    const result = fromText("しゃべりゅう");
+    const result = fromJapaneseText("しゃべりゅう");
     expect(result).toHaveLength(4);
     expect(result[0].label).toBe("しゃ");
     expect(result[1].label).toBe("べ");
