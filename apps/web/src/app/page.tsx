@@ -5,7 +5,7 @@ import { SessionInput } from "../features/typing/components/session-input";
 export default function Home() {
   const sampleSentences = [
     {
-      words: [
+      characters: [
         {
           label: "こんにちは",
           ruby: "こんにちは",
@@ -19,7 +19,7 @@ export default function Home() {
       ],
     },
     {
-      words: [
+      characters: [
         {
           label: "プログラミング",
           ruby: "ぷろぐらみんぐ",
@@ -38,7 +38,7 @@ export default function Home() {
       ],
     },
     {
-      words: [
+      characters: [
         {
           label: "タイピング",
           ruby: "たいぴんぐ",

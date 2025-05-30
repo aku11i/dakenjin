@@ -1,117 +1,117 @@
 import { describe, it, expect } from "vitest";
 import { Sentence } from "./sentence";
-import { Word } from "./word";
+import { Character } from "./character";
 
 describe("Sentence", () => {
   describe("constructor", () => {
-    it("should initialize with an array of Words", () => {
-      const words = [
-        new Word({ label: "a", inputPatterns: ["a"] }),
-        new Word({ label: "b", inputPatterns: ["b"] }),
+    it("should initialize with an array of Characters", () => {
+      const characters = [
+        new Character({ label: "a", inputPatterns: ["a"] }),
+        new Character({ label: "b", inputPatterns: ["b"] }),
       ];
-      const sentence = new Sentence(words);
-      expect(sentence.words).toEqual(words);
+      const sentence = new Sentence(characters);
+      expect(sentence.characters).toEqual(characters);
     });
   });
 
-  describe("currentWord", () => {
-    it("should return the first non-completed word", () => {
-      const completedWord = new Word({ label: "a", inputPatterns: ["a"] });
-      completedWord.input("a");
+  describe("currentCharacter", () => {
+    it("should return the first non-completed character", () => {
+      const completedCharacter = new Character({ label: "a", inputPatterns: ["a"] });
+      completedCharacter.input("a");
 
-      const incompleteWord = new Word({ label: "b", inputPatterns: ["b"] });
+      const incompleteCharacter = new Character({ label: "b", inputPatterns: ["b"] });
 
-      const words = [completedWord, incompleteWord];
-      const sentence = new Sentence(words);
-      expect(sentence.currentWord).toBe(incompleteWord);
+      const characters = [completedCharacter, incompleteCharacter];
+      const sentence = new Sentence(characters);
+      expect(sentence.currentCharacter).toBe(incompleteCharacter);
     });
 
-    it("should return null if all words are completed", () => {
-      const word1 = new Word({ label: "a", inputPatterns: ["a"] });
-      word1.input("a");
+    it("should return null if all characters are completed", () => {
+      const character1 = new Character({ label: "a", inputPatterns: ["a"] });
+      character1.input("a");
 
-      const word2 = new Word({ label: "b", inputPatterns: ["b"] });
-      word2.input("b");
+      const character2 = new Character({ label: "b", inputPatterns: ["b"] });
+      character2.input("b");
 
-      const sentence = new Sentence([word1, word2]);
-      expect(sentence.currentWord).toBeNull();
+      const sentence = new Sentence([character1, character2]);
+      expect(sentence.currentCharacter).toBeNull();
     });
 
-    it("should return null if there are no words", () => {
+    it("should return null if there are no characters", () => {
       const sentence = new Sentence([]);
-      expect(sentence.currentWord).toBeNull();
+      expect(sentence.currentCharacter).toBeNull();
     });
   });
 
-  describe("completedWords", () => {
-    it("should return all completed words", () => {
-      const word1 = new Word({ label: "a", inputPatterns: ["a"] });
-      word1.input("a");
+  describe("completedCharacters", () => {
+    it("should return all completed characters", () => {
+      const character1 = new Character({ label: "a", inputPatterns: ["a"] });
+      character1.input("a");
 
-      const word2 = new Word({ label: "b", inputPatterns: ["b"] });
-      word2.input("b");
+      const character2 = new Character({ label: "b", inputPatterns: ["b"] });
+      character2.input("b");
 
-      const word3 = new Word({ label: "c", inputPatterns: ["c"] });
+      const character3 = new Character({ label: "c", inputPatterns: ["c"] });
 
-      const sentence = new Sentence([word1, word2, word3]);
-      expect(sentence.completedWords).toEqual([word1, word2]);
+      const sentence = new Sentence([character1, character2, character3]);
+      expect(sentence.completedCharacters).toEqual([character1, character2]);
     });
 
-    it("should return empty array when no words are completed", () => {
-      const word1 = new Word({ label: "a", inputPatterns: ["a"] });
-      const word2 = new Word({ label: "b", inputPatterns: ["b"] });
+    it("should return empty array when no characters are completed", () => {
+      const character1 = new Character({ label: "a", inputPatterns: ["a"] });
+      const character2 = new Character({ label: "b", inputPatterns: ["b"] });
 
-      const sentence = new Sentence([word1, word2]);
-      expect(sentence.completedWords).toEqual([]);
+      const sentence = new Sentence([character1, character2]);
+      expect(sentence.completedCharacters).toEqual([]);
     });
   });
 
-  describe("incompletedWords", () => {
-    it("should return all incomplete words", () => {
-      const word1 = new Word({ label: "a", inputPatterns: ["a"] });
-      word1.input("a");
+  describe("incompletedCharacters", () => {
+    it("should return all incomplete characters", () => {
+      const character1 = new Character({ label: "a", inputPatterns: ["a"] });
+      character1.input("a");
 
-      const word2 = new Word({ label: "b", inputPatterns: ["b"] });
-      word2.input("b");
+      const character2 = new Character({ label: "b", inputPatterns: ["b"] });
+      character2.input("b");
 
-      const word3 = new Word({ label: "c", inputPatterns: ["c"] });
-      const word4 = new Word({ label: "d", inputPatterns: ["d"] });
+      const character3 = new Character({ label: "c", inputPatterns: ["c"] });
+      const character4 = new Character({ label: "d", inputPatterns: ["d"] });
 
-      const sentence = new Sentence([word1, word2, word3, word4]);
-      expect(sentence.incompletedWords).toEqual([word3, word4]);
+      const sentence = new Sentence([character1, character2, character3, character4]);
+      expect(sentence.incompletedCharacters).toEqual([character3, character4]);
     });
 
-    it("should return empty array when all words are completed", () => {
-      const word1 = new Word({ label: "a", inputPatterns: ["a"] });
-      word1.input("a");
+    it("should return empty array when all characters are completed", () => {
+      const character1 = new Character({ label: "a", inputPatterns: ["a"] });
+      character1.input("a");
 
-      const word2 = new Word({ label: "b", inputPatterns: ["b"] });
-      word2.input("b");
+      const character2 = new Character({ label: "b", inputPatterns: ["b"] });
+      character2.input("b");
 
-      const sentence = new Sentence([word1, word2]);
-      expect(sentence.incompletedWords).toEqual([]);
+      const sentence = new Sentence([character1, character2]);
+      expect(sentence.incompletedCharacters).toEqual([]);
     });
   });
 
   describe("isCompleted", () => {
-    it("should return true when all words are completed", () => {
-      const word1 = new Word({ label: "a", inputPatterns: ["a"] });
-      word1.input("a");
+    it("should return true when all characters are completed", () => {
+      const character1 = new Character({ label: "a", inputPatterns: ["a"] });
+      character1.input("a");
 
-      const word2 = new Word({ label: "b", inputPatterns: ["b"] });
-      word2.input("b");
+      const character2 = new Character({ label: "b", inputPatterns: ["b"] });
+      character2.input("b");
 
-      const sentence = new Sentence([word1, word2]);
+      const sentence = new Sentence([character1, character2]);
       expect(sentence.isCompleted()).toBe(true);
     });
 
-    it("should return false when at least one word is incomplete", () => {
-      const word1 = new Word({ label: "a", inputPatterns: ["a"] });
-      word1.input("a");
+    it("should return false when at least one character is incomplete", () => {
+      const character1 = new Character({ label: "a", inputPatterns: ["a"] });
+      character1.input("a");
 
-      const word2 = new Word({ label: "b", inputPatterns: ["b"] });
+      const character2 = new Character({ label: "b", inputPatterns: ["b"] });
 
-      const sentence = new Sentence([word1, word2]);
+      const sentence = new Sentence([character1, character2]);
       expect(sentence.isCompleted()).toBe(false);
     });
 

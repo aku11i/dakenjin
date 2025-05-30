@@ -9,7 +9,7 @@ import { TypingInput } from "./typing-input";
 
 type SessionInputProps = {
   sentences: Array<{
-    words: Array<{
+    characters: Array<{
       label: string;
       ruby?: string;
       inputPatterns: string[];
@@ -21,7 +21,7 @@ type SessionInputProps = {
 export function SessionInput({ sentences, onComplete }: SessionInputProps) {
   const {
     currentSentence,
-    currentWord,
+    currentCharacter,
     completedSentences,
     sentences: allSentences,
     input,
@@ -58,23 +58,23 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
         <div className="mb-6 text-center">
           <div className="mb-6 space-y-4">
             <TypingDisplay
-              completedWords={currentSentence.completedWords}
-              currentWord={currentWord}
+              completedCharacters={currentSentence.completedCharacters}
+              currentCharacter={currentCharacter}
               currentInputs={inputs}
               suggestions={suggestions}
               error={error}
-              futureWords={currentSentence.incompletedWords.slice(
-                currentWord ? 1 : 0,
+              futureCharacters={currentSentence.incompletedCharacters.slice(
+                currentCharacter ? 1 : 0,
               )}
             />
-            <SentenceDisplay words={currentSentence.words} />
+            <SentenceDisplay characters={currentSentence.characters} />
           </div>
         </div>
       )}
 
       <TypingInput
         value={inputs}
-        onInput={(character) => (currentWord ? input(character) : false)}
+        onInput={(character) => (currentCharacter ? input(character) : false)}
         onComplete={onComplete}
         isCompleted={isCompleted}
         onError={handleError}

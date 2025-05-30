@@ -1,39 +1,39 @@
-type CompletedWord = {
+type CompletedCharacter = {
   inputs: string;
 };
 
-type CurrentWord = {
+type CurrentCharacter = {
   label: string;
   ruby?: string;
 };
 
 type TypingDisplayProps = {
-  completedWords: CompletedWord[];
-  currentWord: CurrentWord | null;
+  completedCharacters: CompletedCharacter[];
+  currentCharacter: CurrentCharacter | null;
   currentInputs: string;
   suggestions: string[];
   error: boolean;
-  futureWords: { getSuggestions: () => string[] }[];
+  futureCharacters: { getSuggestions: () => string[] }[];
 };
 
 export function TypingDisplay({
-  completedWords,
-  currentWord,
+  completedCharacters,
+  currentCharacter,
   currentInputs,
   suggestions,
   error,
-  futureWords,
+  futureCharacters,
 }: TypingDisplayProps) {
   const firstSuggestion = suggestions[0] || "";
 
   return (
     <div className="flex flex-wrap justify-center gap-2">
-      {completedWords.map((word, index) => (
+      {completedCharacters.map((character, index) => (
         <span key={index} className="text-lg font-mono text-green-500">
-          {word.inputs}
+          {character.inputs}
         </span>
       ))}
-      {currentWord && (
+      {currentCharacter && (
         <div
           className={`text-lg font-mono inline-flex ${
             error ? "animate-pulse" : ""
@@ -45,8 +45,8 @@ export function TypingDisplay({
           </span>
         </div>
       )}
-      {futureWords.map((word, index) => {
-        const futureSuggestions = word.getSuggestions();
+      {futureCharacters.map((character, index) => {
+        const futureSuggestions = character.getSuggestions();
         return (
           <span
             key={`future-${index}`}

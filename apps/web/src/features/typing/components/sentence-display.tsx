@@ -1,23 +1,23 @@
-type SentenceWord = {
+type SentenceCharacter = {
   label: string;
   ruby?: string;
 };
 
 type SentenceDisplayProps = {
-  words: SentenceWord[];
+  characters: SentenceCharacter[];
 };
 
-export function SentenceDisplay({ words }: SentenceDisplayProps) {
+export function SentenceDisplay({ characters }: SentenceDisplayProps) {
   return (
     <div className="space-y-1">
       <div className="text-2xl text-gray-800">
-        {words.map((word, index) => (
-          <span key={index}>{word.label}</span>
+        {characters.map((character, index) => (
+          <span key={index}>{character.label}</span>
         ))}
       </div>
       <div className="text-sm text-gray-500">
-        {words.map((word, index) => (
-          <span key={index}>{word.ruby || word.label}</span>
+        {characters.map((character, index) => (
+          <span key={index}>{character.ruby || character.label}</span>
         ))}
       </div>
     </div>

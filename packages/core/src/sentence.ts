@@ -1,29 +1,29 @@
-import { Word } from "./word";
+import { Character } from "./character";
 
 export class Sentence {
-  private _words: Word[];
+  private _characters: Character[];
 
-  constructor(words: Word[]) {
-    this._words = words;
+  constructor(characters: Character[]) {
+    this._characters = characters;
   }
 
-  get words(): Word[] {
-    return this._words;
+  get characters(): Character[] {
+    return this._characters;
   }
 
-  get currentWord(): Word | null {
-    return this._words.find((word) => !word.isCompleted()) ?? null;
+  get currentCharacter(): Character | null {
+    return this._characters.find((character) => !character.isCompleted()) ?? null;
   }
 
-  get completedWords(): Word[] {
-    return this._words.filter((word) => word.isCompleted());
+  get completedCharacters(): Character[] {
+    return this._characters.filter((character) => character.isCompleted());
   }
 
-  get incompletedWords(): Word[] {
-    return this._words.filter((word) => !word.isCompleted());
+  get incompletedCharacters(): Character[] {
+    return this._characters.filter((character) => !character.isCompleted());
   }
 
   isCompleted(): boolean {
-    return this._words.every((word) => word.isCompleted());
+    return this._characters.every((character) => character.isCompleted());
   }
 }
