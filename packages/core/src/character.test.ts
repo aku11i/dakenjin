@@ -39,19 +39,24 @@ describe("Character", () => {
       expect(character.inputPatterns).toEqual(["shu", "syu"]);
     });
 
-
     it("should throw error when label is empty", () => {
-      expect(() => new Character({
-        label: "",
-        inputPatterns: ["a"],
-      })).toThrow("Character label cannot be empty");
+      expect(
+        () =>
+          new Character({
+            label: "",
+            inputPatterns: ["a"],
+          }),
+      ).toThrow("Character label cannot be empty");
     });
 
     it("should throw error when no input patterns provided", () => {
-      expect(() => new Character({
-        label: "a",
-        inputPatterns: [],
-      })).toThrow("At least one input pattern is required");
+      expect(
+        () =>
+          new Character({
+            label: "a",
+            inputPatterns: [],
+          }),
+      ).toThrow("At least one input pattern is required");
     });
   });
 
@@ -147,7 +152,9 @@ describe("Character", () => {
         inputPatterns: ["a"],
       });
       character.input("a");
-      expect(() => character.input("a")).toThrow("Character is already completed");
+      expect(() => character.input("a")).toThrow(
+        "Character is already completed",
+      );
     });
   });
 

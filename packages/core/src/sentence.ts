@@ -12,7 +12,9 @@ export class Sentence {
   }
 
   get currentCharacter(): Character | null {
-    return this._characters.find((character) => !character.isCompleted()) ?? null;
+    return (
+      this._characters.find((character) => !character.isCompleted()) ?? null
+    );
   }
 
   get completedCharacters(): Character[] {

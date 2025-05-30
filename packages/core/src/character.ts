@@ -42,8 +42,8 @@ export class Character {
     }
 
     const nextInputs = this._inputs + character;
-    const availablePatterns = this._inputPatterns.filter(pattern => 
-      pattern.startsWith(nextInputs)
+    const availablePatterns = this._inputPatterns.filter((pattern) =>
+      pattern.startsWith(nextInputs),
     );
 
     if (availablePatterns.length === 0) {
@@ -59,14 +59,14 @@ export class Character {
   }
 
   getAvailablePatterns(): string[] {
-    return this._inputPatterns.filter(pattern => 
-      pattern.startsWith(this._inputs)
+    return this._inputPatterns.filter((pattern) =>
+      pattern.startsWith(this._inputs),
     );
   }
 
   getSuggestions(): string[] {
     return this.getAvailablePatterns()
-      .map(pattern => pattern.slice(this._inputs.length))
+      .map((pattern) => pattern.slice(this._inputs.length))
       .filter(Boolean);
   }
 }

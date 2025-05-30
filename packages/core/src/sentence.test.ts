@@ -16,10 +16,16 @@ describe("Sentence", () => {
 
   describe("currentCharacter", () => {
     it("should return the first non-completed character", () => {
-      const completedCharacter = new Character({ label: "a", inputPatterns: ["a"] });
+      const completedCharacter = new Character({
+        label: "a",
+        inputPatterns: ["a"],
+      });
       completedCharacter.input("a");
 
-      const incompleteCharacter = new Character({ label: "b", inputPatterns: ["b"] });
+      const incompleteCharacter = new Character({
+        label: "b",
+        inputPatterns: ["b"],
+      });
 
       const characters = [completedCharacter, incompleteCharacter];
       const sentence = new Sentence(characters);
@@ -77,7 +83,12 @@ describe("Sentence", () => {
       const character3 = new Character({ label: "c", inputPatterns: ["c"] });
       const character4 = new Character({ label: "d", inputPatterns: ["d"] });
 
-      const sentence = new Sentence([character1, character2, character3, character4]);
+      const sentence = new Sentence([
+        character1,
+        character2,
+        character3,
+        character4,
+      ]);
       expect(sentence.incompletedCharacters).toEqual([character3, character4]);
     });
 
