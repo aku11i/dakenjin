@@ -43,7 +43,8 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
       <div className="mb-6">
         <div className="flex justify-between items-center mb-2">
           <span className="text-sm text-gray-600">
-            文章 {currentSentenceIndex + 1} / {allSentences.length}
+            文章 {Math.min(currentSentenceIndex + 1, allSentences.length)} /{" "}
+            {allSentences.length}
           </span>
           <span className="text-sm text-gray-600">
             {Math.round(progress)}% 完了
