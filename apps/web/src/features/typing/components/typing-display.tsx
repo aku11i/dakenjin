@@ -7,7 +7,6 @@ type TypingDisplayProps = {
   futureCharacterPreviews: string[];
   currentInputs: string;
   currentCharacterPreview: string;
-  suggestions: string[];
   error: boolean;
 };
 
@@ -18,7 +17,6 @@ export function TypingDisplay({
   futureCharacterPreviews,
   currentInputs,
   currentCharacterPreview,
-  suggestions,
   error,
 }: TypingDisplayProps) {
   const remainingPreview = currentCharacterPreview.slice(currentInputs.length);

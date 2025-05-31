@@ -42,11 +42,14 @@ export function useSession({ sentences }: UseSessionParams) {
               : character.getPreview();
           })
         : [],
-      currentCharacterPreview: currentCharacter && currentCharacterSet
-        ? currentCharacterSet.getCharacterPreview(
-            currentCharacterSet.characters.findIndex(c => c === currentCharacter)
-          )
-        : "",
+      currentCharacterPreview:
+        currentCharacter && currentCharacterSet
+          ? currentCharacterSet.getCharacterPreview(
+              currentCharacterSet.characters.findIndex(
+                (c) => c === currentCharacter,
+              ),
+            )
+          : "",
       suggestions: currentCharacterSet?.getCurrentCharacterSuggestions() || [],
     };
   });
@@ -99,11 +102,14 @@ export function useSession({ sentences }: UseSessionParams) {
                   : character.getPreview();
               })
             : [],
-          currentCharacterPreview: newCurrentCharacter && newCurrentCharacterSet
-            ? newCurrentCharacterSet.getCharacterPreview(
-                newCurrentCharacterSet.characters.findIndex(c => c === newCurrentCharacter)
-              )
-            : "",
+          currentCharacterPreview:
+            newCurrentCharacter && newCurrentCharacterSet
+              ? newCurrentCharacterSet.getCharacterPreview(
+                  newCurrentCharacterSet.characters.findIndex(
+                    (c) => c === newCurrentCharacter,
+                  ),
+                )
+              : "",
           suggestions:
             newCurrentCharacterSet?.getCurrentCharacterSuggestions() || [],
         });
