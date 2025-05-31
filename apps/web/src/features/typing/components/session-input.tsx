@@ -23,6 +23,7 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
     isCompleted,
     inputs,
     suggestions,
+    getFutureCharacterPreview,
   } = useSession({ sentences });
 
   const [error, setError] = useState(false);
@@ -61,6 +62,7 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
               futureCharacters={currentSentence.incompletedCharacters.slice(
                 currentCharacter ? 1 : 0,
               )}
+              getFutureCharacterPreview={getFutureCharacterPreview}
             />
             <SentenceDisplay sentence={currentSentence} />
           </div>

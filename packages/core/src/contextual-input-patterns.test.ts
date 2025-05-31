@@ -11,7 +11,7 @@ describe("Contextual Input Patterns", () => {
           label: "ん",
           inputPatterns: ["nn", "n"],
         });
-        expect(character.preview).toBe("nn");
+        expect(character.getPreview()).toBe("nn");
       });
     });
 
@@ -27,7 +27,7 @@ describe("Contextual Input Patterns", () => {
 
       it("should use resolver when provided", () => {
         const resolver: InputPatternResolver = (context) => {
-          if (context.next && context.next.preview.startsWith("n")) {
+          if (context.next && context.next.getPreview().startsWith("n")) {
             return ["nn"];
           }
           return ["nn", "n"];
@@ -52,7 +52,7 @@ describe("Contextual Input Patterns", () => {
     describe("input with context", () => {
       it("should accept valid input based on context", () => {
         const resolver: InputPatternResolver = (context) => {
-          if (context.next && context.next.preview.startsWith("n")) {
+          if (context.next && context.next.getPreview().startsWith("n")) {
             return ["nn"];
           }
           return ["nn", "n"];
@@ -79,7 +79,7 @@ describe("Contextual Input Patterns", () => {
 
       it("should reject invalid input based on context", () => {
         const resolver: InputPatternResolver = (context) => {
-          if (context.next && context.next.preview.startsWith("n")) {
+          if (context.next && context.next.getPreview().startsWith("n")) {
             return ["nn"];
           }
           return ["nn", "n"];
@@ -105,7 +105,7 @@ describe("Contextual Input Patterns", () => {
 
       it("should allow single n when next character doesn't start with n", () => {
         const resolver: InputPatternResolver = (context) => {
-          if (context.next && context.next.preview.startsWith("n")) {
+          if (context.next && context.next.getPreview().startsWith("n")) {
             return ["nn"];
           }
           return ["nn", "n"];

@@ -41,6 +41,46 @@ export class CharacterSet {
     });
   }
 
+  inputCurrentCharacter(character: string): boolean {
+    const currentIndex = this._characters.findIndex((char, index) => {
+      const context = this.getContext(index);
+      return !char.isCompleted(context);
+    });
+
+    if (currentIndex === -1) {
+      return false;
+    }
+
+    const currentChar = this._characters[currentIndex];
+    const context = this.getContext(currentIndex);
+    return currentChar.input(character, context);
+  }
+
+  getCurrentCharacterSuggestions(): string[] {
+    const currentIndex = this._characters.findIndex((char, index) => {
+      const context = this.getContext(index);
+      return !char.isCompleted(context);
+    });
+
+    if (currentIndex === -1) {
+      return [];
+    }
+
+    const currentChar = this._characters[currentIndex];
+    const context = this.getContext(currentIndex);
+    return currentChar.getSuggestions(context);
+  }
+
+  getCharacterPreview(index: number): string {
+    if (index < 0 || index >= this._characters.length) {
+      return "";
+    }
+
+    const character = this._characters[index];
+    const context = this.getContext(index);
+    return character.getPreview(context);
+  }
+
   private getContext(index: number): {
     prev: Character | null;
     next: Character | null;

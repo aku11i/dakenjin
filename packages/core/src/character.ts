@@ -41,6 +41,14 @@ export class Character {
     return this._inputPatterns[0];
   }
 
+  getPreview(context?: {
+    prev: Character | null;
+    next: Character | null;
+  }): string {
+    const patterns = this.getInputPatterns(context);
+    return patterns[0];
+  }
+
   get inputPatternResolver(): InputPatternResolver | undefined {
     return this._inputPatternResolver;
   }

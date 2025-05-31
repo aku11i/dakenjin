@@ -33,4 +33,16 @@ export class Sentence {
   isCompleted(): boolean {
     return this._characterSet.isCompleted();
   }
+
+  inputCurrentCharacter(character: string): boolean {
+    return this._characterSet.inputCurrentCharacter(character);
+  }
+
+  getCurrentCharacterSuggestions(): string[] {
+    return this._characterSet.getCurrentCharacterSuggestions();
+  }
+
+  getCharacterPreview(index: number): string {
+    return this._characterSet.getCharacterPreview(index);
+  }
 }

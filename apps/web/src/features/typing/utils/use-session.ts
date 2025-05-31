@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
-import { Sentence, Session } from "@dakenjin/core";
+import { Sentence, Session, Character } from "@dakenjin/core";
 
 type UseSessionParams = {
   sentences: Sentence[];
@@ -19,33 +19,32 @@ export function useSession({ sentences }: UseSessionParams) {
   const isCompleted = session.isCompleted();
 
   useMemo(() => {
-    if (currentCharacter) {
-      setSuggestions(currentCharacter.getSuggestions());
+    if (currentSentence) {
+      setSuggestions(currentSentence.getCurrentCharacterSuggestions());
     }
-  }, [currentCharacter]);
+  }, [currentSentence, currentCharacter]);
 
   const input = useCallback(
     (character: string): boolean => {
-      if (!currentCharacter) {
+      if (!currentCharacter || !currentSentence) {
         return false;
       }
 
-      const isValid = currentCharacter.input(character);
+      const isValid = currentSentence.inputCurrentCharacter(character);
 
       if (isValid) {
         setInputs(currentCharacter.inputs);
-        setSuggestions(currentCharacter.getSuggestions());
+        setSuggestions(currentSentence.getCurrentCharacterSuggestions());
 
         if (currentCharacter.isCompleted()) {
           setInputs("");
           const nextCharacter = currentSentence?.currentCharacter;
           if (nextCharacter) {
-            setSuggestions(nextCharacter.getSuggestions());
+            setSuggestions(currentSentence.getCurrentCharacterSuggestions());
           } else {
             const nextSentence = session.currentSentence;
-            const nextSentenceCharacter = nextSentence?.currentCharacter;
-            if (nextSentenceCharacter) {
-              setSuggestions(nextSentenceCharacter.getSuggestions());
+            if (nextSentence) {
+              setSuggestions(nextSentence.getCurrentCharacterSuggestions());
             }
           }
         }
@@ -54,6 +53,20 @@ export function useSession({ sentences }: UseSessionParams) {
       return isValid;
     },
     [currentCharacter, currentSentence, session],
+  );
+
+  const getFutureCharacterPreview = useCallback(
+    (character: Character): string => {
+      if (!currentSentence) return character.getPreview();
+
+      const characterIndex = currentSentence.characters.findIndex(
+        (c) => c === character,
+      );
+      if (characterIndex === -1) return character.getPreview();
+
+      return currentSentence.getCharacterPreview(characterIndex);
+    },
+    [currentSentence],
   );
 
   return {
@@ -65,5 +78,6 @@ export function useSession({ sentences }: UseSessionParams) {
     suggestions,
     isCompleted,
     input,
+    getFutureCharacterPreview,
   };
 }

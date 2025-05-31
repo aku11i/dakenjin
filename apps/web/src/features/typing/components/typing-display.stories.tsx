@@ -34,11 +34,17 @@ const meta: Meta<typeof TypingDisplay> = {
     futureCharacters: {
       description: "Array of future characters to be typed",
     },
+    getFutureCharacterPreview: {
+      description: "Function to get preview for future characters with context",
+    },
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+const defaultGetFutureCharacterPreview = (character: Character) =>
+  character.getPreview();
 
 export const Empty: Story = {
   args: {
@@ -48,6 +54,7 @@ export const Empty: Story = {
     suggestions: [],
     error: false,
     futureCharacters: [],
+    getFutureCharacterPreview: defaultGetFutureCharacterPreview,
   },
 };
 
@@ -59,6 +66,7 @@ export const SingleCharacter: Story = {
     suggestions: ["a"],
     error: false,
     futureCharacters: [],
+    getFutureCharacterPreview: defaultGetFutureCharacterPreview,
   },
 };
 
@@ -70,6 +78,7 @@ export const PartiallyTyped: Story = {
     suggestions: ["ki"],
     error: false,
     futureCharacters: [],
+    getFutureCharacterPreview: defaultGetFutureCharacterPreview,
   },
 };
 
@@ -84,6 +93,7 @@ export const WithError: Story = {
     suggestions: ["shi", "si"],
     error: true,
     futureCharacters: [],
+    getFutureCharacterPreview: defaultGetFutureCharacterPreview,
   },
 };
 
@@ -113,6 +123,7 @@ export const CompletedCharacters: Story = {
     suggestions: ["to"],
     error: false,
     futureCharacters: [],
+    getFutureCharacterPreview: defaultGetFutureCharacterPreview,
   },
 };
 
@@ -139,6 +150,7 @@ export const WithFutureCharacters: Story = {
       new Character({ label: "ち", inputPatterns: ["chi", "ti"] }),
       new Character({ label: "は", inputPatterns: ["wa", "ha"] }),
     ],
+    getFutureCharacterPreview: defaultGetFutureCharacterPreview,
   },
 };
 
@@ -191,5 +203,6 @@ export const LongSentence: Story = {
       new Character({ label: "ま", inputPatterns: ["ma"] }),
       new Character({ label: "す", inputPatterns: ["su"] }),
     ],
+    getFutureCharacterPreview: defaultGetFutureCharacterPreview,
   },
 };

@@ -7,6 +7,7 @@ type TypingDisplayProps = {
   suggestions: string[];
   error: boolean;
   futureCharacters: Character[];
+  getFutureCharacterPreview: (character: Character) => string;
 };
 
 export function TypingDisplay({
@@ -16,6 +17,7 @@ export function TypingDisplay({
   suggestions,
   error,
   futureCharacters,
+  getFutureCharacterPreview,
 }: TypingDisplayProps) {
   const firstSuggestion = suggestions[0] || "";
 
@@ -40,13 +42,12 @@ export function TypingDisplay({
           </div>
         )}
         {futureCharacters.map((character, index) => {
-          const futureSuggestions = character.getSuggestions();
           return (
             <span
               key={`future-${index}`}
               className="text-lg font-mono text-gray-400"
             >
-              {futureSuggestions[0] || ""}
+              {getFutureCharacterPreview(character)}
             </span>
           );
         })}
