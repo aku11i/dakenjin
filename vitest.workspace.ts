@@ -5,14 +5,15 @@ export default defineWorkspace([
     test: {
       name: "node",
       include: ["**/*.test.{ts,tsx}"],
-      exclude: ["**/node_modules/**", "**/packages/react/**"],
+      exclude: ["**/node_modules/**", "**/*.dom.test.{ts,tsx}"],
     },
   },
   {
-    extends: "./packages/react/vitest.config.ts",
     test: {
-      name: "react",
-      include: ["packages/react/**/*.test.{ts,tsx}"],
+      name: "dom",
+      environment: "jsdom",
+      include: ["**/*.dom.test.{ts,tsx}"],
+      exclude: ["**/node_modules/**"],
     },
   },
 ]);
