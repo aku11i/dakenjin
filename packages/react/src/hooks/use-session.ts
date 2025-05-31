@@ -54,13 +54,8 @@ export function useSession({ sentences }: UseSessionParams): UseSessionReturn {
       if (isValid) {
         const snapshot = createSessionSnapshot(session);
         setSessionSnapshot(snapshot);
-        setInputs(
-          snapshot.currentCharacter?.inputs ||
-            snapshot.completedCharacters[
-              snapshot.completedCharacters.length - 1
-            ]?.inputs ||
-            "",
-        );
+        const newInputs = snapshot.currentCharacter?.inputs || "";
+        setInputs(newInputs);
       }
 
       return isValid;

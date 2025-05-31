@@ -36,7 +36,7 @@ describe("useSession", () => {
     });
 
     expect(inputResult!).toBe(true);
-    expect(result.current.inputs).toBe("a");
+    expect(result.current.inputs).toBe("");
     expect(result.current.completedCharacters).toHaveLength(1);
     expect(result.current.progress).toBeGreaterThan(0);
   });
