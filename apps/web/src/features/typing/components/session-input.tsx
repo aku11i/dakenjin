@@ -7,6 +7,7 @@ import { useSession } from "../utils/use-session";
 import { TypingDisplay } from "./typing-display";
 import { SentenceDisplay } from "./sentence-display";
 import { TypingInput } from "./typing-input";
+import { TypingStatsDisplay } from "./typing-stats";
 
 type SessionInputProps = {
   sentences: Sentence[];
@@ -15,6 +16,7 @@ type SessionInputProps = {
 
 export function SessionInput({ sentences, onComplete }: SessionInputProps) {
   const {
+    session,
     currentSentence,
     currentCharacter,
     completedSentences,
@@ -79,14 +81,19 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
       />
 
       {isCompleted && (
-        <div className="text-center bg-gradient-to-r from-primary/10 to-accent/10 rounded-3xl p-8 shadow-lg border border-primary/20">
+        <div className="text-center bg-gradient-to-r from-primary/10 to-accent/10 rounded-3xl p-8 shadow-lg border border-primary/20 space-y-6">
           <div className="text-6xl mb-4">🎉</div>
           <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
             セッション完了！
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-lg mb-6">
             全ての文章の入力が完了しました。お疲れ様でした！
           </p>
+
+          <div className="max-w-2xl mx-auto">
+            <h3 className="text-xl font-semibold text-foreground mb-4">結果</h3>
+            <TypingStatsDisplay session={session} />
+          </div>
         </div>
       )}
     </div>
