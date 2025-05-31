@@ -12,12 +12,17 @@ export class CharacterSet {
   }
 
   get currentCharacter(): Character | null {
-    return (
+    const current =
       this._characters.find((character, index) => {
         const context = this.getContext(index);
         return !character.isCompleted(context);
-      }) ?? null
-    );
+      }) ?? null;
+
+    if (current && current.inputLog.startTime === null) {
+      current.inputLog.markInputStart();
+    }
+
+    return current;
   }
 
   get currentCharacterIndex(): number {

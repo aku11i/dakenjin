@@ -1,3 +1,5 @@
+import { CharacterInputLog } from "./character-input-log";
+
 export type InputPatternResolver = (context: {
   prev: Character | null;
   next: Character | null;
@@ -8,6 +10,7 @@ export class Character {
   private _inputPatterns: string[];
   private _inputs: string = "";
   private _inputPatternResolver?: InputPatternResolver;
+  private _inputLog: CharacterInputLog = new CharacterInputLog();
 
   constructor({
     label,
@@ -90,6 +93,11 @@ export class Character {
     }
 
     this._inputs = nextInputs;
+
+    if (this.isCompleted(context)) {
+      this._inputLog.markInputEnd();
+    }
+
     return true;
   }
 
@@ -116,5 +124,9 @@ export class Character {
     return this.getAvailablePatterns(context)
       .map((pattern) => pattern.slice(this._inputs.length))
       .filter(Boolean);
+  }
+
+  get inputLog(): CharacterInputLog {
+    return this._inputLog;
   }
 }

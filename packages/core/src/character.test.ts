@@ -265,4 +265,139 @@ describe("Character", () => {
       expect(character.getSuggestions()).toEqual([]);
     });
   });
+
+  describe("inputLog", () => {
+    it("should initialize with null timestamps", () => {
+      const character = new Character({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      const log = character.inputLog;
+      expect(log.startTime).toBeNull();
+      expect(log.endTime).toBeNull();
+    });
+
+    it("should record start time when markInputStart is called", () => {
+      const character = new Character({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      const beforeTime = new Date();
+      character.inputLog.markInputStart();
+      const afterTime = new Date();
+
+      const log = character.inputLog;
+      expect(log.startTime).not.toBeNull();
+      expect(new Date(log.startTime!)).toBeInstanceOf(Date);
+      expect(new Date(log.startTime!).getTime()).toBeGreaterThanOrEqual(
+        beforeTime.getTime(),
+      );
+      expect(new Date(log.startTime!).getTime()).toBeLessThanOrEqual(
+        afterTime.getTime(),
+      );
+      expect(log.endTime).toBeNull();
+    });
+
+    it("should record end time when markInputEnd is called", () => {
+      const character = new Character({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      character.inputLog.markInputStart();
+      const beforeTime = new Date();
+      character.inputLog.markInputEnd();
+      const afterTime = new Date();
+
+      const log = character.inputLog;
+      expect(log.endTime).not.toBeNull();
+      expect(new Date(log.endTime!)).toBeInstanceOf(Date);
+      expect(new Date(log.endTime!).getTime()).toBeGreaterThanOrEqual(
+        beforeTime.getTime(),
+      );
+      expect(new Date(log.endTime!).getTime()).toBeLessThanOrEqual(
+        afterTime.getTime(),
+      );
+    });
+
+    it("should automatically record end time when character is completed", () => {
+      const character = new Character({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      character.inputLog.markInputStart();
+      const beforeTime = new Date();
+      character.input("a");
+      const afterTime = new Date();
+
+      const log = character.inputLog;
+      expect(log.endTime).not.toBeNull();
+      expect(new Date(log.endTime!)).toBeInstanceOf(Date);
+      expect(new Date(log.endTime!).getTime()).toBeGreaterThanOrEqual(
+        beforeTime.getTime(),
+      );
+      expect(new Date(log.endTime!).getTime()).toBeLessThanOrEqual(
+        afterTime.getTime(),
+      );
+    });
+
+    it("should not overwrite start time if already set", () => {
+      const character = new Character({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      character.inputLog.markInputStart();
+      const firstStartTime = character.inputLog.startTime;
+
+      character.inputLog.markInputStart(); // Try to mark again
+
+      expect(character.inputLog.startTime).toBe(firstStartTime);
+    });
+
+    it("should not overwrite end time if already set", () => {
+      const character = new Character({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      character.inputLog.markInputStart();
+      character.inputLog.markInputEnd();
+      const firstEndTime = character.inputLog.endTime;
+
+      character.inputLog.markInputEnd(); // Try to mark again
+
+      expect(character.inputLog.endTime).toBe(firstEndTime);
+    });
+
+    it("should return the same log instance", () => {
+      const character = new Character({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      character.inputLog.markInputStart();
+
+      const log1 = character.inputLog;
+      const log2 = character.inputLog;
+
+      expect(log1).toBe(log2); // Same object
+      expect(log1.startTime).toBe(log2.startTime); // Same content
+    });
+
+    it("should store time in ISO string format", () => {
+      const character = new Character({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      character.inputLog.markInputStart();
+      character.inputLog.markInputEnd();
+
+      const log = character.inputLog;
+      expect(typeof log.startTime).toBe("string");
+      expect(typeof log.endTime).toBe("string");
+      expect(log.startTime).toMatch(
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
+      );
+      expect(log.endTime).toMatch(
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
+      );
+    });
+  });
 });

@@ -90,4 +90,48 @@ describe("CharacterSet", () => {
       expect(characterSet.isCompleted()).toBe(true);
     });
   });
+
+  describe("input logging", () => {
+    it("should automatically mark input start when accessing currentCharacter", () => {
+      const characters = createCharacters();
+      const characterSet = new CharacterSet(characters);
+
+      expect(characters[0].inputLog.startTime).toBeNull();
+
+      const current = characterSet.currentCharacter;
+
+      expect(current).toBe(characters[0]);
+      expect(characters[0].inputLog.startTime).not.toBeNull();
+    });
+
+    it("should not overwrite start time if already set", () => {
+      const characters = createCharacters();
+      const characterSet = new CharacterSet(characters);
+
+      characters[0].inputLog.markInputStart();
+      const firstStartTime = characters[0].inputLog.startTime;
+
+      characterSet.currentCharacter; // Access again
+
+      expect(characters[0].inputLog.startTime).toBe(firstStartTime);
+    });
+
+    it("should mark start time for next character when current is completed", () => {
+      const characters = createCharacters();
+      const characterSet = new CharacterSet(characters);
+
+      // Access first character (should mark start time)
+      characterSet.currentCharacter;
+      expect(characters[0].inputLog.startTime).not.toBeNull();
+      expect(characters[1].inputLog.startTime).toBeNull();
+
+      // Complete first character
+      characters[0].input("a");
+
+      // Access current character again (should be second character and mark its start time)
+      const current = characterSet.currentCharacter;
+      expect(current).toBe(characters[1]);
+      expect(characters[1].inputLog.startTime).not.toBeNull();
+    });
+  });
 });
