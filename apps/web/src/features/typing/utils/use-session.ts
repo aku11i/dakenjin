@@ -1,9 +1,59 @@
 import { useState, useCallback } from "react";
-import { Sentence, Session } from "@dakenjin/core";
+import { Sentence, Session, Character } from "@dakenjin/core";
 
 type UseSessionParams = {
   sentences: Sentence[];
 };
+
+type SessionSnapshot = {
+  currentSentence: Sentence | null;
+  currentCharacter: Character | null;
+  completedSentences: Sentence[];
+  isCompleted: boolean;
+  completedCharacters: Character[];
+  futureCharacters: Character[];
+  futureCharacterPreviews: string[];
+  currentCharacterPreview: string;
+};
+
+function createSessionSnapshot(session: Session): SessionSnapshot {
+  const currentSentence = session.currentSentence;
+  const currentCharacter = currentSentence?.currentCharacter || null;
+  const currentCharacterSet = currentSentence?.characterSet;
+
+  return {
+    currentSentence,
+    currentCharacter,
+    completedSentences: session.completedSentences,
+    isCompleted: session.isCompleted(),
+    completedCharacters: currentCharacterSet?.completedCharacters || [],
+    futureCharacters:
+      currentCharacter && currentCharacterSet
+        ? currentCharacterSet.incompletedCharacters.slice(1)
+        : currentCharacterSet?.incompletedCharacters || [],
+    futureCharacterPreviews: currentCharacterSet
+      ? (currentCharacter
+          ? currentCharacterSet.incompletedCharacters.slice(1)
+          : currentCharacterSet.incompletedCharacters
+        ).map((character) => {
+          const actualIndex = currentCharacterSet.characters.findIndex(
+            (c) => c === character,
+          );
+          return actualIndex !== -1
+            ? currentCharacterSet.getCharacterPreview(actualIndex)
+            : character.getPreview();
+        })
+      : [],
+    currentCharacterPreview:
+      currentCharacter && currentCharacterSet
+        ? currentCharacterSet.getCharacterPreview(
+            currentCharacterSet.characters.findIndex(
+              (c) => c === currentCharacter,
+            ),
+          )
+        : "",
+  };
+}
 
 export function useSession({ sentences }: UseSessionParams) {
   const [session] = useState(() => {
@@ -12,47 +62,9 @@ export function useSession({ sentences }: UseSessionParams) {
 
   const [inputs, setInputs] = useState("");
 
-  // セッション状態のスナップショットを管理
-  const [sessionSnapshot, setSessionSnapshot] = useState(() => {
-    const currentSentence = session.currentSentence;
-    const currentCharacter = currentSentence?.currentCharacter || null;
-    const currentCharacterSet = currentSentence?.characterSet;
-
-    return {
-      currentSentence,
-      currentCharacter,
-      completedSentences: session.completedSentences,
-      isCompleted: session.isCompleted(),
-      // CharacterSet関連の情報も含める
-      completedCharacters: currentCharacterSet?.completedCharacters || [],
-      futureCharacters:
-        currentCharacter && currentCharacterSet
-          ? currentCharacterSet.incompletedCharacters.slice(1)
-          : currentCharacterSet?.incompletedCharacters || [],
-      futureCharacterPreviews: currentCharacterSet
-        ? (currentCharacter
-            ? currentCharacterSet.incompletedCharacters.slice(1)
-            : currentCharacterSet.incompletedCharacters
-          ).map((character) => {
-            const actualIndex = currentCharacterSet.characters.findIndex(
-              (c) => c === character,
-            );
-            return actualIndex !== -1
-              ? currentCharacterSet.getCharacterPreview(actualIndex)
-              : character.getPreview();
-          })
-        : [],
-      currentCharacterPreview:
-        currentCharacter && currentCharacterSet
-          ? currentCharacterSet.getCharacterPreview(
-              currentCharacterSet.characters.findIndex(
-                (c) => c === currentCharacter,
-              ),
-            )
-          : "",
-      suggestions: currentCharacterSet?.getCurrentCharacterSuggestions() || [],
-    };
-  });
+  const [sessionSnapshot, setSessionSnapshot] = useState(() =>
+    createSessionSnapshot(session),
+  );
 
   const input = useCallback(
     (character: string): boolean => {
@@ -71,48 +83,7 @@ export function useSession({ sentences }: UseSessionParams) {
           setInputs("");
         }
 
-        // 状態のスナップショットを更新してReactに変更を通知
-        const newCurrentSentence = session.currentSentence;
-        const newCurrentCharacter =
-          newCurrentSentence?.currentCharacter || null;
-        const newCurrentCharacterSet = newCurrentSentence?.characterSet;
-
-        setSessionSnapshot({
-          currentSentence: newCurrentSentence,
-          currentCharacter: newCurrentCharacter,
-          completedSentences: session.completedSentences,
-          isCompleted: session.isCompleted(),
-          // CharacterSet関連の情報も更新
-          completedCharacters:
-            newCurrentCharacterSet?.completedCharacters || [],
-          futureCharacters:
-            newCurrentCharacter && newCurrentCharacterSet
-              ? newCurrentCharacterSet.incompletedCharacters.slice(1)
-              : newCurrentCharacterSet?.incompletedCharacters || [],
-          futureCharacterPreviews: newCurrentCharacterSet
-            ? (newCurrentCharacter
-                ? newCurrentCharacterSet.incompletedCharacters.slice(1)
-                : newCurrentCharacterSet.incompletedCharacters
-              ).map((character) => {
-                const actualIndex = newCurrentCharacterSet.characters.findIndex(
-                  (c) => c === character,
-                );
-                return actualIndex !== -1
-                  ? newCurrentCharacterSet.getCharacterPreview(actualIndex)
-                  : character.getPreview();
-              })
-            : [],
-          currentCharacterPreview:
-            newCurrentCharacter && newCurrentCharacterSet
-              ? newCurrentCharacterSet.getCharacterPreview(
-                  newCurrentCharacterSet.characters.findIndex(
-                    (c) => c === newCurrentCharacter,
-                  ),
-                )
-              : "",
-          suggestions:
-            newCurrentCharacterSet?.getCurrentCharacterSuggestions() || [],
-        });
+        setSessionSnapshot(createSessionSnapshot(session));
       }
 
       return isValid;
@@ -133,6 +104,5 @@ export function useSession({ sentences }: UseSessionParams) {
     futureCharacters: sessionSnapshot.futureCharacters,
     futureCharacterPreviews: sessionSnapshot.futureCharacterPreviews,
     currentCharacterPreview: sessionSnapshot.currentCharacterPreview,
-    suggestions: sessionSnapshot.suggestions,
   };
 }
