@@ -195,4 +195,169 @@ describe("Session", () => {
       expect(session.isCompleted()).toBe(false);
     });
   });
+
+  describe("inputLog", () => {
+    it("should initialize with null timestamps", () => {
+      const character = new Character({ label: "a", inputPatterns: ["a"] });
+      const characterSet = new CharacterSet([character]);
+      const sentence = new Sentence(characterSet, "test sentence");
+      const session = new Session([sentence]);
+
+      const log = session.inputLog;
+      expect(log.startTime).toBeNull();
+      expect(log.endTime).toBeNull();
+    });
+
+    it("should automatically mark start time when accessing currentSentence", () => {
+      const character = new Character({ label: "a", inputPatterns: ["a"] });
+      const characterSet = new CharacterSet([character]);
+      const sentence = new Sentence(characterSet, "test sentence");
+      const session = new Session([sentence]);
+
+      expect(session.inputLog.startTime).toBeNull();
+
+      const current = session.currentSentence;
+
+      expect(current).toBe(sentence);
+      expect(session.inputLog.startTime).not.toBeNull();
+      expect(session.inputLog.endTime).toBeNull();
+    });
+
+    it("should not overwrite start time if already set", () => {
+      const character = new Character({ label: "a", inputPatterns: ["a"] });
+      const characterSet = new CharacterSet([character]);
+      const sentence = new Sentence(characterSet, "test sentence");
+      const session = new Session([sentence]);
+
+      session.currentSentence; // Mark start time
+      const firstStartTime = session.inputLog.startTime;
+
+      session.currentSentence; // Access again
+
+      expect(session.inputLog.startTime).toBe(firstStartTime);
+    });
+
+    it("should automatically mark end time when session is completed", () => {
+      const character = new Character({ label: "a", inputPatterns: ["a"] });
+      const characterSet = new CharacterSet([character]);
+      const sentence = new Sentence(characterSet, "test sentence");
+      const session = new Session([sentence]);
+
+      session.currentSentence; // Mark start time
+      expect(session.inputLog.endTime).toBeNull();
+
+      // Complete the sentence
+      sentence.currentCharacter; // Start sentence
+      sentence.inputCurrentCharacter("a"); // Complete sentence
+
+      const beforeTime = new Date();
+      session.isCompleted(); // Check completion - should mark end time
+      const afterTime = new Date();
+
+      const log = session.inputLog;
+      expect(log.endTime).not.toBeNull();
+      expect(new Date(log.endTime!)).toBeInstanceOf(Date);
+      expect(new Date(log.endTime!).getTime()).toBeGreaterThanOrEqual(
+        beforeTime.getTime(),
+      );
+      expect(new Date(log.endTime!).getTime()).toBeLessThanOrEqual(
+        afterTime.getTime(),
+      );
+    });
+
+    it("should not mark end time when session is not completed", () => {
+      const character1 = new Character({ label: "a", inputPatterns: ["a"] });
+      const characterSet1 = new CharacterSet([character1]);
+      const sentence1 = new Sentence(characterSet1, "sentence 1");
+
+      const character2 = new Character({ label: "b", inputPatterns: ["b"] });
+      const characterSet2 = new CharacterSet([character2]);
+      const sentence2 = new Sentence(characterSet2, "sentence 2");
+
+      const session = new Session([sentence1, sentence2]);
+
+      session.currentSentence; // Mark start time
+
+      // Complete only first sentence
+      sentence1.currentCharacter; // Start sentence1
+      sentence1.inputCurrentCharacter("a"); // Complete sentence1
+
+      session.isCompleted(); // Check completion - should not mark end time
+
+      expect(session.inputLog.endTime).toBeNull();
+    });
+
+    it("should handle multi-sentence session completion", () => {
+      const character1 = new Character({ label: "a", inputPatterns: ["a"] });
+      const characterSet1 = new CharacterSet([character1]);
+      const sentence1 = new Sentence(characterSet1, "sentence 1");
+
+      const character2 = new Character({ label: "b", inputPatterns: ["b"] });
+      const characterSet2 = new CharacterSet([character2]);
+      const sentence2 = new Sentence(characterSet2, "sentence 2");
+
+      const session = new Session([sentence1, sentence2]);
+
+      session.currentSentence; // Mark start time
+
+      // Complete first sentence
+      sentence1.currentCharacter; // Start sentence1
+      sentence1.inputCurrentCharacter("a"); // Complete sentence1
+      session.isCompleted(); // Check completion - should not mark end time yet
+      expect(session.inputLog.endTime).toBeNull();
+
+      // Complete second sentence
+      sentence2.currentCharacter; // Start sentence2
+      sentence2.inputCurrentCharacter("b"); // Complete sentence2
+
+      const beforeTime = new Date();
+      session.isCompleted(); // Check completion - should mark end time
+      const afterTime = new Date();
+
+      const log = session.inputLog;
+      expect(log.endTime).not.toBeNull();
+      expect(new Date(log.endTime!).getTime()).toBeGreaterThanOrEqual(
+        beforeTime.getTime(),
+      );
+      expect(new Date(log.endTime!).getTime()).toBeLessThanOrEqual(
+        afterTime.getTime(),
+      );
+    });
+
+    it("should store time in ISO string format", () => {
+      const character = new Character({ label: "a", inputPatterns: ["a"] });
+      const characterSet = new CharacterSet([character]);
+      const sentence = new Sentence(characterSet, "test sentence");
+      const session = new Session([sentence]);
+
+      session.currentSentence; // Mark start time
+
+      // Complete the sentence
+      sentence.currentCharacter; // Start sentence
+      sentence.inputCurrentCharacter("a"); // Complete sentence
+      session.isCompleted(); // Mark end time
+
+      const log = session.inputLog;
+      expect(typeof log.startTime).toBe("string");
+      expect(typeof log.endTime).toBe("string");
+      expect(log.startTime).toMatch(
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
+      );
+      expect(log.endTime).toMatch(
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
+      );
+    });
+
+    it("should return the same log instance", () => {
+      const character = new Character({ label: "a", inputPatterns: ["a"] });
+      const characterSet = new CharacterSet([character]);
+      const sentence = new Sentence(characterSet, "test sentence");
+      const session = new Session([sentence]);
+
+      const log1 = session.inputLog;
+      const log2 = session.inputLog;
+
+      expect(log1).toBe(log2); // Same object
+    });
+  });
 });
