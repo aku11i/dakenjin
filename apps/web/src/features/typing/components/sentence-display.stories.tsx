@@ -3,7 +3,7 @@ import {
   Sentence,
   CharacterSet,
   Character,
-  fromJapaneseText,
+  createCharacterSetFactory,
 } from "@dakenjin/core";
 import { SentenceDisplay } from "./sentence-display";
 
@@ -45,10 +45,12 @@ export const SingleCharacter: Story = {
   },
 };
 
+const factory = createCharacterSetFactory();
+
 export const ShortSentence: Story = {
   args: {
     sentence: new Sentence(
-      new CharacterSet(fromJapaneseText("こんにちは")),
+      new CharacterSet(factory.fromText("こんにちは").characters),
       "こんにちは",
     ),
   },
@@ -57,7 +59,9 @@ export const ShortSentence: Story = {
 export const LongSentence: Story = {
   args: {
     sentence: new Sentence(
-      new CharacterSet(fromJapaneseText("わたしはにほんごをよみます")),
+      new CharacterSet(
+        factory.fromText("わたしはにほんごをよみます").characters,
+      ),
       "わたしはにほんごをよみます",
     ),
   },
@@ -66,7 +70,7 @@ export const LongSentence: Story = {
 export const MixedCharacters: Story = {
   args: {
     sentence: new Sentence(
-      new CharacterSet(fromJapaneseText("わたしのなまえ")),
+      new CharacterSet(factory.fromText("わたしのなまえ").characters),
       "わたしのなまえ",
     ),
   },

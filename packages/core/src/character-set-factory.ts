@@ -1,5 +1,17 @@
 import { Character } from "./character";
 import { CharacterSet } from "./character-set";
+import { JAPANESE_CHARACTERS } from "./characters/japanese";
+
+export function createCharacterSetFactory(): CharacterSetFactory {
+  const japaneseCharacters = JAPANESE_CHARACTERS.map((data) => {
+    return new Character({
+      label: data.label,
+      inputPatterns: [...data.inputPatterns],
+      inputPatternResolver: (data as any).inputPatternResolver,
+    });
+  });
+  return new CharacterSetFactory(japaneseCharacters);
+}
 
 export class CharacterSetFactory {
   private _characters: Character[];

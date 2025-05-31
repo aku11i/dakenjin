@@ -3,4 +3,4 @@ export * from "./character-set";
 export * from "./character-set-factory";
 export * from "./sentence";
 export * from "./session";
-export { fromJapaneseText } from "./characters/japanese";
+export { createCharacterSetFactory } from "./character-set-factory";

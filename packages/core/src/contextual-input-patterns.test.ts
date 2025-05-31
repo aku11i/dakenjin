@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { Character, InputPatternResolver } from "./character";
 import { CharacterSet } from "./character-set";
-import { fromJapaneseText } from "./characters/japanese";
+import { createCharacterSetFactory } from "./character-set-factory";
 
 describe("Contextual Input Patterns", () => {
   describe("Character class", () => {
@@ -132,8 +132,10 @@ describe("Contextual Input Patterns", () => {
   });
 
   describe("fromJapaneseText with contextual patterns", () => {
+    const factory = createCharacterSetFactory();
+
     it("should create ん character with context-aware input patterns", () => {
-      const characters = fromJapaneseText("まんなか");
+      const characters = factory.fromText("まんなか").characters;
       const nnChar = characters[1]; // "ん"
       const naChar = characters[2]; // "な"
 
@@ -158,8 +160,10 @@ describe("Contextual Input Patterns", () => {
   });
 
   describe("CharacterSet with contextual patterns", () => {
+    const factory = createCharacterSetFactory();
+
     it("should provide correct context to characters", () => {
-      const characters = fromJapaneseText("まんなか");
+      const characters = factory.fromText("まんなか").characters;
       const characterSet = new CharacterSet(characters);
 
       // Get the "ん" character
@@ -178,7 +182,7 @@ describe("Contextual Input Patterns", () => {
     });
 
     it("should handle completion correctly with context", () => {
-      const characters = fromJapaneseText("あんば");
+      const characters = factory.fromText("あんば").characters;
       const characterSet = new CharacterSet(characters);
 
       const nnChar = characterSet.characters[1]; // "ん"
@@ -193,7 +197,7 @@ describe("Contextual Input Patterns", () => {
     });
 
     it("should require nn when ん is at the end of sentence", () => {
-      const characters = fromJapaneseText("まん");
+      const characters = factory.fromText("まん").characters;
       const characterSet = new CharacterSet(characters);
 
       const nnChar = characterSet.characters[1]; // "ん"

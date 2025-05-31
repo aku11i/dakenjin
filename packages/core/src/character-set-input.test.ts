@@ -1,11 +1,13 @@
 import { describe, it, expect } from "vitest";
 import { CharacterSet } from "./character-set";
-import { fromJapaneseText } from "./characters/japanese";
+import { createCharacterSetFactory } from "./character-set-factory";
 
 describe("CharacterSet input methods", () => {
+  const factory = createCharacterSetFactory();
+
   describe("getCharacterPreview", () => {
     it("should return context-aware preview for characters", () => {
-      const characters = fromJapaneseText("こんにちは");
+      const characters = factory.fromText("こんにちは").characters;
       const characterSet = new CharacterSet(characters);
 
       // Complete "こ"
@@ -20,7 +22,7 @@ describe("CharacterSet input methods", () => {
     });
 
     it("should work with different contexts", () => {
-      const characters = fromJapaneseText("あんば");
+      const characters = factory.fromText("あんば").characters;
       const characterSet = new CharacterSet(characters);
 
       // Complete "あ"
@@ -31,7 +33,7 @@ describe("CharacterSet input methods", () => {
     });
 
     it("should return nn for ん at the end of sentence", () => {
-      const characters = fromJapaneseText("あん");
+      const characters = factory.fromText("あん").characters;
       const characterSet = new CharacterSet(characters);
 
       // Complete "あ"
@@ -44,7 +46,7 @@ describe("CharacterSet input methods", () => {
 
   describe("inputCurrentCharacter", () => {
     it("should input to current character with context", () => {
-      const characters = fromJapaneseText("こんにちは");
+      const characters = factory.fromText("こんにちは").characters;
       const characterSet = new CharacterSet(characters);
 
       // こ - ko
@@ -70,7 +72,7 @@ describe("CharacterSet input methods", () => {
     });
 
     it("should return correct suggestions with context", () => {
-      const characters = fromJapaneseText("こんにちは");
+      const characters = factory.fromText("こんにちは").characters;
       const characterSet = new CharacterSet(characters);
 
       // Complete "こ"
@@ -83,7 +85,7 @@ describe("CharacterSet input methods", () => {
     });
 
     it("should work with different contexts", () => {
-      const characters = fromJapaneseText("あんば");
+      const characters = factory.fromText("あんば").characters;
       const characterSet = new CharacterSet(characters);
 
       // Complete "あ"
