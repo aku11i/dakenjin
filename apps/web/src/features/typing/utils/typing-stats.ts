@@ -1,19 +1,10 @@
 import { SessionAnalyzer } from "@dakenjin/core";
+import type { Session } from "@dakenjin/core";
+import type { UseTypingStatsReturn } from "@dakenjin/react";
 
-export type TypingStats = {
-  elapsedTime: number;
-  totalKeystrokes: number;
-  successfulKeystrokes: number;
-  failedKeystrokes: number;
-  accuracy: number;
-  kps: number;
-  cpm: number;
-  isActive: boolean;
-};
+export type TypingStats = UseTypingStatsReturn;
 
-export function calculateTypingStats(
-  session: ConstructorParameters<typeof SessionAnalyzer>[0],
-): TypingStats {
+export function calculateTypingStats(session: Session): TypingStats {
   const analyzer = new SessionAnalyzer(session);
   return {
     elapsedTime: analyzer.getDuration(),

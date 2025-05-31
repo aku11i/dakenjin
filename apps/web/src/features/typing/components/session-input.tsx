@@ -28,6 +28,7 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
     futureCharacters,
     futureCharacterPreviews,
     currentCharacterPreview,
+    progress,
   } = useSession({ sentences });
 
   const [error, setError] = useState(false);
@@ -37,7 +38,6 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
     setTimeout(() => setError(false), 300);
   }, []);
 
-  const progress = (completedSentences.length / allSentences.length) * 100;
   const currentSentenceIndex = completedSentences.length;
 
   return (
