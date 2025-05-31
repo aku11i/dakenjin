@@ -252,8 +252,4 @@ export const KATAKANA_CHARACTERS = [
 export const JAPANESE_CHARACTERS = [
   ...HIRAGANA_CHARACTERS,
   ...KATAKANA_CHARACTERS,
-] as const;
-
-export type HiraganaCharacter = (typeof HIRAGANA_CHARACTERS)[number];
-export type KatakanaCharacter = (typeof KATAKANA_CHARACTERS)[number];
-export type JapaneseCharacter = (typeof JAPANESE_CHARACTERS)[number];
+].reverse();
