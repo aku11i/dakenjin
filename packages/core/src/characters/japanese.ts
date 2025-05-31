@@ -1,6 +1,17 @@
 import { Character, InputPatternResolver } from "../character";
 import { CharacterSetFactory } from "../character-set-factory";
 
+const createNInputPatternResolver = (): InputPatternResolver => {
+  return (context) => {
+    // 次の文字が「な行」の場合は "nn" のみ
+    if (context.next && context.next.preview.startsWith("n")) {
+      return ["nn"];
+    }
+    // それ以外は両方許可
+    return ["nn", "n"];
+  };
+};
+
 export const HIRAGANA_CHARACTERS = [
   { label: "あ", inputPatterns: ["a"] },
   { label: "い", inputPatterns: ["i"] },
@@ -74,7 +85,7 @@ export const HIRAGANA_CHARACTERS = [
   { label: "ゐ", inputPatterns: ["wi"] },
   { label: "ゑ", inputPatterns: ["we"] },
   { label: "を", inputPatterns: ["wo"] },
-  { label: "ん", inputPatterns: ["nn", "n"] },
+  { label: "ん", inputPatterns: ["nn", "n"], inputPatternResolver: createNInputPatternResolver() },
   { label: "ゃ", inputPatterns: ["xya", "lya"] },
   { label: "ゅ", inputPatterns: ["xyu", "lyu"] },
   { label: "ょ", inputPatterns: ["xyo", "lyo"] },
@@ -187,7 +198,7 @@ export const KATAKANA_CHARACTERS = [
   { label: "ヰ", inputPatterns: ["wi"] },
   { label: "ヱ", inputPatterns: ["we"] },
   { label: "ヲ", inputPatterns: ["wo"] },
-  { label: "ン", inputPatterns: ["nn", "n"] },
+  { label: "ン", inputPatterns: ["nn", "n"], inputPatternResolver: createNInputPatternResolver() },
   { label: "ャ", inputPatterns: ["xya", "lya"] },
   { label: "ュ", inputPatterns: ["xyu", "lyu"] },
   { label: "ョ", inputPatterns: ["xyo", "lyo"] },
@@ -236,30 +247,12 @@ export type HiraganaCharacter = (typeof HIRAGANA_CHARACTERS)[number];
 export type KatakanaCharacter = (typeof KATAKANA_CHARACTERS)[number];
 export type JapaneseCharacter = (typeof JAPANESE_CHARACTERS)[number];
 
-const createNInputPatternResolver = (): InputPatternResolver => {
-  return (context) => {
-    // 次の文字が「な行」の場合は "nn" のみ
-    if (context.next && context.next.preview.startsWith("n")) {
-      return ["nn"];
-    }
-    // それ以外は両方許可
-    return ["nn", "n"];
-  };
-};
-
 export function fromJapaneseText(text: string): Character[] {
   const japaneseCharacters = JAPANESE_CHARACTERS.map((data) => {
-    // 「ん」の場合は特別なresolverを適用
-    if (data.label === "ん") {
-      return new Character({
-        label: data.label,
-        inputPatterns: [...data.inputPatterns],
-        inputPatternResolver: createNInputPatternResolver(),
-      });
-    }
     return new Character({
       label: data.label,
       inputPatterns: [...data.inputPatterns],
+      inputPatternResolver: (data as any).inputPatternResolver,
     });
   });
   const factory = new CharacterSetFactory(japaneseCharacters);
