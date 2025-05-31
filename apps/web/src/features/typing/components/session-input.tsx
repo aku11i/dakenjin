@@ -40,13 +40,13 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
 
   return (
     <div className="w-full max-w-3xl">
-      <div className="mb-6">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm text-gray-600">
+      <div className="mb-8 bg-card rounded-3xl p-6 shadow-lg border border-border">
+        <div className="flex justify-between items-center mb-4">
+          <span className="text-sm text-muted-foreground font-medium bg-secondary px-3 py-1 rounded-full">
             文章 {Math.min(currentSentenceIndex + 1, allSentences.length)} /{" "}
             {allSentences.length}
           </span>
-          <span className="text-sm text-gray-600">
+          <span className="text-sm text-muted-foreground font-medium bg-accent px-3 py-1 rounded-full">
             {Math.round(progress)}% 完了
           </span>
         </div>
@@ -79,11 +79,12 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
       />
 
       {isCompleted && (
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-green-600 mb-4">
+        <div className="text-center bg-gradient-to-r from-primary/10 to-accent/10 rounded-3xl p-8 shadow-lg border border-primary/20">
+          <div className="text-6xl mb-4">🎉</div>
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
             セッション完了！
           </h2>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground text-lg">
             全ての文章の入力が完了しました。お疲れ様でした！
           </p>
         </div>
