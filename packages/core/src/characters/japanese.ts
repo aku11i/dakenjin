@@ -1,4 +1,5 @@
 import { Character } from "../character";
+import { CharacterSetFactory } from "../character-set-factory";
 
 export const HIRAGANA_CHARACTERS = [
   { label: "あ", inputPatterns: ["a"] },
@@ -236,32 +237,13 @@ export type KatakanaCharacter = (typeof KATAKANA_CHARACTERS)[number];
 export type JapaneseCharacter = (typeof JAPANESE_CHARACTERS)[number];
 
 export function fromJapaneseText(text: string): Character[] {
-  const characters: Character[] = [];
-  let i = 0;
-
-  while (i < text.length) {
-    let matched = false;
-
-    for (const characterData of [...JAPANESE_CHARACTERS].reverse()) {
-      if (
-        text.slice(i, i + characterData.label.length) === characterData.label
-      ) {
-        characters.push(
-          new Character({
-            label: characterData.label,
-            inputPatterns: [...characterData.inputPatterns],
-          }),
-        );
-        i += characterData.label.length;
-        matched = true;
-        break;
-      }
-    }
-
-    if (!matched) {
-      throw new Error(`Unsupported character: ${text[i]} at position ${i}`);
-    }
-  }
-
-  return characters;
+  const japaneseCharacters = JAPANESE_CHARACTERS.map(
+    (data) =>
+      new Character({
+        label: data.label,
+        inputPatterns: [...data.inputPatterns],
+      }),
+  );
+  const factory = new CharacterSetFactory(japaneseCharacters);
+  return factory.fromText(text).characters;
 }
