@@ -14,6 +14,10 @@ export class Sentence {
     return this._characterSet.characters;
   }
 
+  get characterSet(): CharacterSet {
+    return this._characterSet;
+  }
+
   get label(): string {
     return this._label;
   }

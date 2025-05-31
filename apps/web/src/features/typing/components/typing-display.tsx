@@ -1,24 +1,24 @@
-import type { Character } from "@dakenjin/core";
+import type { CharacterSet } from "@dakenjin/core";
 
 type TypingDisplayProps = {
-  completedCharacters: Character[];
-  currentCharacter: Character | null;
+  characterSet: CharacterSet;
   currentInputs: string;
-  suggestions: string[];
   error: boolean;
-  futureCharacters: Character[];
-  getFutureCharacterPreview: (character: Character) => string;
 };
 
 export function TypingDisplay({
-  completedCharacters,
-  currentCharacter,
+  characterSet,
   currentInputs,
-  suggestions,
   error,
-  futureCharacters,
-  getFutureCharacterPreview,
 }: TypingDisplayProps) {
+  const completedCharacters = characterSet.completedCharacters;
+  const currentCharacter = characterSet.currentCharacter;
+  const incompletedCharacters = characterSet.incompletedCharacters;
+  const futureCharacters = currentCharacter
+    ? incompletedCharacters.slice(1)
+    : incompletedCharacters;
+
+  const suggestions = characterSet.getCurrentCharacterSuggestions();
   const firstSuggestion = suggestions[0] || "";
 
   return (
@@ -42,12 +42,20 @@ export function TypingDisplay({
           </div>
         )}
         {futureCharacters.map((character, index) => {
+          const characterIndex = characterSet.characters.findIndex(
+            (c) => c === character,
+          );
+          const preview =
+            characterIndex !== -1
+              ? characterSet.getCharacterPreview(characterIndex)
+              : character.getPreview();
+
           return (
             <span
               key={`future-${index}`}
               className="text-lg font-mono text-gray-400"
             >
-              {getFutureCharacterPreview(character)}
+              {preview}
             </span>
           );
         })}
