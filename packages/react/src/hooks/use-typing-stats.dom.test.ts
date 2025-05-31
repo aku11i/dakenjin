@@ -39,7 +39,7 @@ describe("useTypingStats", () => {
 
   it("should calculate stats for active session", () => {
     const session = createTestSession();
-    void session.currentSentence;
+    session.start();
 
     vi.advanceTimersByTime(5000);
 
@@ -51,6 +51,7 @@ describe("useTypingStats", () => {
 
   it("should calculate keystroke stats correctly", () => {
     const session = createTestSession();
+    session.start();
     const sentence = session.currentSentence!;
     void sentence.currentCharacter;
 

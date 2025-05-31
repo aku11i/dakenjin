@@ -36,7 +36,7 @@ describe("calculateTypingStats", () => {
   });
 
   it("should calculate stats for active session", () => {
-    void session.currentSentence;
+    session.start();
 
     vi.advanceTimersByTime(10000);
 
@@ -47,6 +47,7 @@ describe("calculateTypingStats", () => {
   });
 
   it("should calculate keystroke stats correctly", () => {
+    session.start();
     const currentSentence = session.currentSentence;
     const sentence = currentSentence!;
     void sentence.currentCharacter;
@@ -65,6 +66,7 @@ describe("calculateTypingStats", () => {
   });
 
   it("should calculate KPS and CPM correctly", () => {
+    session.start();
     const currentSentence = session.currentSentence;
     const sentence = currentSentence!;
     void sentence.currentCharacter;
@@ -85,6 +87,7 @@ describe("calculateTypingStats", () => {
   });
 
   it("should handle completed session", () => {
+    session.start();
     const currentSentence = session.currentSentence;
     const sentence = currentSentence!;
     void sentence.currentCharacter;

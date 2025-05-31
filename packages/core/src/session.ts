@@ -4,6 +4,7 @@ import { SessionInputLog } from "./session-input-log";
 export class Session {
   private _sentences: Sentence[];
   private _inputLog: SessionInputLog = new SessionInputLog();
+  private _isStarted: boolean = false;
 
   constructor(sentences: Sentence[]) {
     if (sentences.length === 0) {
@@ -25,15 +26,7 @@ export class Session {
   }
 
   get currentSentence(): Sentence | null {
-    const current =
-      this._sentences.find((sentence) => !sentence.isCompleted()) ?? null;
-
-    // Mark session start when first sentence becomes current
-    if (current && this._inputLog.startTime === null) {
-      this._inputLog.markInputStart();
-    }
-
-    return current;
+    return this._sentences.find((sentence) => !sentence.isCompleted()) ?? null;
   }
 
   isCompleted(): boolean {
@@ -51,5 +44,16 @@ export class Session {
 
   get inputLog(): SessionInputLog {
     return this._inputLog;
+  }
+
+  get isStarted(): boolean {
+    return this._isStarted;
+  }
+
+  start(): void {
+    this._isStarted = true;
+    if (this._inputLog.startTime === null) {
+      this._inputLog.markInputStart();
+    }
   }
 }

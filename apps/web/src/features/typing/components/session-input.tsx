@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Progress } from "../../../ui/components";
+import { Progress, Button } from "../../../ui/components";
 import { Sentence } from "@dakenjin/core";
 import { useSession } from "@dakenjin/react";
 import { TypingDisplay } from "./typing-display";
@@ -23,6 +23,7 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
     sentences: allSentences,
     input,
     isCompleted,
+    start,
     inputs,
     completedCharacters,
     futureCharacters,
@@ -39,6 +40,43 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
   }, []);
 
   const currentSentenceIndex = completedSentences.length;
+
+  if (!session.isStarted) {
+    return (
+      <div className="w-full max-w-3xl">
+        <div className="text-center bg-card rounded-3xl p-8 shadow-lg border border-border space-y-6">
+          <div className="text-4xl mb-4">📝</div>
+          <h2 className="text-2xl font-bold text-foreground">
+            タイピング練習を開始しましょう
+          </h2>
+          <p className="text-muted-foreground text-lg">
+            {allSentences.length}つの文章でタイピング練習を行います
+          </p>
+
+          <div className="bg-secondary/30 rounded-2xl p-6 space-y-4">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
+              練習する文章
+            </h3>
+            {allSentences.map((sentence, index) => (
+              <div
+                key={index}
+                className="text-left p-4 bg-background rounded-xl border border-border"
+              >
+                <div className="text-sm text-muted-foreground mb-2">
+                  文章 {index + 1}
+                </div>
+                <div className="text-lg">{sentence.label}</div>
+              </div>
+            ))}
+          </div>
+
+          <Button onClick={start} size="lg" className="mt-6">
+            タイピングを開始
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-3xl">
@@ -78,6 +116,7 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
         onComplete={onComplete}
         isCompleted={isCompleted}
         onError={handleError}
+        autoFocus={true}
       />
 
       {isCompleted && (

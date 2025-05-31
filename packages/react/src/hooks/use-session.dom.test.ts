@@ -13,7 +13,7 @@ describe("useSession", () => {
     return [new Sentence(new CharacterSet(characters), "あいう")];
   };
 
-  it("should initialize with correct initial state", () => {
+  it("should initialize with not started state", () => {
     const sentences = createTestSentences();
     const { result } = renderHook(() => useSession({ sentences }));
 
@@ -24,11 +24,30 @@ describe("useSession", () => {
     expect(result.current.isCompleted).toBe(false);
     expect(result.current.inputs).toBe("");
     expect(result.current.progress).toBe(0);
+    expect(result.current.session.isStarted).toBe(false);
   });
 
-  it("should handle character input correctly", () => {
+  it("should start session when start is called", () => {
     const sentences = createTestSentences();
     const { result } = renderHook(() => useSession({ sentences }));
+
+    act(() => {
+      result.current.start();
+    });
+
+    expect(result.current.session).toBeDefined();
+    expect(result.current.currentSentence).toBe(sentences[0]);
+    expect(result.current.currentCharacter).toBeDefined();
+    expect(result.current.session.isStarted).toBe(true);
+  });
+
+  it("should handle character input correctly after start", () => {
+    const sentences = createTestSentences();
+    const { result } = renderHook(() => useSession({ sentences }));
+
+    act(() => {
+      result.current.start();
+    });
 
     let inputResult: boolean;
     act(() => {
@@ -41,9 +60,13 @@ describe("useSession", () => {
     expect(result.current.progress).toBeGreaterThan(0);
   });
 
-  it("should handle incorrect input", () => {
+  it("should handle incorrect input after start", () => {
     const sentences = createTestSentences();
     const { result } = renderHook(() => useSession({ sentences }));
+
+    act(() => {
+      result.current.start();
+    });
 
     let inputResult: boolean;
     act(() => {
@@ -60,8 +83,18 @@ describe("useSession", () => {
     const { result } = renderHook(() => useSession({ sentences }));
 
     act(() => {
+      result.current.start();
+    });
+
+    act(() => {
       result.current.input("a");
+    });
+
+    act(() => {
       result.current.input("i");
+    });
+
+    act(() => {
       result.current.input("u");
     });
 
@@ -103,6 +136,20 @@ describe("useSession", () => {
     expect(result.current.progress).toBe(0);
   });
 
+  it("should not accept input before session starts", () => {
+    const sentences = createTestSentences();
+    const { result } = renderHook(() => useSession({ sentences }));
+
+    let inputResult: boolean;
+    act(() => {
+      inputResult = result.current.input("a");
+    });
+
+    expect(inputResult!).toBe(false);
+    expect(result.current.session.isStarted).toBe(false);
+    expect(result.current.completedCharacters).toHaveLength(0);
+  });
+
   it("should provide correct future characters and previews", () => {
     const sentences = createTestSentences();
     const { result } = renderHook(() => useSession({ sentences }));
@@ -110,6 +157,10 @@ describe("useSession", () => {
     expect(result.current.futureCharacters).toHaveLength(2);
     expect(result.current.futureCharacterPreviews).toHaveLength(2);
     expect(result.current.currentCharacterPreview).toBe("a");
+
+    act(() => {
+      result.current.start();
+    });
 
     act(() => {
       result.current.input("a");

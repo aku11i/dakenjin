@@ -208,7 +208,7 @@ describe("Session", () => {
       expect(log.endTime).toBeNull();
     });
 
-    it("should automatically mark start time when accessing currentSentence", () => {
+    it("should mark start time when start() is called", () => {
       const character = new Character({ label: "a", inputPatterns: ["a"] });
       const characterSet = new CharacterSet([character]);
       const sentence = new Sentence(characterSet, "test sentence");
@@ -216,9 +216,8 @@ describe("Session", () => {
 
       expect(session.inputLog.startTime).toBeNull();
 
-      const current = session.currentSentence;
+      session.start();
 
-      expect(current).toBe(sentence);
       expect(session.inputLog.startTime).not.toBeNull();
       expect(session.inputLog.endTime).toBeNull();
     });
@@ -229,10 +228,10 @@ describe("Session", () => {
       const sentence = new Sentence(characterSet, "test sentence");
       const session = new Session([sentence]);
 
-      session.currentSentence; // Mark start time
+      session.start(); // Mark start time
       const firstStartTime = session.inputLog.startTime;
 
-      session.currentSentence; // Access again
+      session.start(); // Call again
 
       expect(session.inputLog.startTime).toBe(firstStartTime);
     });
@@ -243,7 +242,7 @@ describe("Session", () => {
       const sentence = new Sentence(characterSet, "test sentence");
       const session = new Session([sentence]);
 
-      session.currentSentence; // Mark start time
+      session.start(); // Mark start time
       expect(session.inputLog.endTime).toBeNull();
 
       // Complete the sentence
@@ -330,7 +329,7 @@ describe("Session", () => {
       const sentence = new Sentence(characterSet, "test sentence");
       const session = new Session([sentence]);
 
-      session.currentSentence; // Mark start time
+      session.start(); // Mark start time
 
       // Complete the sentence
       sentence.currentCharacter; // Start sentence
