@@ -457,7 +457,7 @@ describe("Character", () => {
         label: "し",
         inputPatterns: ["shi", "si"],
       });
-      
+
       character.input("s"); // Success
       character.input("h"); // Success
       character.input("i"); // Success
@@ -474,7 +474,7 @@ describe("Character", () => {
         label: "し",
         inputPatterns: ["shi", "si"],
       });
-      
+
       character.input("s"); // Success
       character.input("x"); // Failure
       character.input("h"); // Success

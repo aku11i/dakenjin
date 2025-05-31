@@ -41,7 +41,11 @@ export class CharacterInputLog {
     });
   }
 
-  toJSON(): { startTime: string | null; endTime: string | null; keyInputs: KeyInputEntry[] } {
+  toJSON(): {
+    startTime: string | null;
+    endTime: string | null;
+    keyInputs: KeyInputEntry[];
+  } {
     return {
       startTime: this._startTime,
       endTime: this._endTime,
