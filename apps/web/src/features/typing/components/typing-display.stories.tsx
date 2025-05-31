@@ -2,6 +2,38 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import { Character, CharacterSet } from "@dakenjin/core";
 import { TypingDisplay } from "./typing-display";
 
+// Helper function to convert CharacterSet to TypingDisplay props
+function createTypingDisplayProps(
+  characterSet: CharacterSet,
+  currentInputs: string,
+  error: boolean,
+) {
+  const completedCharacters = characterSet.completedCharacters;
+  const currentCharacter = characterSet.currentCharacter;
+  const futureCharacters = currentCharacter
+    ? characterSet.incompletedCharacters.slice(1)
+    : characterSet.incompletedCharacters;
+
+  const futureCharacterPreviews = futureCharacters.map((character) => {
+    const actualIndex = characterSet.characters.findIndex(
+      (c) => c === character,
+    );
+    return actualIndex !== -1
+      ? characterSet.getCharacterPreview(actualIndex)
+      : character.getPreview();
+  });
+
+  return {
+    completedCharacters,
+    currentCharacter,
+    futureCharacters,
+    futureCharacterPreviews,
+    currentInputs,
+    suggestions: characterSet.getCurrentCharacterSuggestions(),
+    error,
+  };
+}
+
 const meta: Meta<typeof TypingDisplay> = {
   title: "Features/Typing/TypingDisplay",
   component: TypingDisplay,
@@ -10,17 +42,29 @@ const meta: Meta<typeof TypingDisplay> = {
     docs: {
       description: {
         component:
-          "A component that displays the current typing state using a CharacterSet.",
+          "A component that displays the current typing state using explicit props.",
       },
     },
   },
   tags: ["autodocs"],
   argTypes: {
-    characterSet: {
-      description: "CharacterSet containing all character state information",
+    completedCharacters: {
+      description: "Array of completed characters",
+    },
+    currentCharacter: {
+      description: "Current character being typed",
+    },
+    futureCharacters: {
+      description: "Array of future characters to be typed",
+    },
+    futureCharacterPreviews: {
+      description: "Preview strings for future characters",
     },
     currentInputs: {
       description: "Current user inputs for the current character",
+    },
+    suggestions: {
+      description: "Input suggestions for the current character",
     },
     error: {
       description: "Whether there is an error in typing",
@@ -32,51 +76,45 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Empty: Story = {
-  args: {
-    characterSet: new CharacterSet([]),
-    currentInputs: "",
-    error: false,
-  },
+  args: createTypingDisplayProps(new CharacterSet([]), "", false),
 };
 
 export const SingleCharacter: Story = {
-  args: {
-    characterSet: new CharacterSet([
-      new Character({ label: "あ", inputPatterns: ["a"] }),
-    ]),
-    currentInputs: "",
-    error: false,
-  },
+  args: createTypingDisplayProps(
+    new CharacterSet([new Character({ label: "あ", inputPatterns: ["a"] })]),
+    "",
+    false,
+  ),
 };
 
 export const PartiallyTyped: Story = {
-  args: {
-    characterSet: (() => {
+  args: createTypingDisplayProps(
+    (() => {
       const char = new Character({ label: "き", inputPatterns: ["ki"] });
       char.input("k");
       return new CharacterSet([char]);
     })(),
-    currentInputs: "k",
-    error: false,
-  },
+    "k",
+    false,
+  ),
 };
 
 export const WithError: Story = {
-  args: {
-    characterSet: new CharacterSet([
+  args: createTypingDisplayProps(
+    new CharacterSet([
       new Character({
         label: "し",
         inputPatterns: ["shi", "si"],
       }),
     ]),
-    currentInputs: "z",
-    error: true,
-  },
+    "z",
+    true,
+  ),
 };
 
 export const CompletedCharacters: Story = {
-  args: {
-    characterSet: (() => {
+  args: createTypingDisplayProps(
+    (() => {
       const chars = [
         new Character({ label: "あ", inputPatterns: ["a"] }),
         new Character({ label: "り", inputPatterns: ["ri"] }),
@@ -96,14 +134,14 @@ export const CompletedCharacters: Story = {
 
       return new CharacterSet(chars);
     })(),
-    currentInputs: "t",
-    error: false,
-  },
+    "t",
+    false,
+  ),
 };
 
 export const WithFutureCharacters: Story = {
-  args: {
-    characterSet: (() => {
+  args: createTypingDisplayProps(
+    (() => {
       const chars = [
         new Character({ label: "こ", inputPatterns: ["ko"] }),
         new Character({ label: "ん", inputPatterns: ["nn", "n"] }),
@@ -120,14 +158,14 @@ export const WithFutureCharacters: Story = {
 
       return new CharacterSet(chars);
     })(),
-    currentInputs: "",
-    error: false,
-  },
+    "",
+    false,
+  ),
 };
 
 export const LongSentence: Story = {
-  args: {
-    characterSet: (() => {
+  args: createTypingDisplayProps(
+    (() => {
       const chars = [
         new Character({ label: "わ", inputPatterns: ["wa"] }),
         new Character({ label: "た", inputPatterns: ["ta"] }),
@@ -160,7 +198,7 @@ export const LongSentence: Story = {
 
       return new CharacterSet(chars);
     })(),
-    currentInputs: "n",
-    error: false,
-  },
+    "n",
+    false,
+  ),
 };

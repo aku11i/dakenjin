@@ -22,6 +22,10 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
     input,
     isCompleted,
     inputs,
+    completedCharacters,
+    futureCharacters,
+    futureCharacterPreviews,
+    suggestions,
   } = useSession({ sentences });
 
   const [error, setError] = useState(false);
@@ -52,8 +56,12 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
         <div className="mb-6 text-center">
           <div className="mb-6 space-y-4">
             <TypingDisplay
-              characterSet={currentSentence.characterSet}
+              completedCharacters={completedCharacters}
+              currentCharacter={currentCharacter}
+              futureCharacters={futureCharacters}
+              futureCharacterPreviews={futureCharacterPreviews}
               currentInputs={inputs}
+              suggestions={suggestions}
               error={error}
             />
             <SentenceDisplay sentence={currentSentence} />
