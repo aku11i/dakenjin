@@ -38,6 +38,7 @@ describe("SessionAnalyzer", () => {
   it("should calculate values for active session", () => {
     session.start();
 
+    // Advance time by 10 seconds using fake timers
     vi.advanceTimersByTime(10000);
 
     const analyzer = new SessionAnalyzer(session);
@@ -77,6 +78,7 @@ describe("SessionAnalyzer", () => {
       }
     }
 
+    // Advance time by 10 seconds using fake timers
     vi.advanceTimersByTime(10000);
 
     const analyzer = new SessionAnalyzer(session);
@@ -110,6 +112,7 @@ describe("SessionAnalyzer", () => {
       expect(analyzer.getDuration()).toBe(0);
 
       session.start();
+      // Advance time by 5.5 seconds using fake timers
       vi.advanceTimersByTime(5500);
 
       expect(analyzer.getDuration()).toBe(5.5);
@@ -158,6 +161,7 @@ describe("SessionAnalyzer", () => {
 
       sentence.inputCurrentCharacter("a");
       sentence.inputCurrentCharacter("i");
+      // Advance time by 2 seconds using fake timers
       vi.advanceTimersByTime(2000);
 
       expect(analyzer.calcKps()).toBe(1);
@@ -174,6 +178,7 @@ describe("SessionAnalyzer", () => {
       sentence.inputCurrentCharacter("a");
       sentence.inputCurrentCharacter("i");
       sentence.inputCurrentCharacter("u");
+      // Advance time by 6 seconds using fake timers
       vi.advanceTimersByTime(6000);
 
       expect(analyzer.calcCpm()).toBe(30);
