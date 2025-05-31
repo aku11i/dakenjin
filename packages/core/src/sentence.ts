@@ -1,9 +1,11 @@
 import { Character } from "./character";
 import { CharacterSet } from "./character-set";
+import { SentenceInputLog } from "./sentence-input-log";
 
 export class Sentence {
   private _characterSet: CharacterSet;
   private _label: string;
+  private _inputLog: SentenceInputLog = new SentenceInputLog();
 
   constructor(characterSet: CharacterSet, label: string) {
     this._characterSet = characterSet;
@@ -23,7 +25,14 @@ export class Sentence {
   }
 
   get currentCharacter(): Character | null {
-    return this._characterSet.currentCharacter;
+    const current = this._characterSet.currentCharacter;
+
+    // Mark sentence start when first character becomes current
+    if (current && this._inputLog.startTime === null) {
+      this._inputLog.markInputStart();
+    }
+
+    return current;
   }
 
   get completedCharacters(): Character[] {
@@ -39,7 +48,14 @@ export class Sentence {
   }
 
   inputCurrentCharacter(character: string): boolean {
-    return this._characterSet.inputCurrentCharacter(character);
+    const result = this._characterSet.inputCurrentCharacter(character);
+
+    // Mark sentence end when all characters are completed
+    if (result && this.isCompleted()) {
+      this._inputLog.markInputEnd();
+    }
+
+    return result;
   }
 
   getCurrentCharacterSuggestions(): string[] {
@@ -48,5 +64,9 @@ export class Sentence {
 
   getCharacterPreview(index: number): string {
     return this._characterSet.getCharacterPreview(index);
+  }
+
+  get inputLog(): SentenceInputLog {
+    return this._inputLog;
   }
 }
