@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState, useRef } from "react";
-import { Button } from "@heroui/react";
+import { Button } from "../../../ui/components";
 
 type TypingInputProps = {
   value: string;
@@ -49,9 +49,8 @@ export function TypingInput({
     <>
       {!isCompleted && !isFocused && (
         <Button
-          onPress={() => inputRef.current?.focus()}
-          color="primary"
-          variant="flat"
+          onClick={() => inputRef.current?.focus()}
+          variant="secondary"
           className="w-full"
         >
           タイピングを開始

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Progress } from "@heroui/react";
+import { Progress } from "../../../ui/components";
 import { Sentence } from "@dakenjin/core";
 import { useSession } from "../utils/use-session";
 import { TypingDisplay } from "./typing-display";
@@ -50,7 +50,7 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
             {Math.round(progress)}% 完了
           </span>
         </div>
-        <Progress value={progress} className="w-full" color="success" />
+        <Progress value={progress} className="w-full" />
       </div>
 
       {currentSentence && (
