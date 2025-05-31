@@ -20,6 +20,13 @@ export class CharacterSet {
     );
   }
 
+  get currentCharacterIndex(): number {
+    return this._characters.findIndex((character, index) => {
+      const context = this.getContext(index);
+      return !character.isCompleted(context);
+    });
+  }
+
   get completedCharacters(): Character[] {
     return this._characters.filter((character, index) => {
       const context = this.getContext(index);
@@ -42,11 +49,7 @@ export class CharacterSet {
   }
 
   inputCurrentCharacter(character: string): boolean {
-    const currentIndex = this._characters.findIndex((char, index) => {
-      const context = this.getContext(index);
-      return !char.isCompleted(context);
-    });
-
+    const currentIndex = this.currentCharacterIndex;
     if (currentIndex === -1) {
       return false;
     }
@@ -57,11 +60,7 @@ export class CharacterSet {
   }
 
   getCurrentCharacterSuggestions(): string[] {
-    const currentIndex = this._characters.findIndex((char, index) => {
-      const context = this.getContext(index);
-      return !char.isCompleted(context);
-    });
-
+    const currentIndex = this.currentCharacterIndex;
     if (currentIndex === -1) {
       return [];
     }
