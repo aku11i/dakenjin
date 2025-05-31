@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import { Progress } from "../../../ui/components";
 import { Sentence } from "@dakenjin/core";
-import { useSession } from "../utils/use-session";
+import { useSession } from "@dakenjin/react";
 import { TypingDisplay } from "./typing-display";
 import { SentenceDisplay } from "./sentence-display";
 import { TypingInput } from "./typing-input";
@@ -28,6 +28,7 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
     futureCharacters,
     futureCharacterPreviews,
     currentCharacterPreview,
+    progress,
   } = useSession({ sentences });
 
   const [error, setError] = useState(false);
@@ -37,7 +38,6 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
     setTimeout(() => setError(false), 300);
   }, []);
 
-  const progress = (completedSentences.length / allSentences.length) * 100;
   const currentSentenceIndex = completedSentences.length;
 
   return (

@@ -1,0 +1,23 @@
+{
+  "name": "@dakenjin/react",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "test": "pnpm --workspace-root run vitest run packages/react"
+  },
+  "dependencies": {
+    "@dakenjin/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.1.0",
+    "@types/react": "^19.1.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "react": "^19.1.0",
+    "typescript": "^5.8.3"
+  }
+}

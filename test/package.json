@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {},
   "devDependencies": {
+    "jsdom": "^26.1.0",
     "vitest": "^3.1.3"
   }
 }
