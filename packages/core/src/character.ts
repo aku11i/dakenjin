@@ -88,7 +88,12 @@ export class Character {
       pattern.startsWith(nextInputs),
     );
 
-    if (availablePatterns.length === 0) {
+    const success = availablePatterns.length > 0;
+
+    // Record key input with success/failure status
+    this._inputLog.recordKeyInput(character, success);
+
+    if (!success) {
       return false;
     }
 

@@ -400,4 +400,137 @@ describe("Character", () => {
       );
     });
   });
+
+  describe("keyInputs", () => {
+    it("should initialize with empty key input log", () => {
+      const character = new Character({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      expect(character.inputLog.keyInputs).toEqual([]);
+    });
+
+    it("should record successful key input", () => {
+      const character = new Character({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      const beforeTime = new Date();
+      character.input("a");
+      const afterTime = new Date();
+
+      const keyInputs = character.inputLog.keyInputs;
+      expect(keyInputs).toHaveLength(1);
+      expect(keyInputs[0].key).toBe("a");
+      expect(keyInputs[0].success).toBe(true);
+      expect(new Date(keyInputs[0].timestamp).getTime()).toBeGreaterThanOrEqual(
+        beforeTime.getTime(),
+      );
+      expect(new Date(keyInputs[0].timestamp).getTime()).toBeLessThanOrEqual(
+        afterTime.getTime(),
+      );
+    });
+
+    it("should record failed key input", () => {
+      const character = new Character({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      const beforeTime = new Date();
+      character.input("b"); // Wrong input
+      const afterTime = new Date();
+
+      const keyInputs = character.inputLog.keyInputs;
+      expect(keyInputs).toHaveLength(1);
+      expect(keyInputs[0].key).toBe("b");
+      expect(keyInputs[0].success).toBe(false);
+      expect(new Date(keyInputs[0].timestamp).getTime()).toBeGreaterThanOrEqual(
+        beforeTime.getTime(),
+      );
+      expect(new Date(keyInputs[0].timestamp).getTime()).toBeLessThanOrEqual(
+        afterTime.getTime(),
+      );
+    });
+
+    it("should record multiple key inputs in sequence", () => {
+      const character = new Character({
+        label: "し",
+        inputPatterns: ["shi", "si"],
+      });
+      
+      character.input("s"); // Success
+      character.input("h"); // Success
+      character.input("i"); // Success
+
+      const keyInputs = character.inputLog.keyInputs;
+      expect(keyInputs).toHaveLength(3);
+      expect(keyInputs[0]).toMatchObject({ key: "s", success: true });
+      expect(keyInputs[1]).toMatchObject({ key: "h", success: true });
+      expect(keyInputs[2]).toMatchObject({ key: "i", success: true });
+    });
+
+    it("should record both successful and failed inputs", () => {
+      const character = new Character({
+        label: "し",
+        inputPatterns: ["shi", "si"],
+      });
+      
+      character.input("s"); // Success
+      character.input("x"); // Failure
+      character.input("h"); // Success
+      character.input("i"); // Success
+
+      const keyInputs = character.inputLog.keyInputs;
+      expect(keyInputs).toHaveLength(4);
+      expect(keyInputs[0]).toMatchObject({ key: "s", success: true });
+      expect(keyInputs[1]).toMatchObject({ key: "x", success: false });
+      expect(keyInputs[2]).toMatchObject({ key: "h", success: true });
+      expect(keyInputs[3]).toMatchObject({ key: "i", success: true });
+    });
+
+    it("should store timestamps in ISO string format", () => {
+      const character = new Character({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      character.input("a");
+
+      const keyInputs = character.inputLog.keyInputs;
+      expect(keyInputs[0].timestamp).toMatch(
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
+      );
+    });
+
+    it("should return copy of key inputs array", () => {
+      const character = new Character({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      character.input("a");
+
+      const keyInputs1 = character.inputLog.keyInputs;
+      const keyInputs2 = character.inputLog.keyInputs;
+
+      expect(keyInputs1).not.toBe(keyInputs2); // Different array instances
+      expect(keyInputs1).toEqual(keyInputs2); // Same content
+    });
+
+    it("should include key inputs in toJSON output", () => {
+      const character = new Character({
+        label: "あ",
+        inputPatterns: ["a"],
+      });
+      character.inputLog.markInputStart();
+      character.input("a");
+
+      const json = character.inputLog.toJSON();
+      expect(json).toHaveProperty("keyInputs");
+      expect(json.keyInputs).toHaveLength(1);
+      expect(json.keyInputs[0]).toMatchObject({
+        key: "a",
+        success: true,
+      });
+      expect(typeof json.keyInputs[0].timestamp).toBe("string");
+    });
+  });
 });
