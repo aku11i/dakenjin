@@ -1,5 +1,4 @@
-import { Character, InputPatternResolver } from "../character";
-import { CharacterSetFactory } from "../character-set-factory";
+import { InputPatternResolver } from "../character";
 
 const createNInputPatternResolver = (): InputPatternResolver => {
   return (context) => {
@@ -258,15 +257,3 @@ export const JAPANESE_CHARACTERS = [
 export type HiraganaCharacter = (typeof HIRAGANA_CHARACTERS)[number];
 export type KatakanaCharacter = (typeof KATAKANA_CHARACTERS)[number];
 export type JapaneseCharacter = (typeof JAPANESE_CHARACTERS)[number];
-
-export function fromJapaneseText(text: string): Character[] {
-  const japaneseCharacters = JAPANESE_CHARACTERS.map((data) => {
-    return new Character({
-      label: data.label,
-      inputPatterns: [...data.inputPatterns],
-      inputPatternResolver: (data as any).inputPatternResolver,
-    });
-  });
-  const factory = new CharacterSetFactory(japaneseCharacters);
-  return factory.fromText(text).characters;
-}

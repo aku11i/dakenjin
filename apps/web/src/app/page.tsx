@@ -1,20 +1,27 @@
 "use client";
 
-import { Sentence, fromJapaneseText, CharacterSet } from "@dakenjin/core";
+import {
+  Sentence,
+  createCharacterSetFactory,
+  CharacterSet,
+} from "@dakenjin/core";
 import { SessionInput } from "../features/typing/components/session-input";
 
 export default function Home() {
+  const factory = createCharacterSetFactory();
   const sampleSentences = [
     new Sentence(
-      new CharacterSet(fromJapaneseText("こんにちはせかい")),
+      new CharacterSet(factory.fromText("こんにちはせかい").characters),
       "こんにちは世界",
     ),
     new Sentence(
-      new CharacterSet(fromJapaneseText("プログラミングはたのしい")),
+      new CharacterSet(factory.fromText("プログラミングはたのしい").characters),
       "プログラミングは楽しい",
     ),
     new Sentence(
-      new CharacterSet(fromJapaneseText("タイピングれんしゅうをがんばろう")),
+      new CharacterSet(
+        factory.fromText("タイピングれんしゅうをがんばろう").characters,
+      ),
       "タイピング練習を頑張ろう",
     ),
   ];

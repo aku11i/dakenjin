@@ -1,21 +1,31 @@
 import { describe, it, expect } from "vitest";
 import { Session, Sentence, CharacterSet } from "../index";
-import { fromJapaneseText } from "../characters/japanese";
+import { createCharacterSetFactory } from "../character-set-factory";
 
 describe("Session E2E Tests - Complete Application Flow", () => {
   it("should complete all three sample sentences from page.tsx", () => {
     // Create the exact same sentences as defined in page.tsx
     const sampleSentences = [
       new Sentence(
-        new CharacterSet(fromJapaneseText("こんにちはせかい")),
+        new CharacterSet(
+          createCharacterSetFactory().fromText("こんにちはせかい").characters,
+        ),
         "こんにちは世界",
       ),
       new Sentence(
-        new CharacterSet(fromJapaneseText("プログラミングはたのしい")),
+        new CharacterSet(
+          createCharacterSetFactory().fromText(
+            "プログラミングはたのしい",
+          ).characters,
+        ),
         "プログラミングは楽しい",
       ),
       new Sentence(
-        new CharacterSet(fromJapaneseText("タイピングれんしゅうをがんばろう")),
+        new CharacterSet(
+          createCharacterSetFactory().fromText(
+            "タイピングれんしゅうをがんばろう",
+          ).characters,
+        ),
         "タイピング練習を頑張ろう",
       ),
     ];
@@ -195,11 +205,15 @@ describe("Session E2E Tests - Complete Application Flow", () => {
   it("should handle errors and recovery during the complete session", () => {
     const sampleSentences = [
       new Sentence(
-        new CharacterSet(fromJapaneseText("こんにちは")),
+        new CharacterSet(
+          createCharacterSetFactory().fromText("こんにちは").characters,
+        ),
         "こんにちは",
       ),
       new Sentence(
-        new CharacterSet(fromJapaneseText("ありがとう")),
+        new CharacterSet(
+          createCharacterSetFactory().fromText("ありがとう").characters,
+        ),
         "ありがとう",
       ),
     ];
