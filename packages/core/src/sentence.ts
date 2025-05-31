@@ -1,16 +1,17 @@
 import { Character } from "./character";
+import { CharacterSet } from "./character-set";
 
 export class Sentence {
-  private _characters: Character[];
+  private _characterSet: CharacterSet;
   private _label: string;
 
-  constructor(characters: Character[], label: string) {
-    this._characters = characters;
+  constructor(characterSet: CharacterSet, label: string) {
+    this._characterSet = characterSet;
     this._label = label;
   }
 
   get characters(): Character[] {
-    return this._characters;
+    return this._characterSet.characters;
   }
 
   get label(): string {
@@ -18,20 +19,18 @@ export class Sentence {
   }
 
   get currentCharacter(): Character | null {
-    return (
-      this._characters.find((character) => !character.isCompleted()) ?? null
-    );
+    return this._characterSet.currentCharacter;
   }
 
   get completedCharacters(): Character[] {
-    return this._characters.filter((character) => character.isCompleted());
+    return this._characterSet.completedCharacters;
   }
 
   get incompletedCharacters(): Character[] {
-    return this._characters.filter((character) => !character.isCompleted());
+    return this._characterSet.incompletedCharacters;
   }
 
   isCompleted(): boolean {
-    return this._characters.every((character) => character.isCompleted());
+    return this._characterSet.isCompleted();
   }
 }
