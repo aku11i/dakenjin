@@ -25,6 +25,7 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
     completedCharacters,
     futureCharacters,
     futureCharacterPreviews,
+    currentCharacterPreview,
     suggestions,
   } = useSession({ sentences });
 
@@ -61,6 +62,7 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
               futureCharacters={futureCharacters}
               futureCharacterPreviews={futureCharacterPreviews}
               currentInputs={inputs}
+              currentCharacterPreview={currentCharacterPreview}
               suggestions={suggestions}
               error={error}
             />
