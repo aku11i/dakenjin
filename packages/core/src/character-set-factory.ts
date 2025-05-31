@@ -21,6 +21,7 @@ export class CharacterSetFactory {
             new Character({
               label: character.label,
               inputPatterns: [...character.inputPatterns],
+              inputPatternResolver: character.inputPatternResolver,
             }),
           );
           i += character.label.length;

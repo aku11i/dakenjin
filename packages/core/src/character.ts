@@ -1,14 +1,22 @@
+export type InputPatternResolver = (context: {
+  prev: Character | null;
+  next: Character | null;
+}) => string[];
+
 export class Character {
   private _label: string;
   private _inputPatterns: string[];
   private _inputs: string = "";
+  private _inputPatternResolver?: InputPatternResolver;
 
   constructor({
     label,
     inputPatterns,
+    inputPatternResolver,
   }: {
     label: string;
     inputPatterns: string[];
+    inputPatternResolver?: InputPatternResolver;
   }) {
     if (label.length === 0) {
       throw new Error("Character label cannot be empty");
@@ -18,6 +26,7 @@ export class Character {
     }
     this._label = label;
     this._inputPatterns = inputPatterns;
+    this._inputPatternResolver = inputPatternResolver;
   }
 
   get label(): string {
@@ -28,21 +37,43 @@ export class Character {
     return this._inputPatterns;
   }
 
+  get preview(): string {
+    return this._inputPatterns[0];
+  }
+
+  get inputPatternResolver(): InputPatternResolver | undefined {
+    return this._inputPatternResolver;
+  }
+
+  getInputPatterns(context?: {
+    prev: Character | null;
+    next: Character | null;
+  }): string[] {
+    if (this._inputPatternResolver && context) {
+      return this._inputPatternResolver(context);
+    }
+    return this._inputPatterns;
+  }
+
   get inputs(): string {
     return this._inputs;
   }
 
-  input(character: string): boolean {
+  input(
+    character: string,
+    context?: { prev: Character | null; next: Character | null },
+  ): boolean {
     if (character.length !== 1) {
       throw new Error("Input must be a single character");
     }
 
-    if (this.isCompleted()) {
+    if (this.isCompleted(context)) {
       throw new Error("Character is already completed");
     }
 
     const nextInputs = this._inputs + character;
-    const availablePatterns = this._inputPatterns.filter((pattern) =>
+    const patterns = this.getInputPatterns(context);
+    const availablePatterns = patterns.filter((pattern) =>
       pattern.startsWith(nextInputs),
     );
 
@@ -54,18 +85,27 @@ export class Character {
     return true;
   }
 
-  isCompleted(): boolean {
-    return this._inputPatterns.includes(this._inputs);
+  isCompleted(context?: {
+    prev: Character | null;
+    next: Character | null;
+  }): boolean {
+    const patterns = this.getInputPatterns(context);
+    return patterns.includes(this._inputs);
   }
 
-  getAvailablePatterns(): string[] {
-    return this._inputPatterns.filter((pattern) =>
-      pattern.startsWith(this._inputs),
-    );
+  getAvailablePatterns(context?: {
+    prev: Character | null;
+    next: Character | null;
+  }): string[] {
+    const patterns = this.getInputPatterns(context);
+    return patterns.filter((pattern) => pattern.startsWith(this._inputs));
   }
 
-  getSuggestions(): string[] {
-    return this.getAvailablePatterns()
+  getSuggestions(context?: {
+    prev: Character | null;
+    next: Character | null;
+  }): string[] {
+    return this.getAvailablePatterns(context)
       .map((pattern) => pattern.slice(this._inputs.length))
       .filter(Boolean);
   }
