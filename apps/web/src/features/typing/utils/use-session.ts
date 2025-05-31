@@ -88,6 +88,7 @@ export function useSession({ sentences }: UseSessionParams) {
   );
 
   return {
+    session,
     currentSentence: sessionSnapshot.currentSentence,
     currentCharacter: sessionSnapshot.currentCharacter,
     completedSentences: sessionSnapshot.completedSentences,
