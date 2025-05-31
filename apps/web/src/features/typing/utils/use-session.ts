@@ -42,6 +42,14 @@ export function useSession({ sentences }: UseSessionParams) {
               : character.getPreview();
           })
         : [],
+      currentCharacterPreview:
+        currentCharacter && currentCharacterSet
+          ? currentCharacterSet.getCharacterPreview(
+              currentCharacterSet.characters.findIndex(
+                (c) => c === currentCharacter,
+              ),
+            )
+          : "",
       suggestions: currentCharacterSet?.getCurrentCharacterSuggestions() || [],
     };
   });
@@ -94,6 +102,14 @@ export function useSession({ sentences }: UseSessionParams) {
                   : character.getPreview();
               })
             : [],
+          currentCharacterPreview:
+            newCurrentCharacter && newCurrentCharacterSet
+              ? newCurrentCharacterSet.getCharacterPreview(
+                  newCurrentCharacterSet.characters.findIndex(
+                    (c) => c === newCurrentCharacter,
+                  ),
+                )
+              : "",
           suggestions:
             newCurrentCharacterSet?.getCurrentCharacterSuggestions() || [],
         });
@@ -116,6 +132,7 @@ export function useSession({ sentences }: UseSessionParams) {
     completedCharacters: sessionSnapshot.completedCharacters,
     futureCharacters: sessionSnapshot.futureCharacters,
     futureCharacterPreviews: sessionSnapshot.futureCharacterPreviews,
+    currentCharacterPreview: sessionSnapshot.currentCharacterPreview,
     suggestions: sessionSnapshot.suggestions,
   };
 }

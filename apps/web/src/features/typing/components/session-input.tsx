@@ -25,7 +25,7 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
     completedCharacters,
     futureCharacters,
     futureCharacterPreviews,
-    suggestions,
+    currentCharacterPreview,
   } = useSession({ sentences });
 
   const [error, setError] = useState(false);
@@ -61,7 +61,7 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
               futureCharacters={futureCharacters}
               futureCharacterPreviews={futureCharacterPreviews}
               currentInputs={inputs}
-              suggestions={suggestions}
+              currentCharacterPreview={currentCharacterPreview}
               error={error}
             />
             <SentenceDisplay sentence={currentSentence} />

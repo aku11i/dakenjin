@@ -6,7 +6,7 @@ type TypingDisplayProps = {
   futureCharacters: Character[];
   futureCharacterPreviews: string[];
   currentInputs: string;
-  suggestions: string[];
+  currentCharacterPreview: string;
   error: boolean;
 };
 
@@ -16,10 +16,10 @@ export function TypingDisplay({
   futureCharacters,
   futureCharacterPreviews,
   currentInputs,
-  suggestions,
+  currentCharacterPreview,
   error,
 }: TypingDisplayProps) {
-  const firstSuggestion = suggestions[0] || "";
+  const remainingPreview = currentCharacterPreview.slice(currentInputs.length);
 
   return (
     <div className="space-y-2">
@@ -37,7 +37,7 @@ export function TypingDisplay({
           >
             <span className="text-green-500">{currentInputs}</span>
             <span className={error ? "text-red-400" : "text-gray-400"}>
-              {firstSuggestion}
+              {remainingPreview}
             </span>
           </div>
         )}
