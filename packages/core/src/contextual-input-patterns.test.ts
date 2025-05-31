@@ -146,9 +146,14 @@ describe("Contextual Input Patterns", () => {
       // Should only allow "nn" when next is "な"
       expect(nnChar.getInputPatterns(context)).toEqual(["nn"]);
 
-      // Context where next character is not "な"
-      const contextNoN = { prev: characters[0], next: null };
-      expect(nnChar.getInputPatterns(contextNoN)).toEqual(["nn", "n"]);
+      // Context where next character is not "な" but not at end
+      const baChar = characters[3]; // "か"
+      const contextNoN = { prev: characters[0], next: baChar };
+      expect(nnChar.getInputPatterns(contextNoN)).toEqual(["n", "nn"]);
+
+      // Context where character is at the end of sentence
+      const contextEnd = { prev: characters[0], next: null };
+      expect(nnChar.getInputPatterns(contextEnd)).toEqual(["nn"]);
     });
   });
 
@@ -185,6 +190,28 @@ describe("Contextual Input Patterns", () => {
       // Since next character is "ば" (starts with "b"), single "n" should be allowed
       expect(nnChar.input("n", context)).toBe(true);
       expect(nnChar.isCompleted(context)).toBe(true); // Should be completed with single "n"
+    });
+
+    it("should require nn when ん is at the end of sentence", () => {
+      const characters = fromJapaneseText("まん");
+      const characterSet = new CharacterSet(characters);
+
+      const nnChar = characterSet.characters[1]; // "ん"
+      const context = {
+        prev: characterSet.characters[0],
+        next: null, // End of sentence
+      };
+
+      // Should only allow "nn" when at the end of sentence
+      expect(nnChar.getInputPatterns(context)).toEqual(["nn"]);
+
+      // Single "n" should not complete when at the end
+      expect(nnChar.input("n", context)).toBe(true);
+      expect(nnChar.isCompleted(context)).toBe(false);
+
+      // Double "nn" should complete
+      expect(nnChar.input("n", context)).toBe(true);
+      expect(nnChar.isCompleted(context)).toBe(true);
     });
   });
 });
