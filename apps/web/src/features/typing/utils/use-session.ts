@@ -77,13 +77,9 @@ export function useSession({ sentences }: UseSessionParams) {
       const isValid = currentSentence.inputCurrentCharacter(character);
 
       if (isValid) {
-        setInputs(currentCharacter.inputs);
-
-        if (currentCharacter.isCompleted()) {
-          setInputs("");
-        }
-
-        setSessionSnapshot(createSessionSnapshot(session));
+const snapshot = createSessionSnapshot(session)
+        setInputs(snapshot.currentCharacter?.inputs || "");
+        setSessionSnapshot(snapshot);
       }
 
       return isValid;
