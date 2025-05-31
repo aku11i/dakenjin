@@ -46,6 +46,14 @@ export const metadata: Metadata = {
     title: "だけんちゅ - 日本語タイピング練習",
     description: "日本語タイピング練習のためのWebアプリケーション",
   },
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
 };
 
 export default function RootLayout({
