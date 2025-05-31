@@ -13,7 +13,6 @@ export function Header({ title, subtitle }: HeaderProps) {
               className="text-3xl font-bold text-gray-500 drop-shadow-sm"
               style={{
                 WebkitTextStroke: "1px white",
-                textStroke: "1px white",
               }}
             >
               {title}
