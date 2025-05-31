@@ -26,7 +26,18 @@ describe("CharacterSet input methods", () => {
       // Complete "あ"
       characterSet.inputCurrentCharacter("a");
 
-      // Check preview for "ん" - should be "nn" when next is "ば" (not n-starting)
+      // Check preview for "ん" - should be "n" when next is "ば" (not n-starting and not at end)
+      expect(characterSet.getCharacterPreview(1)).toBe("n");
+    });
+
+    it("should return nn for ん at the end of sentence", () => {
+      const characters = fromJapaneseText("あん");
+      const characterSet = new CharacterSet(characters);
+
+      // Complete "あ"
+      characterSet.inputCurrentCharacter("a");
+
+      // Check preview for "ん" - should be "nn" when at the end
       expect(characterSet.getCharacterPreview(1)).toBe("nn");
     });
   });

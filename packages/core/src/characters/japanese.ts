@@ -4,11 +4,15 @@ import { CharacterSetFactory } from "../character-set-factory";
 const createNInputPatternResolver = (): InputPatternResolver => {
   return (context) => {
     // 次の文字が「な行」の場合は "nn" のみ
-    if (context.next && context.next.getPreview().startsWith("n")) {
+    if (context.next && context.next.getPreview(context).startsWith("n")) {
+      return ["nn"];
+    }
+    // 文章の最後の場合は "nn" のみ
+    if (!context.next) {
       return ["nn"];
     }
     // それ以外は両方許可
-    return ["nn", "n"];
+    return ["n", "nn"];
   };
 };
 
