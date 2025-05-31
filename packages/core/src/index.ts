@@ -5,4 +5,5 @@ export * from "./character-set-factory";
 export * from "./sentence";
 export * from "./sentence-input-log";
 export * from "./session";
+export * from "./session-input-log";
 export { createCharacterSetFactory } from "./character-set-factory";

@@ -1,7 +1,9 @@
 import { Sentence } from "./sentence";
+import { SessionInputLog } from "./session-input-log";
 
 export class Session {
   private _sentences: Sentence[];
+  private _inputLog: SessionInputLog = new SessionInputLog();
 
   constructor(sentences: Sentence[]) {
     if (sentences.length === 0) {
@@ -23,10 +25,31 @@ export class Session {
   }
 
   get currentSentence(): Sentence | null {
-    return this._sentences.find((sentence) => !sentence.isCompleted()) ?? null;
+    const current =
+      this._sentences.find((sentence) => !sentence.isCompleted()) ?? null;
+
+    // Mark session start when first sentence becomes current
+    if (current && this._inputLog.startTime === null) {
+      this._inputLog.markInputStart();
+    }
+
+    return current;
   }
 
   isCompleted(): boolean {
-    return this._sentences.every((sentence) => sentence.isCompleted());
+    const completed = this._sentences.every((sentence) =>
+      sentence.isCompleted(),
+    );
+
+    // Mark session end when all sentences are completed
+    if (completed && this._inputLog.endTime === null) {
+      this._inputLog.markInputEnd();
+    }
+
+    return completed;
+  }
+
+  get inputLog(): SessionInputLog {
+    return this._inputLog;
   }
 }
