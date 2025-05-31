@@ -23,13 +23,19 @@ function createTypingDisplayProps(
       : character.getPreview();
   });
 
+  const currentCharacterPreview = currentCharacter
+    ? characterSet.getCharacterPreview(
+        characterSet.characters.findIndex((c) => c === currentCharacter),
+      )
+    : "";
+
   return {
     completedCharacters,
     currentCharacter,
     futureCharacters,
     futureCharacterPreviews,
     currentInputs,
-    suggestions: characterSet.getCurrentCharacterSuggestions(),
+    currentCharacterPreview,
     error,
   };
 }
@@ -63,8 +69,8 @@ const meta: Meta<typeof TypingDisplay> = {
     currentInputs: {
       description: "Current user inputs for the current character",
     },
-    suggestions: {
-      description: "Input suggestions for the current character",
+    currentCharacterPreview: {
+      description: "Preview string for the current character",
     },
     error: {
       description: "Whether there is an error in typing",
