@@ -12,13 +12,44 @@ export function useSession({ sentences }: UseSessionParams) {
 
   const [inputs, setInputs] = useState("");
 
-  const currentSentence = session.currentSentence;
-  const currentCharacter = currentSentence?.currentCharacter || null;
-  const completedSentences = session.completedSentences;
-  const isCompleted = session.isCompleted();
+  // セッション状態のスナップショットを管理
+  const [sessionSnapshot, setSessionSnapshot] = useState(() => {
+    const currentSentence = session.currentSentence;
+    const currentCharacter = currentSentence?.currentCharacter || null;
+    const currentCharacterSet = currentSentence?.characterSet;
+
+    return {
+      currentSentence,
+      currentCharacter,
+      completedSentences: session.completedSentences,
+      isCompleted: session.isCompleted(),
+      // CharacterSet関連の情報も含める
+      completedCharacters: currentCharacterSet?.completedCharacters || [],
+      futureCharacters:
+        currentCharacter && currentCharacterSet
+          ? currentCharacterSet.incompletedCharacters.slice(1)
+          : currentCharacterSet?.incompletedCharacters || [],
+      futureCharacterPreviews: currentCharacterSet
+        ? (currentCharacter
+            ? currentCharacterSet.incompletedCharacters.slice(1)
+            : currentCharacterSet.incompletedCharacters
+          ).map((character) => {
+            const actualIndex = currentCharacterSet.characters.findIndex(
+              (c) => c === character,
+            );
+            return actualIndex !== -1
+              ? currentCharacterSet.getCharacterPreview(actualIndex)
+              : character.getPreview();
+          })
+        : [],
+      suggestions: currentCharacterSet?.getCurrentCharacterSuggestions() || [],
+    };
+  });
 
   const input = useCallback(
     (character: string): boolean => {
+      const { currentSentence, currentCharacter } = sessionSnapshot;
+
       if (!currentCharacter || !currentSentence) {
         return false;
       }
@@ -31,20 +62,60 @@ export function useSession({ sentences }: UseSessionParams) {
         if (currentCharacter.isCompleted()) {
           setInputs("");
         }
+
+        // 状態のスナップショットを更新してReactに変更を通知
+        const newCurrentSentence = session.currentSentence;
+        const newCurrentCharacter =
+          newCurrentSentence?.currentCharacter || null;
+        const newCurrentCharacterSet = newCurrentSentence?.characterSet;
+
+        setSessionSnapshot({
+          currentSentence: newCurrentSentence,
+          currentCharacter: newCurrentCharacter,
+          completedSentences: session.completedSentences,
+          isCompleted: session.isCompleted(),
+          // CharacterSet関連の情報も更新
+          completedCharacters:
+            newCurrentCharacterSet?.completedCharacters || [],
+          futureCharacters:
+            newCurrentCharacter && newCurrentCharacterSet
+              ? newCurrentCharacterSet.incompletedCharacters.slice(1)
+              : newCurrentCharacterSet?.incompletedCharacters || [],
+          futureCharacterPreviews: newCurrentCharacterSet
+            ? (newCurrentCharacter
+                ? newCurrentCharacterSet.incompletedCharacters.slice(1)
+                : newCurrentCharacterSet.incompletedCharacters
+              ).map((character) => {
+                const actualIndex = newCurrentCharacterSet.characters.findIndex(
+                  (c) => c === character,
+                );
+                return actualIndex !== -1
+                  ? newCurrentCharacterSet.getCharacterPreview(actualIndex)
+                  : character.getPreview();
+              })
+            : [],
+          suggestions:
+            newCurrentCharacterSet?.getCurrentCharacterSuggestions() || [],
+        });
       }
 
       return isValid;
     },
-    [currentCharacter, currentSentence, session],
+    [session, sessionSnapshot],
   );
 
   return {
-    currentSentence,
-    currentCharacter,
-    completedSentences,
+    currentSentence: sessionSnapshot.currentSentence,
+    currentCharacter: sessionSnapshot.currentCharacter,
+    completedSentences: sessionSnapshot.completedSentences,
     sentences: session.sentences,
     inputs,
-    isCompleted,
+    isCompleted: sessionSnapshot.isCompleted,
     input,
+    // sessionSnapshotから直接取得
+    completedCharacters: sessionSnapshot.completedCharacters,
+    futureCharacters: sessionSnapshot.futureCharacters,
+    futureCharacterPreviews: sessionSnapshot.futureCharacterPreviews,
+    suggestions: sessionSnapshot.suggestions,
   };
 }

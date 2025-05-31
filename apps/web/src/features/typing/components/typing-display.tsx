@@ -1,24 +1,24 @@
-import type { CharacterSet } from "@dakenjin/core";
+import type { Character } from "@dakenjin/core";
 
 type TypingDisplayProps = {
-  characterSet: CharacterSet;
+  completedCharacters: Character[];
+  currentCharacter: Character | null;
+  futureCharacters: Character[];
+  futureCharacterPreviews: string[];
   currentInputs: string;
+  suggestions: string[];
   error: boolean;
 };
 
 export function TypingDisplay({
-  characterSet,
+  completedCharacters,
+  currentCharacter,
+  futureCharacters,
+  futureCharacterPreviews,
   currentInputs,
+  suggestions,
   error,
 }: TypingDisplayProps) {
-  const completedCharacters = characterSet.completedCharacters;
-  const currentCharacter = characterSet.currentCharacter;
-  const incompletedCharacters = characterSet.incompletedCharacters;
-  const futureCharacters = currentCharacter
-    ? incompletedCharacters.slice(1)
-    : incompletedCharacters;
-
-  const suggestions = characterSet.getCurrentCharacterSuggestions();
   const firstSuggestion = suggestions[0] || "";
 
   return (
@@ -41,24 +41,14 @@ export function TypingDisplay({
             </span>
           </div>
         )}
-        {futureCharacters.map((character, index) => {
-          const characterIndex = characterSet.characters.findIndex(
-            (c) => c === character,
-          );
-          const preview =
-            characterIndex !== -1
-              ? characterSet.getCharacterPreview(characterIndex)
-              : character.getPreview();
-
-          return (
-            <span
-              key={`future-${index}`}
-              className="text-lg font-mono text-gray-400"
-            >
-              {preview}
-            </span>
-          );
-        })}
+        {futureCharacters.map((character, index) => (
+          <span
+            key={`future-${index}`}
+            className="text-lg font-mono text-gray-400"
+          >
+            {futureCharacterPreviews[index] || character.getPreview()}
+          </span>
+        ))}
       </div>
       <div className="flex flex-wrap justify-center gap-0.5">
         {completedCharacters.map((character, index) => (
