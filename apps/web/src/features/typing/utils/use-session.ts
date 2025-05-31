@@ -77,7 +77,7 @@ export function useSession({ sentences }: UseSessionParams) {
       const isValid = currentSentence.inputCurrentCharacter(character);
 
       if (isValid) {
-const snapshot = createSessionSnapshot(session)
+        const snapshot = createSessionSnapshot(session);
         setInputs(snapshot.currentCharacter?.inputs || "");
         setSessionSnapshot(snapshot);
       }
