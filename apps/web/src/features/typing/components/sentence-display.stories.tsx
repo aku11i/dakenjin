@@ -1,4 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+import {
+  Sentence,
+  CharacterSet,
+  Character,
+  fromJapaneseText,
+} from "@dakenjin/core";
 import { SentenceDisplay } from "./sentence-display";
 
 const meta: Meta<typeof SentenceDisplay> = {
@@ -15,8 +21,8 @@ const meta: Meta<typeof SentenceDisplay> = {
   },
   tags: ["autodocs"],
   argTypes: {
-    characters: {
-      description: "Array of characters that make up the sentence",
+    sentence: {
+      description: "Sentence instance to display",
     },
   },
 };
@@ -26,58 +32,42 @@ type Story = StoryObj<typeof meta>;
 
 export const Empty: Story = {
   args: {
-    characters: [],
+    sentence: new Sentence(new CharacterSet([]), "empty sentence"),
   },
 };
 
 export const SingleCharacter: Story = {
   args: {
-    characters: [{ label: "あ" }],
+    sentence: new Sentence(
+      new CharacterSet([new Character({ label: "あ", inputPatterns: ["a"] })]),
+      "あ",
+    ),
   },
 };
 
 export const ShortSentence: Story = {
   args: {
-    characters: [
-      { label: "こ" },
-      { label: "ん" },
-      { label: "に" },
-      { label: "ち" },
-      { label: "は" },
-    ],
+    sentence: new Sentence(
+      new CharacterSet(fromJapaneseText("こんにちは")),
+      "こんにちは",
+    ),
   },
 };
 
 export const LongSentence: Story = {
   args: {
-    characters: [
-      { label: "わ" },
-      { label: "た" },
-      { label: "し" },
-      { label: "は" },
-      { label: "に" },
-      { label: "ほ" },
-      { label: "ん" },
-      { label: "ご" },
-      { label: "を" },
-      { label: "よ" },
-      { label: "み" },
-      { label: "ま" },
-      { label: "す" },
-    ],
+    sentence: new Sentence(
+      new CharacterSet(fromJapaneseText("わたしはにほんごをよみます")),
+      "わたしはにほんごをよみます",
+    ),
   },
 };
 
 export const MixedCharacters: Story = {
   args: {
-    characters: [
-      { label: "わ" },
-      { label: "た" },
-      { label: "し" },
-      { label: "の" },
-      { label: "な" },
-      { label: "ま" },
-      { label: "え" },
-    ],
+    sentence: new Sentence(
+      new CharacterSet(fromJapaneseText("わたしのなまえ")),
+      "わたしのなまえ",
+    ),
   },
 };

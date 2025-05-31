@@ -58,11 +58,7 @@ export function useSession({ sentences }: UseSessionParams) {
 
   return {
     currentSentence,
-    currentCharacter: currentCharacter
-      ? {
-          label: currentCharacter.label,
-        }
-      : null,
+    currentCharacter,
     completedSentences,
     sentences: session.sentences,
     inputs,

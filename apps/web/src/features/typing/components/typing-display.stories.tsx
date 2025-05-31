@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+import { Character } from "@dakenjin/core";
 import { TypingDisplay } from "./typing-display";
 
 const meta: Meta<typeof TypingDisplay> = {
@@ -53,7 +54,7 @@ export const Empty: Story = {
 export const SingleCharacter: Story = {
   args: {
     completedCharacters: [],
-    currentCharacter: { label: "あ" },
+    currentCharacter: new Character({ label: "あ", inputPatterns: ["a"] }),
     currentInputs: "",
     suggestions: ["a"],
     error: false,
@@ -64,7 +65,7 @@ export const SingleCharacter: Story = {
 export const PartiallyTyped: Story = {
   args: {
     completedCharacters: [],
-    currentCharacter: { label: "き" },
+    currentCharacter: new Character({ label: "き", inputPatterns: ["ki"] }),
     currentInputs: "k",
     suggestions: ["ki"],
     error: false,
@@ -75,7 +76,10 @@ export const PartiallyTyped: Story = {
 export const WithError: Story = {
   args: {
     completedCharacters: [],
-    currentCharacter: { label: "し" },
+    currentCharacter: new Character({
+      label: "し",
+      inputPatterns: ["shi", "si"],
+    }),
     currentInputs: "z",
     suggestions: ["shi", "si"],
     error: true,
@@ -85,8 +89,26 @@ export const WithError: Story = {
 
 export const CompletedCharacters: Story = {
   args: {
-    completedCharacters: [{ inputs: "a" }, { inputs: "ri" }, { inputs: "ga" }],
-    currentCharacter: { label: "と" },
+    completedCharacters: [
+      (() => {
+        const char = new Character({ label: "あ", inputPatterns: ["a"] });
+        char.input("a");
+        return char;
+      })(),
+      (() => {
+        const char = new Character({ label: "り", inputPatterns: ["ri"] });
+        char.input("r");
+        char.input("i");
+        return char;
+      })(),
+      (() => {
+        const char = new Character({ label: "が", inputPatterns: ["ga"] });
+        char.input("g");
+        char.input("a");
+        return char;
+      })(),
+    ],
+    currentCharacter: new Character({ label: "と", inputPatterns: ["to"] }),
     currentInputs: "t",
     suggestions: ["to"],
     error: false,
@@ -96,14 +118,26 @@ export const CompletedCharacters: Story = {
 
 export const WithFutureCharacters: Story = {
   args: {
-    completedCharacters: [{ inputs: "ko" }, { inputs: "n" }],
-    currentCharacter: { label: "に" },
+    completedCharacters: [
+      (() => {
+        const char = new Character({ label: "こ", inputPatterns: ["ko"] });
+        char.input("k");
+        char.input("o");
+        return char;
+      })(),
+      (() => {
+        const char = new Character({ label: "ん", inputPatterns: ["n", "nn"] });
+        char.input("n");
+        return char;
+      })(),
+    ],
+    currentCharacter: new Character({ label: "に", inputPatterns: ["ni"] }),
     currentInputs: "",
     suggestions: ["ni"],
     error: false,
     futureCharacters: [
-      { getSuggestions: () => ["chi"] },
-      { getSuggestions: () => ["wa"] },
+      new Character({ label: "ち", inputPatterns: ["chi", "ti"] }),
+      new Character({ label: "は", inputPatterns: ["wa", "ha"] }),
     ],
   },
 };
@@ -111,24 +145,51 @@ export const WithFutureCharacters: Story = {
 export const LongSentence: Story = {
   args: {
     completedCharacters: [
-      { inputs: "wa" },
-      { inputs: "ta" },
-      { inputs: "shi" },
-      { inputs: "wa" },
+      (() => {
+        const char = new Character({ label: "わ", inputPatterns: ["wa"] });
+        char.input("w");
+        char.input("a");
+        return char;
+      })(),
+      (() => {
+        const char = new Character({ label: "た", inputPatterns: ["ta"] });
+        char.input("t");
+        char.input("a");
+        return char;
+      })(),
+      (() => {
+        const char = new Character({
+          label: "し",
+          inputPatterns: ["shi", "si"],
+        });
+        char.input("s");
+        char.input("h");
+        char.input("i");
+        return char;
+      })(),
+      (() => {
+        const char = new Character({
+          label: "は",
+          inputPatterns: ["ha", "wa"],
+        });
+        char.input("w");
+        char.input("a");
+        return char;
+      })(),
     ],
-    currentCharacter: { label: "に" },
+    currentCharacter: new Character({ label: "に", inputPatterns: ["ni"] }),
     currentInputs: "n",
     suggestions: ["ni"],
     error: false,
     futureCharacters: [
-      { getSuggestions: () => ["ho"] },
-      { getSuggestions: () => ["n"] },
-      { getSuggestions: () => ["go"] },
-      { getSuggestions: () => ["wo"] },
-      { getSuggestions: () => ["yo"] },
-      { getSuggestions: () => ["mi"] },
-      { getSuggestions: () => ["ma"] },
-      { getSuggestions: () => ["su"] },
+      new Character({ label: "ほ", inputPatterns: ["ho"] }),
+      new Character({ label: "ん", inputPatterns: ["n", "nn"] }),
+      new Character({ label: "ご", inputPatterns: ["go"] }),
+      new Character({ label: "を", inputPatterns: ["wo"] }),
+      new Character({ label: "よ", inputPatterns: ["yo"] }),
+      new Character({ label: "み", inputPatterns: ["mi"] }),
+      new Character({ label: "ま", inputPatterns: ["ma"] }),
+      new Character({ label: "す", inputPatterns: ["su"] }),
     ],
   },
 };
