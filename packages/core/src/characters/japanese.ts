@@ -1,4 +1,4 @@
-import { Character } from "../character";
+import { Character, InputPatternResolver } from "../character";
 import { CharacterSetFactory } from "../character-set-factory";
 
 export const HIRAGANA_CHARACTERS = [
@@ -236,14 +236,32 @@ export type HiraganaCharacter = (typeof HIRAGANA_CHARACTERS)[number];
 export type KatakanaCharacter = (typeof KATAKANA_CHARACTERS)[number];
 export type JapaneseCharacter = (typeof JAPANESE_CHARACTERS)[number];
 
+const createNInputPatternResolver = (): InputPatternResolver => {
+  return (context) => {
+    // 次の文字が「な行」の場合は "nn" のみ
+    if (context.next && context.next.preview.startsWith("n")) {
+      return ["nn"];
+    }
+    // それ以外は両方許可
+    return ["nn", "n"];
+  };
+};
+
 export function fromJapaneseText(text: string): Character[] {
-  const japaneseCharacters = JAPANESE_CHARACTERS.map(
-    (data) =>
-      new Character({
+  const japaneseCharacters = JAPANESE_CHARACTERS.map((data) => {
+    // 「ん」の場合は特別なresolverを適用
+    if (data.label === "ん") {
+      return new Character({
         label: data.label,
         inputPatterns: [...data.inputPatterns],
-      }),
-  );
+        inputPatternResolver: createNInputPatternResolver(),
+      });
+    }
+    return new Character({
+      label: data.label,
+      inputPatterns: [...data.inputPatterns],
+    });
+  });
   const factory = new CharacterSetFactory(japaneseCharacters);
   return factory.fromText(text).characters;
 }
