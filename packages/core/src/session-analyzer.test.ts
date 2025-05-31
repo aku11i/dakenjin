@@ -36,7 +36,7 @@ describe("SessionAnalyzer", () => {
   });
 
   it("should calculate values for active session", () => {
-    void session.currentSentence;
+    session.start();
 
     vi.advanceTimersByTime(10000);
 
@@ -65,6 +65,7 @@ describe("SessionAnalyzer", () => {
   });
 
   it("should calculate KPS and CPM correctly", () => {
+    session.start();
     const currentSentence = session.currentSentence;
     const sentence = currentSentence!;
     void sentence.currentCharacter;
@@ -85,6 +86,7 @@ describe("SessionAnalyzer", () => {
   });
 
   it("should handle completed session", () => {
+    session.start();
     const currentSentence = session.currentSentence;
     const sentence = currentSentence!;
     void sentence.currentCharacter;
@@ -107,7 +109,7 @@ describe("SessionAnalyzer", () => {
       const analyzer = new SessionAnalyzer(session);
       expect(analyzer.getDuration()).toBe(0);
 
-      void session.currentSentence;
+      session.start();
       vi.advanceTimersByTime(5500);
 
       expect(analyzer.getDuration()).toBe(5.5);
@@ -148,6 +150,7 @@ describe("SessionAnalyzer", () => {
 
     it("should calculate KPS correctly", () => {
       const analyzer = new SessionAnalyzer(session);
+      session.start();
       const sentence = session.currentSentence!;
       void sentence.currentCharacter;
 
@@ -162,6 +165,7 @@ describe("SessionAnalyzer", () => {
 
     it("should calculate CPM correctly", () => {
       const analyzer = new SessionAnalyzer(session);
+      session.start();
       const sentence = session.currentSentence!;
       void sentence.currentCharacter;
 
@@ -180,7 +184,7 @@ describe("SessionAnalyzer", () => {
 
       expect(analyzer.isActive()).toBe(false);
 
-      void session.currentSentence;
+      session.start();
       expect(analyzer.isActive()).toBe(true);
 
       const sentence = session.currentSentence!;

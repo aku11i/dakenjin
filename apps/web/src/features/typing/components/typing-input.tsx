@@ -9,6 +9,7 @@ type TypingInputProps = {
   onComplete?: () => void;
   isCompleted: boolean;
   onError?: () => void;
+  autoFocus?: boolean;
 };
 
 export function TypingInput({
@@ -17,6 +18,7 @@ export function TypingInput({
   onComplete,
   isCompleted,
   onError,
+  autoFocus = false,
 }: TypingInputProps) {
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -65,6 +67,7 @@ export function TypingInput({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         disabled={isCompleted}
+        autoFocus={autoFocus}
         readOnly
         className="sr-only"
         aria-label="タイピング入力"

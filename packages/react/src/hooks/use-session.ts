@@ -22,6 +22,7 @@ export type UseSessionReturn = {
   isCompleted: boolean;
   input: (character: string) => boolean;
   reset: () => void;
+  start: () => void;
   completedCharacters: SessionSnapshot["completedCharacters"];
   futureCharacters: SessionSnapshot["futureCharacters"];
   futureCharacterPreviews: SessionSnapshot["futureCharacterPreviews"];
@@ -30,9 +31,9 @@ export type UseSessionReturn = {
 };
 
 export function useSession({ sentences }: UseSessionParams): UseSessionReturn {
-  const [session, setSession] = useState(() => {
-    return new SessionClass(sentences);
-  });
+  const [session, setSession] = useState<SessionClass>(
+    () => new SessionClass(sentences),
+  );
 
   const [inputs, setInputs] = useState("");
 
@@ -43,6 +44,7 @@ export function useSession({ sentences }: UseSessionParams): UseSessionReturn {
   const input = useCallback(
     (character: string): boolean => {
       if (
+        !session.isStarted ||
         !session.currentSentence ||
         !session.currentSentence.currentCharacter
       ) {
@@ -51,17 +53,33 @@ export function useSession({ sentences }: UseSessionParams): UseSessionReturn {
 
       const isValid = session.currentSentence.inputCurrentCharacter(character);
 
+      // Always update snapshot after input attempt to catch completion state
+      const snapshot = createSessionSnapshot(session);
+      setSessionSnapshot(snapshot);
+
       if (isValid) {
-        const snapshot = createSessionSnapshot(session);
-        setSessionSnapshot(snapshot);
         const newInputs = snapshot.currentCharacter?.inputs || "";
         setInputs(newInputs);
+
+        // If session is completed after this input, ensure completion is captured
+        if (session.isCompleted()) {
+          const completedSnapshot = createSessionSnapshot(session);
+          setSessionSnapshot(completedSnapshot);
+        }
       }
 
       return isValid;
     },
     [session],
   );
+
+  const start = useCallback(() => {
+    if (!session.isStarted) {
+      session.start();
+      setInputs("");
+      setSessionSnapshot(createSessionSnapshot(session));
+    }
+  }, [session]);
 
   const reset = useCallback(() => {
     const newSession = new SessionClass(sentences);
@@ -71,6 +89,8 @@ export function useSession({ sentences }: UseSessionParams): UseSessionReturn {
   }, [sentences]);
 
   const progress = (() => {
+    if (!session.isStarted) return 0;
+
     const totalSentences = session.sentences.length;
     const completedSentences = session.completedSentences.length;
     const currentSentenceProgress = sessionSnapshot.currentSentence
@@ -93,6 +113,7 @@ export function useSession({ sentences }: UseSessionParams): UseSessionReturn {
     isCompleted: sessionSnapshot.isCompleted,
     input,
     reset,
+    start,
     completedCharacters: sessionSnapshot.completedCharacters,
     futureCharacters: sessionSnapshot.futureCharacters,
     futureCharacterPreviews: sessionSnapshot.futureCharacterPreviews,
