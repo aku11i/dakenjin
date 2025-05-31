@@ -27,7 +27,7 @@ export class CharacterSetFactory {
     while (i < text.length) {
       let matched = false;
 
-      for (const character of [...this._characters].reverse()) {
+      for (const character of this._characters) {
         if (text.slice(i, i + character.label.length) === character.label) {
           characters.push(
             new Character({
