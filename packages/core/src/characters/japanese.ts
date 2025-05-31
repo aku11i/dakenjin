@@ -4,7 +4,7 @@ import { CharacterSetFactory } from "../character-set-factory";
 const createNInputPatternResolver = (): InputPatternResolver => {
   return (context) => {
     // 次の文字が「な行」の場合は "nn" のみ
-    if (context.next && context.next.preview.startsWith("n")) {
+    if (context.next && context.next.getPreview().startsWith("n")) {
       return ["nn"];
     }
     // それ以外は両方許可
@@ -85,7 +85,11 @@ export const HIRAGANA_CHARACTERS = [
   { label: "ゐ", inputPatterns: ["wi"] },
   { label: "ゑ", inputPatterns: ["we"] },
   { label: "を", inputPatterns: ["wo"] },
-  { label: "ん", inputPatterns: ["nn", "n"], inputPatternResolver: createNInputPatternResolver() },
+  {
+    label: "ん",
+    inputPatterns: ["nn", "n"],
+    inputPatternResolver: createNInputPatternResolver(),
+  },
   { label: "ゃ", inputPatterns: ["xya", "lya"] },
   { label: "ゅ", inputPatterns: ["xyu", "lyu"] },
   { label: "ょ", inputPatterns: ["xyo", "lyo"] },
@@ -198,7 +202,11 @@ export const KATAKANA_CHARACTERS = [
   { label: "ヰ", inputPatterns: ["wi"] },
   { label: "ヱ", inputPatterns: ["we"] },
   { label: "ヲ", inputPatterns: ["wo"] },
-  { label: "ン", inputPatterns: ["nn", "n"], inputPatternResolver: createNInputPatternResolver() },
+  {
+    label: "ン",
+    inputPatterns: ["nn", "n"],
+    inputPatternResolver: createNInputPatternResolver(),
+  },
   { label: "ャ", inputPatterns: ["xya", "lya"] },
   { label: "ュ", inputPatterns: ["xyu", "lyu"] },
   { label: "ョ", inputPatterns: ["xyo", "lyo"] },
