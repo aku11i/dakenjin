@@ -31,8 +31,8 @@ export const programmingConversation = new SentenceCollection({
       "パフォーマンスの改善が必要です",
     ),
     factory.fromText(
-      "エーピーアイのしようしょをかくにんしてください",
-      "APIの仕様書を確認してください",
+      "がいぶれんけいのしようをかくにんしてください",
+      "外部連携の仕様を確認してください",
     ),
     factory.fromText(
       "リファクタリングのじかんをとりましょう",
