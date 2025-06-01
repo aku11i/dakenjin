@@ -4,6 +4,11 @@
     <strong>シンプルに、ただタイピングを楽しむために。</strong>
   </p>
   <p>
+    <a href="https://dakenjin.com">
+      <strong>🌐 dakenjin.com で今すぐ試す</strong>
+    </a>
+  </p>
+  <p>
     打鍵人は、余計なものを削ぎ落とした日本語タイピング練習サービスです。<br>
     ゲーム要素がないため、タイピングそのものに集中できます。
   </p>
