@@ -230,11 +230,11 @@ describe("Contextual Input Patterns", () => {
       // Context where next character is "こ"
       const context = { prev: sentence.characters[0], next: koChar };
 
-      // Should include "kk" pattern when next is "こ"
+      // Should include "k" pattern when next is "こ"
       const patterns = smallTsuChar.getInputPatterns(context);
       expect(patterns).toContain("xtu");
       expect(patterns).toContain("ltu");
-      expect(patterns).toContain("kk");
+      expect(patterns).toContain("k");
     });
 
     it("should handle っ before さ行", () => {
@@ -245,8 +245,7 @@ describe("Contextual Input Patterns", () => {
       const context = { prev: sentence.characters[0], next: shiChar };
       const patterns = smallTsuChar.getInputPatterns(context);
 
-      expect(patterns).toContain("ss"); // For し with pattern "si"
-      expect(patterns).toContain("ssh"); // For し with pattern "shi"
+      expect(patterns).toContain("s"); // For both "si" and "shi" patterns
     });
 
     it("should handle っ before た行", () => {
@@ -257,7 +256,7 @@ describe("Contextual Input Patterns", () => {
       const context = { prev: sentence.characters[0], next: taChar };
       const patterns = smallTsuChar.getInputPatterns(context);
 
-      expect(patterns).toContain("tt");
+      expect(patterns).toContain("t");
     });
 
     it("should handle っ before ぱ行", () => {
@@ -268,7 +267,7 @@ describe("Contextual Input Patterns", () => {
       const context = { prev: sentence.characters[0], next: paChar };
       const patterns = smallTsuChar.getInputPatterns(context);
 
-      expect(patterns).toContain("pp");
+      expect(patterns).toContain("p");
     });
 
     it("should handle っ before ちゃ/ちゅ/ちょ", () => {
@@ -279,8 +278,7 @@ describe("Contextual Input Patterns", () => {
       const context = { prev: sentence.characters[0], next: chaChar };
       const patterns = smallTsuChar.getInputPatterns(context);
 
-      expect(patterns).toContain("tch"); // For ちゃ with pattern "cha"
-      expect(patterns).toContain("tt"); // For ちゃ with pattern "tya"
+      expect(patterns).toContain("t"); // For both "cha" (tch) and "tya" (tt) patterns
     });
 
     it("should handle っ at the end of sentence", () => {
@@ -301,8 +299,7 @@ describe("Contextual Input Patterns", () => {
       expect(sentence.inputCurrentCharacter("g")).toBe(true);
       expect(sentence.inputCurrentCharacter("a")).toBe(true);
 
-      // Type っ with double consonant
-      expect(sentence.inputCurrentCharacter("k")).toBe(true);
+      // Type っ with single k
       expect(sentence.inputCurrentCharacter("k")).toBe(true);
 
       // っ should be completed
@@ -340,7 +337,7 @@ describe("Contextual Input Patterns", () => {
       const context = { prev: sentence.characters[0], next: kaChar };
       const patterns = smallTsuChar.getInputPatterns(context);
 
-      expect(patterns).toContain("kk");
+      expect(patterns).toContain("k");
     });
   });
 });

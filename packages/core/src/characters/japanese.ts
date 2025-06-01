@@ -30,27 +30,28 @@ const createSmallTsuInputPatternResolver = (): InputPatternResolver => {
     for (const pattern of nextPatterns) {
       // k, g, s, z, t, d, h, b, p, m, y, r, w, f から始まるパターン
       // または ch, sh, ts などの2文字子音を抽出
-      if (pattern.match(/^k/)) consonants.add("kk");
-      if (pattern.match(/^g/)) consonants.add("gg");
-      if (pattern.match(/^s(?!h)/)) consonants.add("ss");
-      if (pattern.match(/^sh/)) consonants.add("ssh");
-      if (pattern.match(/^z/)) consonants.add("zz");
-      if (pattern.match(/^t(?!s)/)) consonants.add("tt");
-      if (pattern.match(/^ts/)) consonants.add("tts");
-      if (pattern.match(/^ch/)) consonants.add("tch");
-      if (pattern.match(/^d/)) consonants.add("dd");
-      if (pattern.match(/^h/)) consonants.add("hh");
-      if (pattern.match(/^b/)) consonants.add("bb");
-      if (pattern.match(/^p/)) consonants.add("pp");
-      if (pattern.match(/^m/)) consonants.add("mm");
-      if (pattern.match(/^y/)) consonants.add("yy");
-      if (pattern.match(/^r/)) consonants.add("rr");
-      if (pattern.match(/^w/)) consonants.add("ww");
-      if (pattern.match(/^f/)) consonants.add("ff");
-      if (pattern.match(/^j/)) consonants.add("jj");
+      if (pattern.match(/^k/)) consonants.add("k");
+      if (pattern.match(/^g/)) consonants.add("g");
+      if (pattern.match(/^s(?!h)/)) consonants.add("s");
+      if (pattern.match(/^sh/)) consonants.add("s");
+      if (pattern.match(/^z/)) consonants.add("z");
+      if (pattern.match(/^t(?!s)/)) consonants.add("t");
+      if (pattern.match(/^ts/)) consonants.add("t");
+      if (pattern.match(/^ch/)) consonants.add("t");
+      if (pattern.match(/^d/)) consonants.add("d");
+      if (pattern.match(/^h/)) consonants.add("h");
+      if (pattern.match(/^b/)) consonants.add("b");
+      if (pattern.match(/^p/)) consonants.add("p");
+      if (pattern.match(/^m/)) consonants.add("m");
+      if (pattern.match(/^y/)) consonants.add("y");
+      if (pattern.match(/^r/)) consonants.add("r");
+      if (pattern.match(/^w/)) consonants.add("w");
+      if (pattern.match(/^f/)) consonants.add("f");
+      if (pattern.match(/^j/)) consonants.add("j");
     }
 
-    return [...basePatterns, ...Array.from(consonants)];
+    // 促音パターンを先に、ベースパターンを後に配置
+    return [...Array.from(consonants), ...basePatterns];
   };
 };
 
