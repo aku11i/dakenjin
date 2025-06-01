@@ -249,7 +249,13 @@ export const KATAKANA_CHARACTERS = [
   { label: "リョ", inputPatterns: ["ryo"] },
 ] as const;
 
+export const PUNCTUATION_CHARACTERS = [
+  { label: "。", inputPatterns: ["."] },
+  { label: "、", inputPatterns: [","] },
+] as const;
+
 export const JAPANESE_CHARACTERS = [
   ...HIRAGANA_CHARACTERS,
   ...KATAKANA_CHARACTERS,
+  ...PUNCTUATION_CHARACTERS,
 ].reverse();
