@@ -157,6 +157,48 @@ describe("Contextual Input Patterns", () => {
       const contextEnd = { prev: sentence.characters[0], next: null };
       expect(nnChar.getInputPatterns(contextEnd)).toEqual(["nn"]);
     });
+
+    it("should require nn when ん is followed by vowels", () => {
+      // Test with あ
+      const sentenceA = factory.fromText("こんあん");
+      const nnChar1 = sentenceA.characters[1]; // first "ん"
+      const aChar = sentenceA.characters[2]; // "あ"
+
+      const contextA = { prev: sentenceA.characters[0], next: aChar };
+      expect(nnChar1.getInputPatterns(contextA)).toEqual(["nn"]);
+
+      // Test with い
+      const sentenceI = factory.fromText("しんいん");
+      const nnCharI = sentenceI.characters[1]; // "ん"
+      const iChar = sentenceI.characters[2]; // "い"
+
+      const contextI = { prev: sentenceI.characters[0], next: iChar };
+      expect(nnCharI.getInputPatterns(contextI)).toEqual(["nn"]);
+
+      // Test with う
+      const sentenceU = factory.fromText("さんう");
+      const nnCharU = sentenceU.characters[1]; // "ん"
+      const uChar = sentenceU.characters[2]; // "う"
+
+      const contextU = { prev: sentenceU.characters[0], next: uChar };
+      expect(nnCharU.getInputPatterns(contextU)).toEqual(["nn"]);
+
+      // Test with え
+      const sentenceE = factory.fromText("けんえき");
+      const nnCharE = sentenceE.characters[1]; // "ん"
+      const eChar = sentenceE.characters[2]; // "え"
+
+      const contextE = { prev: sentenceE.characters[0], next: eChar };
+      expect(nnCharE.getInputPatterns(contextE)).toEqual(["nn"]);
+
+      // Test with お
+      const sentenceO = factory.fromText("きんおう");
+      const nnCharO = sentenceO.characters[1]; // "ん"
+      const oChar = sentenceO.characters[2]; // "お"
+
+      const contextO = { prev: sentenceO.characters[0], next: oChar };
+      expect(nnCharO.getInputPatterns(contextO)).toEqual(["nn"]);
+    });
   });
 
   describe("Sentence with contextual patterns", () => {

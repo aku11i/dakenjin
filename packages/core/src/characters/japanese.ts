@@ -6,6 +6,19 @@ const createNInputPatternResolver = (): InputPatternResolver => {
     if (context.next && context.next.getPreview(context).startsWith("n")) {
       return ["nn"];
     }
+    // 次の文字が母音（あ行）の場合は "nn" のみ
+    if (context.next) {
+      const nextPreview = context.next.getPreview(context);
+      if (
+        nextPreview.startsWith("a") ||
+        nextPreview.startsWith("i") ||
+        nextPreview.startsWith("u") ||
+        nextPreview.startsWith("e") ||
+        nextPreview.startsWith("o")
+      ) {
+        return ["nn"];
+      }
+    }
     // 文章の最後の場合は "nn" のみ
     if (!context.next) {
       return ["nn"];
