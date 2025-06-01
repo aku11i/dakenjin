@@ -107,16 +107,18 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
       {currentSentence && (
         <div className="mb-6 text-center">
           <div className="mb-6 space-y-4">
-            <TypingDisplay
-              completedCharacters={completedCharacters}
-              currentCharacter={currentCharacter}
-              futureCharacters={futureCharacters}
-              futureCharacterPreviews={futureCharacterPreviews}
-              currentInputs={inputs}
-              currentCharacterPreview={currentCharacterPreview}
-              error={error}
-            />
             <SentenceDisplay sentence={currentSentence} />
+            <div className="bg-card rounded-2xl p-6 shadow-sm border border-border">
+              <TypingDisplay
+                completedCharacters={completedCharacters}
+                currentCharacter={currentCharacter}
+                futureCharacters={futureCharacters}
+                futureCharacterPreviews={futureCharacterPreviews}
+                currentInputs={inputs}
+                currentCharacterPreview={currentCharacterPreview}
+                error={error}
+              />
+            </div>
           </div>
         </div>
       )}
