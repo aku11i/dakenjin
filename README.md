@@ -1,7 +1,7 @@
 <div align="center">
   <h1>🎌 打鍵人（Dakenjin）</h1>
   <p>
-    <strong>A pure, focused Japanese typing experience</strong>
+    <strong>純粋で集中できる日本語タイピング体験</strong>
   </p>
   <p>
     <a href="https://github.com/aku11i/dakenjin/actions/workflows/ci.yml">
@@ -15,143 +15,143 @@
     </a>
   </p>
   <p>
-    <a href="#features">Features</a> •
-    <a href="#why-dakenjin">Why Dakenjin?</a> •
-    <a href="#getting-started">Getting Started</a> •
-    <a href="#contributing">Contributing</a> •
-    <a href="#license">License</a>
+    <a href="#-特徴">特徴</a> •
+    <a href="#-なぜ打鍵人">なぜ打鍵人？</a> •
+    <a href="#-はじめ方">はじめ方</a> •
+    <a href="#-コントリビューション">コントリビューション</a> •
+    <a href="#-ライセンス">ライセンス</a>
   </p>
 </div>
 
 ---
 
-## ✨ Features
+## ✨ 特徴
 
-🎯 **Pure Typing Experience**
-- No gamification, no distractions - just you and your keyboard
-- Clean, minimal interface designed for focus
-- Smooth animations that enhance the typing feel
+🎯 **純粋なタイピング体験**
+- ゲーム要素なし、邪魔なし - あなたとキーボードだけ
+- 集中できるクリーンでミニマルなインターフェース
+- タイピングの感触を高める滑らかなアニメーション
 
-📊 **Comprehensive Analytics**
-- Real-time WPM (Words Per Minute) tracking
-- Accuracy percentage and error analysis
-- Downloadable session logs for deep analysis
+📊 **詳細な分析機能**
+- リアルタイムWPM（1分あたりの単語数）測定
+- 正確率とエラー分析
+- 詳細な分析のためのセッションログダウンロード機能
 
-🇯🇵 **Japanese-First Design**
-- Built specifically for Japanese typing practice
-- Support for Hiragana, Katakana, and Kanji
-- Multiple input methods (Romaji, Kana)
+🇯🇵 **日本語ファーストの設計**
+- 日本語タイピング練習に特化した設計
+- ひらがな、カタカナ、漢字をサポート
+- 複数の入力方式（ローマ字、かな入力）
 
-🚀 **Modern Tech Stack**
-- Built with Next.js 15 and React 19
-- TypeScript for type safety
-- Turborepo for efficient monorepo management
+🚀 **モダンな技術スタック**
+- Next.js 15とReact 19で構築
+- TypeScriptによる型安全性
+- Turborepoによる効率的なモノレポ管理
 
-## 🤔 Why Dakenjin?
+## 🤔 なぜ打鍵人？
 
-In a world of gamified typing apps, **Dakenjin** (打鍵人) takes a different approach. We believe that sometimes, you just want to feel the pure connection between your thoughts, fingers, and the keyboard.
+ゲーム化されたタイピングアプリが溢れる中、**打鍵人**は異なるアプローチを取ります。時には、思考と指とキーボードの純粋なつながりを感じたいときがあるはずです。
 
-Perfect for:
-- 🎹 Testing new keyboards or layouts
-- 📈 Tracking your typing progress over time
-- 🏃‍♂️ Warming up before coding sessions
-- 🎯 Focused practice without distractions
+こんな方におすすめ：
+- 🎹 新しいキーボードや配列を試したい
+- 📈 タイピングの上達を記録したい
+- 🏃‍♂️ コーディング前のウォームアップに
+- 🎯 邪魔されずに集中して練習したい
 
-## 🚀 Getting Started
+## 🚀 はじめ方
 
-### Prerequisites
+### 必要な環境
 
-- Node.js 24+
-- pnpm 10.6.3+
+- Node.js 24以上
+- pnpm 10.6.3以上
 
-### Installation
+### インストール
 
 ```bash
-# Clone the repository
+# リポジトリをクローン
 git clone https://github.com/aku11i/dakenjin.git
 cd dakenjin
 
-# Install dependencies
+# 依存関係をインストール
 pnpm install
 
-# Start the development server
+# 開発サーバーを起動
 pnpm dev
 ```
 
-Visit `http://localhost:3000` and start typing!
+`http://localhost:3000`にアクセスしてタイピングを始めましょう！
 
-## 🛠️ Development
+## 🛠️ 開発
 
-### Project Structure
+### プロジェクト構成
 
 ```
 dakenjin/
 ├── apps/
-│   └── web/          # Next.js web application
+│   └── web/          # Next.js Webアプリケーション
 ├── packages/
-│   ├── core/         # Core typing logic
-│   └── react/        # React hooks and components
-└── turbo.json        # Turborepo configuration
+│   ├── core/         # コアタイピングロジック
+│   └── react/        # ReactフックとComponent
+└── turbo.json        # Turborepo設定
 ```
 
-### Available Commands
+### 利用可能なコマンド
 
 ```bash
-# Development
-pnpm dev              # Start development server
-pnpm build            # Build for production
-pnpm preview          # Preview production build
+# 開発
+pnpm dev              # 開発サーバーを起動
+pnpm build            # プロダクションビルド
+pnpm preview          # プロダクションビルドのプレビュー
 
-# Code Quality
-pnpm lint             # Run ESLint
-pnpm fix              # Fix linting issues
-pnpm type-check       # Run TypeScript compiler
-pnpm test             # Run tests
+# コード品質
+pnpm lint             # ESLintを実行
+pnpm fix              # Lintエラーを修正
+pnpm type-check       # TypeScriptの型チェック
+pnpm test             # テストを実行
 
-# Pre-commit
-pnpm ready            # Run all checks (fix, type-check, test)
-pnpm ready:check      # Run all checks without auto-fix
+# コミット前
+pnpm ready            # すべてのチェックを実行（修正あり）
+pnpm ready:check      # すべてのチェックを実行（修正なし）
 ```
 
-## 🤝 Contributing
+## 🤝 コントリビューション
 
-We welcome contributions from the community! Whether it's bug fixes, new features, or documentation improvements, every contribution helps make Dakenjin better.
+コミュニティからの貢献を歓迎します！バグ修正、新機能、ドキュメントの改善など、どんな貢献も打鍵人をより良くします。
 
-### How to Contribute
+### 貢献方法
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. リポジトリをフォーク
+2. フィーチャーブランチを作成 (`git checkout -b feature/amazing-feature`)
+3. 変更をコミット (`git commit -m 'Add some amazing feature'`)
+4. ブランチにプッシュ (`git push origin feature/amazing-feature`)
+5. プルリクエストを作成
 
-Please read our [Contributing Guidelines](CONTRIBUTING.md) for more details.
+詳細は[コントリビューションガイドライン](CONTRIBUTING.md)をご覧ください。
 
-### Development Philosophy
+### 開発哲学
 
-- **Simplicity First**: Features should enhance, not complicate the typing experience
-- **Performance Matters**: Every millisecond counts in typing feedback
-- **Accessibility**: Everyone should be able to use Dakenjin comfortably
+- **シンプルさ優先**: 機能はタイピング体験を向上させるものであり、複雑にしないこと
+- **パフォーマンス重視**: タイピングのフィードバックではミリ秒単位が重要
+- **アクセシビリティ**: 誰もが快適に打鍵人を使えること
 
-## 📝 License
+## 📝 ライセンス
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+このプロジェクトはMITライセンスの下で公開されています。詳細は[LICENSE](LICENSE)ファイルをご覧ください。
 
-## 🙏 Acknowledgments
+## 🙏 謝辞
 
-- Built with ❤️ by the Dakenjin community
-- Inspired by the minimalist philosophy of Japanese craftsmanship
-- Special thanks to all contributors who help improve the typing experience
+- 打鍵人コミュニティによって❤️を込めて開発
+- 日本の職人技のミニマリスト哲学にインスパイア
+- タイピング体験の向上に貢献してくださるすべての方々に感謝
 
 ---
 
 <div align="center">
   <p>
-    <strong>Ready to improve your typing?</strong>
+    <strong>タイピングスキルを向上させる準備はできましたか？</strong>
   </p>
   <p>
     <a href="https://dakenjin.com">
-      🚀 Try Dakenjin Now
+      🚀 今すぐ打鍵人を試す
     </a>
   </p>
 </div>
