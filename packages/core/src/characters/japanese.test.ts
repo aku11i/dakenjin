@@ -99,4 +99,28 @@ describe("fromJapaneseText", () => {
     expect(result.characters[2].label).toBe("りゅ");
     expect(result.characters[3].label).toBe("う");
   });
+
+  test("てぃ（ひらがな）を変換する", () => {
+    const result = createSentenceFactory().fromText("てぃ");
+    expect(result.characters).toHaveLength(1);
+    expect(result.characters[0].label).toBe("てぃ");
+    expect(result.characters[0].inputPatterns).toEqual(["thi", "texi", "teli"]);
+  });
+
+  test("ティ（カタカナ）を変換する", () => {
+    const result = createSentenceFactory().fromText("ティ");
+    expect(result.characters).toHaveLength(1);
+    expect(result.characters[0].label).toBe("ティ");
+    expect(result.characters[0].inputPatterns).toEqual(["thi", "texi", "teli"]);
+  });
+
+  test("てぃ/ティを含む単語を変換する", () => {
+    const result = createSentenceFactory().fromText("パーティー");
+    expect(result.characters).toHaveLength(4);
+    expect(result.characters[0].label).toBe("パ");
+    expect(result.characters[1].label).toBe("ー");
+    expect(result.characters[2].label).toBe("ティ");
+    expect(result.characters[2].inputPatterns).toEqual(["thi", "texi", "teli"]);
+    expect(result.characters[3].label).toBe("ー");
+  });
 });
