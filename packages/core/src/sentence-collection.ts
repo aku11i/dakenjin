@@ -28,4 +28,27 @@ export class SentenceCollection {
   get sentences(): Sentence[] {
     return this._sentences;
   }
+
+  static pick(collections: SentenceCollection[], count: number): Sentence[] {
+    const allSentences = collections.flatMap(
+      (collection) => collection.sentences,
+    );
+
+    if (allSentences.length <= count) {
+      return allSentences;
+    }
+
+    const picked: Sentence[] = [];
+    const indices = new Set<number>();
+
+    while (picked.length < count) {
+      const randomIndex = Math.floor(Math.random() * allSentences.length);
+      if (!indices.has(randomIndex)) {
+        indices.add(randomIndex);
+        picked.push(allSentences[randomIndex]);
+      }
+    }
+
+    return picked;
+  }
 }
