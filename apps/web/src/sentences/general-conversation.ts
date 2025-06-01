@@ -2,7 +2,7 @@ import { SentenceCollection, createSentenceFactory } from "@dakenjin/core";
 
 const factory = createSentenceFactory();
 
-export const dailyConversation = new SentenceCollection({
+export const generalConversation = new SentenceCollection({
   name: "一般会話",
   description: "様々な場面で使われる一般的な会話表現",
   sentences: [
