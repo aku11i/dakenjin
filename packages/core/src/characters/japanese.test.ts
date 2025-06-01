@@ -30,7 +30,7 @@ describe("fromJapaneseText", () => {
     const result = createSentenceFactory().fromText("しゃ");
     expect(result.characters).toHaveLength(1);
     expect(result.characters[0].label).toBe("しゃ");
-    expect(result.characters[0].inputPatterns).toEqual(["sha", "sya"]);
+    expect(result.characters[0].inputPatterns).toEqual(["sya", "sha"]);
   });
 
   test("拗音を含む文字列を変換する", () => {
@@ -59,7 +59,7 @@ describe("fromJapaneseText", () => {
     const result = createSentenceFactory().fromText("し");
     expect(result.characters).toHaveLength(1);
     expect(result.characters[0].label).toBe("し");
-    expect(result.characters[0].inputPatterns).toEqual(["shi", "si"]);
+    expect(result.characters[0].inputPatterns).toEqual(["si", "shi"]);
   });
 
   test("小さいつを変換する", () => {
