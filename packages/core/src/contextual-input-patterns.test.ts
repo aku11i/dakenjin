@@ -215,4 +215,129 @@ describe("Contextual Input Patterns", () => {
       expect(nnChar.isCompleted(context)).toBe(true);
     });
   });
+
+  describe("Small tsu (っ) with contextual patterns", () => {
+    const factory = createSentenceFactory();
+
+    it("should create っ character with context-aware input patterns", () => {
+      const sentence = factory.fromText("がっこう");
+      const smallTsuChar = sentence.characters[1]; // "っ"
+      const koChar = sentence.characters[2]; // "こ"
+
+      expect(smallTsuChar.label).toBe("っ");
+      expect(koChar.label).toBe("こ");
+
+      // Context where next character is "こ"
+      const context = { prev: sentence.characters[0], next: koChar };
+
+      // Should include "k" pattern when next is "こ"
+      const patterns = smallTsuChar.getInputPatterns(context);
+      expect(patterns).toContain("xtu");
+      expect(patterns).toContain("ltu");
+      expect(patterns).toContain("k");
+    });
+
+    it("should handle っ before さ行", () => {
+      const sentence = factory.fromText("ざっし");
+      const smallTsuChar = sentence.characters[1]; // "っ"
+      const shiChar = sentence.characters[2]; // "し"
+
+      const context = { prev: sentence.characters[0], next: shiChar };
+      const patterns = smallTsuChar.getInputPatterns(context);
+
+      expect(patterns).toContain("s"); // For both "si" and "shi" patterns
+    });
+
+    it("should handle っ before た行", () => {
+      const sentence = factory.fromText("あった");
+      const smallTsuChar = sentence.characters[1]; // "っ"
+      const taChar = sentence.characters[2]; // "た"
+
+      const context = { prev: sentence.characters[0], next: taChar };
+      const patterns = smallTsuChar.getInputPatterns(context);
+
+      expect(patterns).toContain("t");
+    });
+
+    it("should handle っ before ぱ行", () => {
+      const sentence = factory.fromText("いっぱい");
+      const smallTsuChar = sentence.characters[1]; // "っ"
+      const paChar = sentence.characters[2]; // "ぱ"
+
+      const context = { prev: sentence.characters[0], next: paChar };
+      const patterns = smallTsuChar.getInputPatterns(context);
+
+      expect(patterns).toContain("p");
+    });
+
+    it("should handle っ before ちゃ/ちゅ/ちょ", () => {
+      const sentence = factory.fromText("まっちゃ");
+      const smallTsuChar = sentence.characters[1]; // "っ"
+      const chaChar = sentence.characters[2]; // "ちゃ"
+
+      const context = { prev: sentence.characters[0], next: chaChar };
+      const patterns = smallTsuChar.getInputPatterns(context);
+
+      expect(patterns).toContain("t"); // For both "cha" (tch) and "tya" (tt) patterns
+    });
+
+    it("should handle っ at the end of sentence", () => {
+      const sentence = factory.fromText("あっ");
+      const smallTsuChar = sentence.characters[1]; // "っ"
+
+      const context = { prev: sentence.characters[0], next: null };
+      const patterns = smallTsuChar.getInputPatterns(context);
+
+      // Should only have base patterns when at the end
+      expect(patterns).toEqual(["xtu", "ltu", "xtsu", "ltsu"]);
+    });
+
+    it("should accept double consonant input", () => {
+      const sentence = factory.fromText("がっこう");
+
+      // Type が
+      expect(sentence.inputCurrentCharacter("g")).toBe(true);
+      expect(sentence.inputCurrentCharacter("a")).toBe(true);
+
+      // Type っ with single k
+      expect(sentence.inputCurrentCharacter("k")).toBe(true);
+
+      // っ should be completed
+      expect(sentence.currentCharacterIndex).toBe(2); // Should be at こ
+
+      // Type こう
+      expect(sentence.inputCurrentCharacter("k")).toBe(true);
+      expect(sentence.inputCurrentCharacter("o")).toBe(true);
+      expect(sentence.inputCurrentCharacter("u")).toBe(true);
+
+      expect(sentence.isCompleted()).toBe(true);
+    });
+
+    it("should still accept traditional input patterns", () => {
+      const sentence = factory.fromText("がっこう");
+
+      // Type が
+      expect(sentence.inputCurrentCharacter("g")).toBe(true);
+      expect(sentence.inputCurrentCharacter("a")).toBe(true);
+
+      // Type っ with xtu
+      expect(sentence.inputCurrentCharacter("x")).toBe(true);
+      expect(sentence.inputCurrentCharacter("t")).toBe(true);
+      expect(sentence.inputCurrentCharacter("u")).toBe(true);
+
+      // っ should be completed
+      expect(sentence.currentCharacterIndex).toBe(2); // Should be at こ
+    });
+
+    it("should handle katakana ッ", () => {
+      const sentence = factory.fromText("サッカー");
+      const smallTsuChar = sentence.characters[1]; // "ッ"
+      const kaChar = sentence.characters[2]; // "カ"
+
+      const context = { prev: sentence.characters[0], next: kaChar };
+      const patterns = smallTsuChar.getInputPatterns(context);
+
+      expect(patterns).toContain("k");
+    });
+  });
 });

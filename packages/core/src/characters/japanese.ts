@@ -15,6 +15,44 @@ const createNInputPatternResolver = (): InputPatternResolver => {
   };
 };
 
+const createSmallTsuInputPatternResolver = (): InputPatternResolver => {
+  return (context) => {
+    const basePatterns = ["xtu", "ltu", "xtsu", "ltsu"];
+
+    if (!context.next) {
+      return basePatterns;
+    }
+
+    // 次の文字の入力パターンから促音可能な子音を抽出
+    const nextPatterns = context.next.inputPatterns;
+    const consonants = new Set<string>();
+
+    for (const pattern of nextPatterns) {
+      // k, g, s, z, t, d, h, b, p, m, y, r, w, f から始まるパターン
+      // または ch, sh, ts などの2文字子音を抽出
+      if (pattern.match(/^k/)) consonants.add("k");
+      if (pattern.match(/^g/)) consonants.add("g");
+      if (pattern.match(/^s/)) consonants.add("s");
+      if (pattern.match(/^z/)) consonants.add("z");
+      if (pattern.match(/^t/)) consonants.add("t");
+      if (pattern.match(/^c/)) consonants.add("c");
+      if (pattern.match(/^d/)) consonants.add("d");
+      if (pattern.match(/^h/)) consonants.add("h");
+      if (pattern.match(/^b/)) consonants.add("b");
+      if (pattern.match(/^p/)) consonants.add("p");
+      if (pattern.match(/^m/)) consonants.add("m");
+      if (pattern.match(/^y/)) consonants.add("y");
+      if (pattern.match(/^r/)) consonants.add("r");
+      if (pattern.match(/^w/)) consonants.add("w");
+      if (pattern.match(/^f/)) consonants.add("f");
+      if (pattern.match(/^j/)) consonants.add("j");
+    }
+
+    // 促音パターンを先に、ベースパターンを後に配置
+    return [...Array.from(consonants), ...basePatterns];
+  };
+};
+
 export const HIRAGANA_CHARACTERS = [
   { label: "あ", inputPatterns: ["a"] },
   { label: "い", inputPatterns: ["i"] },
@@ -101,7 +139,11 @@ export const HIRAGANA_CHARACTERS = [
   { label: "ゃ", inputPatterns: ["xya", "lya"] },
   { label: "ゅ", inputPatterns: ["xyu", "lyu"] },
   { label: "ょ", inputPatterns: ["xyo", "lyo"] },
-  { label: "っ", inputPatterns: ["xtu", "ltu", "xtsu", "ltsu"] },
+  {
+    label: "っ",
+    inputPatterns: ["xtu", "ltu", "xtsu", "ltsu"],
+    inputPatternResolver: createSmallTsuInputPatternResolver(),
+  },
   { label: "ふぁ", inputPatterns: ["fa"] },
   { label: "ふぃ", inputPatterns: ["fi"] },
   { label: "ふぇ", inputPatterns: ["fe"] },
@@ -227,7 +269,11 @@ export const KATAKANA_CHARACTERS = [
   { label: "ャ", inputPatterns: ["xya", "lya"] },
   { label: "ュ", inputPatterns: ["xyu", "lyu"] },
   { label: "ョ", inputPatterns: ["xyo", "lyo"] },
-  { label: "ッ", inputPatterns: ["xtu", "ltu", "xtsu", "ltsu"] },
+  {
+    label: "ッ",
+    inputPatterns: ["xtu", "ltu", "xtsu", "ltsu"],
+    inputPatternResolver: createSmallTsuInputPatternResolver(),
+  },
   { label: "ファ", inputPatterns: ["fa"] },
   { label: "フィ", inputPatterns: ["fi"] },
   { label: "フェ", inputPatterns: ["fe"] },
