@@ -54,23 +54,6 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
             {allSentences.length}つの文章でタイピング練習を行います
           </p>
 
-          <div className="bg-secondary/30 rounded-2xl p-6 space-y-4">
-            <h3 className="text-lg font-semibold text-foreground mb-4">
-              練習する文章
-            </h3>
-            {allSentences.map((sentence, index) => (
-              <div
-                key={index}
-                className="text-left p-4 bg-background rounded-xl border border-border"
-              >
-                <div className="text-sm text-muted-foreground mb-2">
-                  文章 {index + 1}
-                </div>
-                <div className="text-lg">{sentence.label}</div>
-              </div>
-            ))}
-          </div>
-
           <Button onClick={start} size="lg" className="mt-6">
             タイピングを開始
           </Button>
