@@ -99,7 +99,6 @@ dakenjin/
 # 開発
 pnpm dev              # 開発サーバーを起動
 pnpm build            # プロダクションビルド
-pnpm preview          # プロダクションビルドのプレビュー
 
 # コード品質
 pnpm lint             # ESLintを実行
