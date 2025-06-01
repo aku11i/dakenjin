@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { calculateTypingStats, formatTime } from "./typing-stats";
-import { Session, Sentence, Character, CharacterSet } from "@dakenjin/core";
+import { Session, Sentence, Character } from "@dakenjin/core";
 
 describe("calculateTypingStats", () => {
   let session: Session;
@@ -14,7 +14,7 @@ describe("calculateTypingStats", () => {
       new Character({ label: "い", inputPatterns: ["i"] }),
       new Character({ label: "う", inputPatterns: ["u"] }),
     ];
-    const sentence = new Sentence(new CharacterSet(characters), "あいう");
+    const sentence = new Sentence(characters, "あいう");
     session = new Session([sentence]);
   });
 

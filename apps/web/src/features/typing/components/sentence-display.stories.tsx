@@ -1,10 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import {
-  Sentence,
-  CharacterSet,
-  Character,
-  createCharacterSetFactory,
-} from "@dakenjin/core";
+import { Sentence, Character, createSentenceFactory } from "@dakenjin/core";
 import { SentenceDisplay } from "./sentence-display";
 
 const meta: Meta<typeof SentenceDisplay> = {
@@ -32,46 +27,35 @@ type Story = StoryObj<typeof meta>;
 
 export const Empty: Story = {
   args: {
-    sentence: new Sentence(new CharacterSet([]), "empty sentence"),
+    sentence: new Sentence([], "empty sentence"),
   },
 };
 
 export const SingleCharacter: Story = {
   args: {
     sentence: new Sentence(
-      new CharacterSet([new Character({ label: "あ", inputPatterns: ["a"] })]),
+      [new Character({ label: "あ", inputPatterns: ["a"] })],
       "あ",
     ),
   },
 };
 
-const factory = createCharacterSetFactory();
+const factory = createSentenceFactory();
 
 export const ShortSentence: Story = {
   args: {
-    sentence: new Sentence(
-      new CharacterSet(factory.fromText("こんにちは").characters),
-      "こんにちは",
-    ),
+    sentence: factory.fromText("こんにちは"),
   },
 };
 
 export const LongSentence: Story = {
   args: {
-    sentence: new Sentence(
-      new CharacterSet(
-        factory.fromText("わたしはにほんごをよみます").characters,
-      ),
-      "わたしはにほんごをよみます",
-    ),
+    sentence: factory.fromText("わたしはにほんごをよみます"),
   },
 };
 
 export const MixedCharacters: Story = {
   args: {
-    sentence: new Sentence(
-      new CharacterSet(factory.fromText("わたしのなまえ").characters),
-      "わたしのなまえ",
-    ),
+    sentence: factory.fromText("わたしのなまえ"),
   },
 };

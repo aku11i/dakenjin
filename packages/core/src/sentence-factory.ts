@@ -1,8 +1,8 @@
 import { Character } from "./character";
-import { CharacterSet } from "./character-set";
+import { Sentence } from "./sentence";
 import { JAPANESE_CHARACTERS } from "./characters/japanese";
 
-export function createCharacterSetFactory(): CharacterSetFactory {
+export function createSentenceFactory(): SentenceFactory {
   const japaneseCharacters = JAPANESE_CHARACTERS.map((data) => {
     return new Character({
       label: data.label,
@@ -10,17 +10,17 @@ export function createCharacterSetFactory(): CharacterSetFactory {
       inputPatternResolver: (data as any).inputPatternResolver,
     });
   });
-  return new CharacterSetFactory(japaneseCharacters);
+  return new SentenceFactory(japaneseCharacters);
 }
 
-export class CharacterSetFactory {
+export class SentenceFactory {
   private _characters: Character[];
 
   constructor(characters: Character[]) {
     this._characters = characters;
   }
 
-  fromText(text: string): CharacterSet {
+  fromText(text: string): Sentence {
     const characters: Character[] = [];
     let i = 0;
 
@@ -47,6 +47,6 @@ export class CharacterSetFactory {
       }
     }
 
-    return new CharacterSet(characters);
+    return new Sentence(characters, text);
   }
 }

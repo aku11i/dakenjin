@@ -2,14 +2,12 @@ import { describe, it, expect } from "vitest";
 import { Session } from "./session";
 import { Sentence } from "./sentence";
 import { Character } from "./character";
-import { CharacterSet } from "./character-set";
 
 describe("Session", () => {
   describe("constructor", () => {
     it("should initialize with an array of Sentences", () => {
       const character = new Character({ label: "a", inputPatterns: ["a"] });
-      const characterSet = new CharacterSet([character]);
-      const sentence = new Sentence(characterSet, "test sentence");
+      const sentence = new Sentence([character], "test sentence");
       const session = new Session([sentence]);
       expect(session.sentences).toEqual([sentence]);
     });
@@ -25,16 +23,14 @@ describe("Session", () => {
     it("should return the first incomplete sentence", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       character1.input("a");
-      const characterSet1 = new CharacterSet([character1]);
       const completedSentence = new Sentence(
-        characterSet1,
+        [character1],
         "completed sentence",
       );
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
-      const characterSet2 = new CharacterSet([character2]);
       const incompleteSentence = new Sentence(
-        characterSet2,
+        [character2],
         "incomplete sentence",
       );
 
@@ -45,13 +41,11 @@ describe("Session", () => {
     it("should return null when all sentences are completed", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       character1.input("a");
-      const characterSet1 = new CharacterSet([character1]);
-      const sentence1 = new Sentence(characterSet1, "sentence 1");
+      const sentence1 = new Sentence([character1], "sentence 1");
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
       character2.input("b");
-      const characterSet2 = new CharacterSet([character2]);
-      const sentence2 = new Sentence(characterSet2, "sentence 2");
+      const sentence2 = new Sentence([character2], "sentence 2");
 
       const session = new Session([sentence1, sentence2]);
       expect(session.currentSentence).toBeNull();
@@ -62,24 +56,21 @@ describe("Session", () => {
     it("should return all completed sentences", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       character1.input("a");
-      const characterSet1 = new CharacterSet([character1]);
       const completedSentence1 = new Sentence(
-        characterSet1,
+        [character1],
         "completed sentence 1",
       );
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
       character2.input("b");
-      const characterSet2 = new CharacterSet([character2]);
       const completedSentence2 = new Sentence(
-        characterSet2,
+        [character2],
         "completed sentence 2",
       );
 
       const character3 = new Character({ label: "c", inputPatterns: ["c"] });
-      const characterSet3 = new CharacterSet([character3]);
       const incompleteSentence = new Sentence(
-        characterSet3,
+        [character3],
         "incomplete sentence",
       );
 
@@ -96,12 +87,10 @@ describe("Session", () => {
 
     it("should return empty array when no sentences are completed", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
-      const characterSet1 = new CharacterSet([character1]);
-      const sentence1 = new Sentence(characterSet1, "sentence 1");
+      const sentence1 = new Sentence([character1], "sentence 1");
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
-      const characterSet2 = new CharacterSet([character2]);
-      const sentence2 = new Sentence(characterSet2, "sentence 2");
+      const sentence2 = new Sentence([character2], "sentence 2");
 
       const session = new Session([sentence1, sentence2]);
       expect(session.completedSentences).toEqual([]);
@@ -112,23 +101,20 @@ describe("Session", () => {
     it("should return all incomplete sentences", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       character1.input("a");
-      const characterSet1 = new CharacterSet([character1]);
       const completedSentence = new Sentence(
-        characterSet1,
+        [character1],
         "completed sentence",
       );
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
-      const characterSet2 = new CharacterSet([character2]);
       const incompleteSentence1 = new Sentence(
-        characterSet2,
+        [character2],
         "incomplete sentence 1",
       );
 
       const character3 = new Character({ label: "c", inputPatterns: ["c"] });
-      const characterSet3 = new CharacterSet([character3]);
       const incompleteSentence2 = new Sentence(
-        characterSet3,
+        [character3],
         "incomplete sentence 2",
       );
 
@@ -146,13 +132,11 @@ describe("Session", () => {
     it("should return empty array when all sentences are completed", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       character1.input("a");
-      const characterSet1 = new CharacterSet([character1]);
-      const sentence1 = new Sentence(characterSet1, "sentence 1");
+      const sentence1 = new Sentence([character1], "sentence 1");
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
       character2.input("b");
-      const characterSet2 = new CharacterSet([character2]);
-      const sentence2 = new Sentence(characterSet2, "sentence 2");
+      const sentence2 = new Sentence([character2], "sentence 2");
 
       const session = new Session([sentence1, sentence2]);
       expect(session.incompletedSentences).toEqual([]);
@@ -163,13 +147,11 @@ describe("Session", () => {
     it("should return true when all sentences are completed", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       character1.input("a");
-      const characterSet1 = new CharacterSet([character1]);
-      const sentence1 = new Sentence(characterSet1, "sentence 1");
+      const sentence1 = new Sentence([character1], "sentence 1");
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
       character2.input("b");
-      const characterSet2 = new CharacterSet([character2]);
-      const sentence2 = new Sentence(characterSet2, "sentence 2");
+      const sentence2 = new Sentence([character2], "sentence 2");
 
       const session = new Session([sentence1, sentence2]);
       expect(session.isCompleted()).toBe(true);
@@ -178,16 +160,14 @@ describe("Session", () => {
     it("should return false when at least one sentence is incomplete", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
       character1.input("a");
-      const characterSet1 = new CharacterSet([character1]);
       const completedSentence = new Sentence(
-        characterSet1,
+        [character1],
         "completed sentence",
       );
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
-      const characterSet2 = new CharacterSet([character2]);
       const incompleteSentence = new Sentence(
-        characterSet2,
+        [character2],
         "incomplete sentence",
       );
 
@@ -199,8 +179,7 @@ describe("Session", () => {
   describe("inputLog", () => {
     it("should initialize with null timestamps", () => {
       const character = new Character({ label: "a", inputPatterns: ["a"] });
-      const characterSet = new CharacterSet([character]);
-      const sentence = new Sentence(characterSet, "test sentence");
+      const sentence = new Sentence([character], "test sentence");
       const session = new Session([sentence]);
 
       const log = session.inputLog;
@@ -210,8 +189,7 @@ describe("Session", () => {
 
     it("should mark start time when start() is called", () => {
       const character = new Character({ label: "a", inputPatterns: ["a"] });
-      const characterSet = new CharacterSet([character]);
-      const sentence = new Sentence(characterSet, "test sentence");
+      const sentence = new Sentence([character], "test sentence");
       const session = new Session([sentence]);
 
       expect(session.inputLog.startTime).toBeNull();
@@ -224,8 +202,7 @@ describe("Session", () => {
 
     it("should not overwrite start time if already set", () => {
       const character = new Character({ label: "a", inputPatterns: ["a"] });
-      const characterSet = new CharacterSet([character]);
-      const sentence = new Sentence(characterSet, "test sentence");
+      const sentence = new Sentence([character], "test sentence");
       const session = new Session([sentence]);
 
       session.start(); // Mark start time
@@ -238,8 +215,7 @@ describe("Session", () => {
 
     it("should automatically mark end time when session is completed", () => {
       const character = new Character({ label: "a", inputPatterns: ["a"] });
-      const characterSet = new CharacterSet([character]);
-      const sentence = new Sentence(characterSet, "test sentence");
+      const sentence = new Sentence([character], "test sentence");
       const session = new Session([sentence]);
 
       session.start(); // Mark start time
@@ -266,12 +242,10 @@ describe("Session", () => {
 
     it("should not mark end time when session is not completed", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
-      const characterSet1 = new CharacterSet([character1]);
-      const sentence1 = new Sentence(characterSet1, "sentence 1");
+      const sentence1 = new Sentence([character1], "sentence 1");
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
-      const characterSet2 = new CharacterSet([character2]);
-      const sentence2 = new Sentence(characterSet2, "sentence 2");
+      const sentence2 = new Sentence([character2], "sentence 2");
 
       const session = new Session([sentence1, sentence2]);
 
@@ -288,12 +262,10 @@ describe("Session", () => {
 
     it("should handle multi-sentence session completion", () => {
       const character1 = new Character({ label: "a", inputPatterns: ["a"] });
-      const characterSet1 = new CharacterSet([character1]);
-      const sentence1 = new Sentence(characterSet1, "sentence 1");
+      const sentence1 = new Sentence([character1], "sentence 1");
 
       const character2 = new Character({ label: "b", inputPatterns: ["b"] });
-      const characterSet2 = new CharacterSet([character2]);
-      const sentence2 = new Sentence(characterSet2, "sentence 2");
+      const sentence2 = new Sentence([character2], "sentence 2");
 
       const session = new Session([sentence1, sentence2]);
 
@@ -325,8 +297,7 @@ describe("Session", () => {
 
     it("should store time in ISO string format", () => {
       const character = new Character({ label: "a", inputPatterns: ["a"] });
-      const characterSet = new CharacterSet([character]);
-      const sentence = new Sentence(characterSet, "test sentence");
+      const sentence = new Sentence([character], "test sentence");
       const session = new Session([sentence]);
 
       session.start(); // Mark start time
@@ -349,8 +320,7 @@ describe("Session", () => {
 
     it("should return the same log instance", () => {
       const character = new Character({ label: "a", inputPatterns: ["a"] });
-      const characterSet = new CharacterSet([character]);
-      const sentence = new Sentence(characterSet, "test sentence");
+      const sentence = new Sentence([character], "test sentence");
       const session = new Session([sentence]);
 
       const log1 = session.inputLog;

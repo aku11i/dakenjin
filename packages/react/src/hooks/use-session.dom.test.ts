@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useSession } from "./use-session";
-import { Sentence, Character, CharacterSet } from "@dakenjin/core";
+import { Sentence, Character } from "@dakenjin/core";
 
 describe("useSession", () => {
   const createTestSentences = () => {
@@ -10,7 +10,7 @@ describe("useSession", () => {
       new Character({ label: "い", inputPatterns: ["i"] }),
       new Character({ label: "う", inputPatterns: ["u"] }),
     ];
-    return [new Sentence(new CharacterSet(characters), "あいう")];
+    return [new Sentence(characters, "あいう")];
   };
 
   it("should initialize with not started state", () => {

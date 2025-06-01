@@ -1,33 +1,14 @@
 import { describe, it, expect } from "vitest";
-import { Session, Sentence, CharacterSet } from "../index";
-import { createCharacterSetFactory } from "../character-set-factory";
+import { Session, Sentence } from "../index";
+import { createSentenceFactory } from "../sentence-factory";
 
 describe("Session E2E Tests - Complete Application Flow", () => {
   it("should complete all three sample sentences from page.tsx", () => {
     // Create the exact same sentences as defined in page.tsx
     const sampleSentences = [
-      new Sentence(
-        new CharacterSet(
-          createCharacterSetFactory().fromText("こんにちはせかい").characters,
-        ),
-        "こんにちは世界",
-      ),
-      new Sentence(
-        new CharacterSet(
-          createCharacterSetFactory().fromText(
-            "プログラミングはたのしい",
-          ).characters,
-        ),
-        "プログラミングは楽しい",
-      ),
-      new Sentence(
-        new CharacterSet(
-          createCharacterSetFactory().fromText(
-            "タイピングれんしゅうをがんばろう",
-          ).characters,
-        ),
-        "タイピング練習を頑張ろう",
-      ),
+      createSentenceFactory().fromText("こんにちはせかい"),
+      createSentenceFactory().fromText("プログラミングはたのしい"),
+      createSentenceFactory().fromText("タイピングれんしゅうをがんばろう"),
     ];
 
     const session = new Session(sampleSentences);
@@ -39,7 +20,7 @@ describe("Session E2E Tests - Complete Application Flow", () => {
 
     // ========== Sentence 1: "こんにちはせかい" ==========
     let currentSentence = session.currentSentence!;
-    expect(currentSentence.label).toBe("こんにちは世界");
+    expect(currentSentence.label).toBe("こんにちはせかい");
 
     // こ
     expect(currentSentence.inputCurrentCharacter("k")).toBe(true);
@@ -80,7 +61,7 @@ describe("Session E2E Tests - Complete Application Flow", () => {
 
     // ========== Sentence 2: "プログラミングはたのしい" ==========
     currentSentence = session.currentSentence!;
-    expect(currentSentence.label).toBe("プログラミングは楽しい");
+    expect(currentSentence.label).toBe("プログラミングはたのしい");
 
     // プ
     expect(currentSentence.inputCurrentCharacter("p")).toBe(true);
@@ -136,7 +117,7 @@ describe("Session E2E Tests - Complete Application Flow", () => {
 
     // ========== Sentence 3: "タイピングれんしゅうをがんばろう" ==========
     currentSentence = session.currentSentence!;
-    expect(currentSentence.label).toBe("タイピング練習を頑張ろう");
+    expect(currentSentence.label).toBe("タイピングれんしゅうをがんばろう");
 
     // タ
     expect(currentSentence.inputCurrentCharacter("t")).toBe(true);
@@ -204,18 +185,8 @@ describe("Session E2E Tests - Complete Application Flow", () => {
 
   it("should handle errors and recovery during the complete session", () => {
     const sampleSentences = [
-      new Sentence(
-        new CharacterSet(
-          createCharacterSetFactory().fromText("こんにちは").characters,
-        ),
-        "こんにちは",
-      ),
-      new Sentence(
-        new CharacterSet(
-          createCharacterSetFactory().fromText("ありがとう").characters,
-        ),
-        "ありがとう",
-      ),
+      createSentenceFactory().fromText("こんにちは"),
+      createSentenceFactory().fromText("ありがとう"),
     ];
 
     const session = new Session(sampleSentences);

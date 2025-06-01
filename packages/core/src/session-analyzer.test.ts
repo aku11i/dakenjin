@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { SessionAnalyzer } from "./session-analyzer";
-import { Session, Sentence, Character, CharacterSet } from "./index";
+import { Session, Sentence, Character } from "./index";
 
 describe("SessionAnalyzer", () => {
   let session: Session;
@@ -14,7 +14,7 @@ describe("SessionAnalyzer", () => {
       new Character({ label: "い", inputPatterns: ["i"] }),
       new Character({ label: "う", inputPatterns: ["u"] }),
     ];
-    const sentence = new Sentence(new CharacterSet(characters), "あいう");
+    const sentence = new Sentence(characters, "あいう");
     session = new Session([sentence]);
   });
 

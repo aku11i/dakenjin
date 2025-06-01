@@ -1,31 +1,29 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import { Character, CharacterSet } from "@dakenjin/core";
+import { Character, Sentence } from "@dakenjin/core";
 import { TypingDisplay } from "./typing-display";
 
-// Helper function to convert CharacterSet to TypingDisplay props
+// Helper function to convert Sentence to TypingDisplay props
 function createTypingDisplayProps(
-  characterSet: CharacterSet,
+  sentence: Sentence,
   currentInputs: string,
   error: boolean,
 ) {
-  const completedCharacters = characterSet.completedCharacters;
-  const currentCharacter = characterSet.currentCharacter;
+  const completedCharacters = sentence.completedCharacters;
+  const currentCharacter = sentence.currentCharacter;
   const futureCharacters = currentCharacter
-    ? characterSet.incompletedCharacters.slice(1)
-    : characterSet.incompletedCharacters;
+    ? sentence.incompletedCharacters.slice(1)
+    : sentence.incompletedCharacters;
 
   const futureCharacterPreviews = futureCharacters.map((character) => {
-    const actualIndex = characterSet.characters.findIndex(
-      (c) => c === character,
-    );
+    const actualIndex = sentence.characters.findIndex((c) => c === character);
     return actualIndex !== -1
-      ? characterSet.getCharacterPreview(actualIndex)
+      ? sentence.getCharacterPreview(actualIndex)
       : character.getPreview();
   });
 
   const currentCharacterPreview = currentCharacter
-    ? characterSet.getCharacterPreview(
-        characterSet.characters.findIndex((c) => c === currentCharacter),
+    ? sentence.getCharacterPreview(
+        sentence.characters.findIndex((c) => c === currentCharacter),
       )
     : "";
 
@@ -82,12 +80,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Empty: Story = {
-  args: createTypingDisplayProps(new CharacterSet([]), "", false),
+  args: createTypingDisplayProps(new Sentence([], ""), "", false),
 };
 
 export const SingleCharacter: Story = {
   args: createTypingDisplayProps(
-    new CharacterSet([new Character({ label: "あ", inputPatterns: ["a"] })]),
+    new Sentence([new Character({ label: "あ", inputPatterns: ["a"] })], "あ"),
     "",
     false,
   ),
@@ -98,7 +96,7 @@ export const PartiallyTyped: Story = {
     (() => {
       const char = new Character({ label: "き", inputPatterns: ["ki"] });
       char.input("k");
-      return new CharacterSet([char]);
+      return new Sentence([char], "き");
     })(),
     "k",
     false,
@@ -107,12 +105,15 @@ export const PartiallyTyped: Story = {
 
 export const WithError: Story = {
   args: createTypingDisplayProps(
-    new CharacterSet([
-      new Character({
-        label: "し",
-        inputPatterns: ["shi", "si"],
-      }),
-    ]),
+    new Sentence(
+      [
+        new Character({
+          label: "し",
+          inputPatterns: ["shi", "si"],
+        }),
+      ],
+      "し",
+    ),
     "z",
     true,
   ),
@@ -138,7 +139,7 @@ export const CompletedCharacters: Story = {
       // Partially type the fourth character
       chars[3].input("t");
 
-      return new CharacterSet(chars);
+      return new Sentence(chars, "ありがと");
     })(),
     "t",
     false,
@@ -162,7 +163,7 @@ export const WithFutureCharacters: Story = {
       chars[1].input("n");
       chars[1].input("n");
 
-      return new CharacterSet(chars);
+      return new Sentence(chars, "こんにちは");
     })(),
     "",
     false,
@@ -202,9 +203,31 @@ export const LongSentence: Story = {
       // Partially type the fifth character
       chars[4].input("n");
 
-      return new CharacterSet(chars);
+      return new Sentence(chars, "わたしはにほんごをよみます");
     })(),
     "n",
+    false,
+  ),
+};
+
+export const AllCompleted: Story = {
+  args: createTypingDisplayProps(
+    (() => {
+      const chars = [
+        new Character({ label: "す", inputPatterns: ["su"] }),
+        new Character({ label: "し", inputPatterns: ["shi", "si"] }),
+      ];
+
+      // Complete all characters
+      chars[0].input("s");
+      chars[0].input("u");
+      chars[1].input("s");
+      chars[1].input("h");
+      chars[1].input("i");
+
+      return new Sentence(chars, "すし");
+    })(),
+    "",
     false,
   ),
 };
