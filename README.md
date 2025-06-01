@@ -1,11 +1,11 @@
 <div align="center">
-  <h1>⌨️ 打鍵人（Dakenjin）</h1>
+  <h1>⌨️ 打鍵人（だけんちゅ）</h1>
   <p>
     <strong>シンプルに、ただタイピングを楽しむために。</strong>
   </p>
   <p>
     打鍵人は、余計なものを削ぎ落とした日本語タイピング練習サービスです。<br>
-    ゲーム要素もランキングもありません。あるのは、あなたとキーボードの対話だけ。
+    ゲーム要素もランキングもありません。純粋にタイピングの速度と正確性を測定します。
   </p>
   <p>
     <a href="https://github.com/aku11i/dakenjin/actions/workflows/ci.yml">
