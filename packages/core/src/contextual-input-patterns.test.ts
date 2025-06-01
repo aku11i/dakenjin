@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { Character, InputPatternResolver } from "./character";
-import { CharacterSet } from "./character-set";
-import { createCharacterSetFactory } from "./character-set-factory";
+import { Sentence } from "./sentence";
+import { createSentenceFactory } from "./sentence-factory";
 
 describe("Contextual Input Patterns", () => {
   describe("Character class", () => {
@@ -132,45 +132,44 @@ describe("Contextual Input Patterns", () => {
   });
 
   describe("fromJapaneseText with contextual patterns", () => {
-    const factory = createCharacterSetFactory();
+    const factory = createSentenceFactory();
 
     it("should create ん character with context-aware input patterns", () => {
-      const characters = factory.fromText("まんなか").characters;
-      const nnChar = characters[1]; // "ん"
-      const naChar = characters[2]; // "な"
+      const sentence = factory.fromText("まんなか");
+      const nnChar = sentence.characters[1]; // "ん"
+      const naChar = sentence.characters[2]; // "な"
 
       expect(nnChar.label).toBe("ん");
       expect(naChar.label).toBe("な");
 
       // Context where next character is "な"
-      const context = { prev: characters[0], next: naChar };
+      const context = { prev: sentence.characters[0], next: naChar };
 
       // Should only allow "nn" when next is "な"
       expect(nnChar.getInputPatterns(context)).toEqual(["nn"]);
 
       // Context where next character is not "な" but not at end
-      const baChar = characters[3]; // "か"
-      const contextNoN = { prev: characters[0], next: baChar };
+      const baChar = sentence.characters[3]; // "か"
+      const contextNoN = { prev: sentence.characters[0], next: baChar };
       expect(nnChar.getInputPatterns(contextNoN)).toEqual(["n", "nn"]);
 
       // Context where character is at the end of sentence
-      const contextEnd = { prev: characters[0], next: null };
+      const contextEnd = { prev: sentence.characters[0], next: null };
       expect(nnChar.getInputPatterns(contextEnd)).toEqual(["nn"]);
     });
   });
 
-  describe("CharacterSet with contextual patterns", () => {
-    const factory = createCharacterSetFactory();
+  describe("Sentence with contextual patterns", () => {
+    const factory = createSentenceFactory();
 
     it("should provide correct context to characters", () => {
-      const characters = factory.fromText("まんなか").characters;
-      const characterSet = new CharacterSet(characters);
+      const sentence = factory.fromText("まんなか");
 
       // Get the "ん" character
-      const nnChar = characterSet.characters[1];
+      const nnChar = sentence.characters[1];
       const context = {
-        prev: characterSet.characters[0],
-        next: characterSet.characters[2],
+        prev: sentence.characters[0],
+        next: sentence.characters[2],
       };
 
       // Test input on the "ん" character with context
@@ -182,13 +181,12 @@ describe("Contextual Input Patterns", () => {
     });
 
     it("should handle completion correctly with context", () => {
-      const characters = factory.fromText("あんば").characters;
-      const characterSet = new CharacterSet(characters);
+      const sentence = factory.fromText("あんば");
 
-      const nnChar = characterSet.characters[1]; // "ん"
+      const nnChar = sentence.characters[1]; // "ん"
       const context = {
-        prev: characterSet.characters[0],
-        next: characterSet.characters[2],
+        prev: sentence.characters[0],
+        next: sentence.characters[2],
       };
 
       // Since next character is "ば" (starts with "b"), single "n" should be allowed
@@ -197,12 +195,11 @@ describe("Contextual Input Patterns", () => {
     });
 
     it("should require nn when ん is at the end of sentence", () => {
-      const characters = factory.fromText("まん").characters;
-      const characterSet = new CharacterSet(characters);
+      const sentence = factory.fromText("まん");
 
-      const nnChar = characterSet.characters[1]; // "ん"
+      const nnChar = sentence.characters[1]; // "ん"
       const context = {
-        prev: characterSet.characters[0],
+        prev: sentence.characters[0],
         next: null, // End of sentence
       };
 

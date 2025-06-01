@@ -1,23 +1,18 @@
 import { Character } from "./character";
-import { CharacterSet } from "./character-set";
 import { SentenceInputLog } from "./sentence-input-log";
 
 export class Sentence {
-  private _characterSet: CharacterSet;
+  private _characters: Character[];
   private _label: string;
   private _inputLog: SentenceInputLog = new SentenceInputLog();
 
-  constructor(characterSet: CharacterSet, label: string) {
-    this._characterSet = characterSet;
+  constructor(characters: Character[], label: string) {
+    this._characters = characters;
     this._label = label;
   }
 
   get characters(): Character[] {
-    return this._characterSet.characters;
-  }
-
-  get characterSet(): CharacterSet {
-    return this._characterSet;
+    return this._characters;
   }
 
   get label(): string {
@@ -25,7 +20,15 @@ export class Sentence {
   }
 
   get currentCharacter(): Character | null {
-    const current = this._characterSet.currentCharacter;
+    const current =
+      this._characters.find((character, index) => {
+        const context = this.getContext(index);
+        return !character.isCompleted(context);
+      }) ?? null;
+
+    if (current && current.inputLog.startTime === null) {
+      current.inputLog.markInputStart();
+    }
 
     // Mark sentence start when first character becomes current
     if (current && this._inputLog.startTime === null) {
@@ -35,20 +38,43 @@ export class Sentence {
     return current;
   }
 
+  get currentCharacterIndex(): number {
+    return this._characters.findIndex((character, index) => {
+      const context = this.getContext(index);
+      return !character.isCompleted(context);
+    });
+  }
+
   get completedCharacters(): Character[] {
-    return this._characterSet.completedCharacters;
+    return this._characters.filter((character, index) => {
+      const context = this.getContext(index);
+      return character.isCompleted(context);
+    });
   }
 
   get incompletedCharacters(): Character[] {
-    return this._characterSet.incompletedCharacters;
+    return this._characters.filter((character, index) => {
+      const context = this.getContext(index);
+      return !character.isCompleted(context);
+    });
   }
 
   isCompleted(): boolean {
-    return this._characterSet.isCompleted();
+    return this._characters.every((character, index) => {
+      const context = this.getContext(index);
+      return character.isCompleted(context);
+    });
   }
 
   inputCurrentCharacter(character: string): boolean {
-    const result = this._characterSet.inputCurrentCharacter(character);
+    const currentIndex = this.currentCharacterIndex;
+    if (currentIndex === -1) {
+      return false;
+    }
+
+    const currentChar = this._characters[currentIndex];
+    const context = this.getContext(currentIndex);
+    const result = currentChar.input(character, context);
 
     // Mark sentence end when all characters are completed
     if (result && this.isCompleted()) {
@@ -59,14 +85,40 @@ export class Sentence {
   }
 
   getCurrentCharacterSuggestions(): string[] {
-    return this._characterSet.getCurrentCharacterSuggestions();
+    const currentIndex = this.currentCharacterIndex;
+    if (currentIndex === -1) {
+      return [];
+    }
+
+    const currentChar = this._characters[currentIndex];
+    const context = this.getContext(currentIndex);
+    return currentChar.getSuggestions(context);
   }
 
   getCharacterPreview(index: number): string {
-    return this._characterSet.getCharacterPreview(index);
+    if (index < 0 || index >= this._characters.length) {
+      return "";
+    }
+
+    const character = this._characters[index];
+    const context = this.getContext(index);
+    return character.getPreview(context);
   }
 
   get inputLog(): SentenceInputLog {
     return this._inputLog;
+  }
+
+  private getContext(index: number): {
+    prev: Character | null;
+    next: Character | null;
+  } {
+    return {
+      prev: index > 0 ? this._characters[index - 1] : null,
+      next:
+        index < this._characters.length - 1
+          ? this._characters[index + 1]
+          : null,
+    };
   }
 }

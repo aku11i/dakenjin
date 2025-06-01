@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import { TypingStatsDisplay } from "./typing-stats";
-import { Session, Sentence, Character, CharacterSet } from "@dakenjin/core";
+import { Session, Sentence, Character } from "@dakenjin/core";
 
 const meta: Meta<typeof TypingStatsDisplay> = {
   title: "Features/Typing/TypingStatsDisplay",
@@ -38,7 +38,7 @@ function createSession(): Session {
     new Character({ label: "い", inputPatterns: ["i"] }),
     new Character({ label: "う", inputPatterns: ["u"] }),
   ];
-  const sentence = new Sentence(new CharacterSet(characters), "あいう");
+  const sentence = new Sentence(characters, "あいう");
   return new Session([sentence]);
 }
 

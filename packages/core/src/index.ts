@@ -1,10 +1,9 @@
 export * from "./character";
 export * from "./character-input-log";
-export * from "./character-set";
-export * from "./character-set-factory";
 export * from "./sentence";
+export * from "./sentence-factory";
 export * from "./sentence-input-log";
 export * from "./session";
 export * from "./session-input-log";
 export * from "./session-analyzer";
-export { createCharacterSetFactory } from "./character-set-factory";
+export { createSentenceFactory } from "./sentence-factory";

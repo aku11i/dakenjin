@@ -1,9 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import {
-  Sentence,
-  createCharacterSetFactory,
-  CharacterSet,
-} from "@dakenjin/core";
+import { createSentenceFactory } from "@dakenjin/core";
 import { SessionInput } from "./session-input";
 
 const meta: Meta<typeof SessionInput> = {
@@ -32,16 +28,11 @@ const meta: Meta<typeof SessionInput> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const factory = createCharacterSetFactory();
+const factory = createSentenceFactory();
 
 export const SingleSentence: Story = {
   args: {
-    sentences: [
-      new Sentence(
-        new CharacterSet(factory.fromText("こんにちは").characters),
-        "こんにちは",
-      ),
-    ],
+    sentences: [factory.fromText("こんにちは")],
     onComplete: () => console.log("Session completed!"),
   },
 };
@@ -49,18 +40,9 @@ export const SingleSentence: Story = {
 export const MultipleSentences: Story = {
   args: {
     sentences: [
-      new Sentence(
-        new CharacterSet(factory.fromText("こんにちは").characters),
-        "こんにちは",
-      ),
-      new Sentence(
-        new CharacterSet(factory.fromText("ありがとう").characters),
-        "ありがとう",
-      ),
-      new Sentence(
-        new CharacterSet(factory.fromText("さようなら").characters),
-        "さようなら",
-      ),
+      factory.fromText("こんにちは"),
+      factory.fromText("ありがとう"),
+      factory.fromText("さようなら"),
     ],
     onComplete: () => console.log("All sentences completed!"),
   },
@@ -68,14 +50,7 @@ export const MultipleSentences: Story = {
 
 export const LongSentence: Story = {
   args: {
-    sentences: [
-      new Sentence(
-        new CharacterSet(
-          factory.fromText("わたしはにほんごをよみます").characters,
-        ),
-        "わたしはにほんごをよみます",
-      ),
-    ],
+    sentences: [factory.fromText("わたしはにほんごをよみます")],
     onComplete: () => console.log("Long sentence completed!"),
   },
 };

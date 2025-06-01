@@ -14,37 +14,34 @@ export type SessionSnapshot = {
 export function createSessionSnapshot(session: Session): SessionSnapshot {
   const currentSentence = session.currentSentence;
   const currentCharacter = currentSentence?.currentCharacter || null;
-  const currentCharacterSet = currentSentence?.characterSet;
 
   return {
     currentSentence,
     currentCharacter,
     completedSentences: session.completedSentences,
     isCompleted: session.isCompleted(),
-    completedCharacters: currentCharacterSet?.completedCharacters || [],
+    completedCharacters: currentSentence?.completedCharacters || [],
     futureCharacters:
-      currentCharacter && currentCharacterSet
-        ? currentCharacterSet.incompletedCharacters.slice(1)
-        : currentCharacterSet?.incompletedCharacters || [],
-    futureCharacterPreviews: currentCharacterSet
+      currentCharacter && currentSentence
+        ? currentSentence.incompletedCharacters.slice(1)
+        : currentSentence?.incompletedCharacters || [],
+    futureCharacterPreviews: currentSentence
       ? (currentCharacter
-          ? currentCharacterSet.incompletedCharacters.slice(1)
-          : currentCharacterSet.incompletedCharacters
+          ? currentSentence.incompletedCharacters.slice(1)
+          : currentSentence.incompletedCharacters
         ).map((character) => {
-          const actualIndex = currentCharacterSet.characters.findIndex(
+          const actualIndex = currentSentence.characters.findIndex(
             (c) => c === character,
           );
           return actualIndex !== -1
-            ? currentCharacterSet.getCharacterPreview(actualIndex)
+            ? currentSentence.getCharacterPreview(actualIndex)
             : character.getPreview();
         })
       : [],
     currentCharacterPreview:
-      currentCharacter && currentCharacterSet
-        ? currentCharacterSet.getCharacterPreview(
-            currentCharacterSet.characters.findIndex(
-              (c) => c === currentCharacter,
-            ),
+      currentCharacter && currentSentence
+        ? currentSentence.getCharacterPreview(
+            currentSentence.characters.findIndex((c) => c === currentCharacter),
           )
         : "",
   };

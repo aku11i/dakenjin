@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { useTypingStats } from "./use-typing-stats";
-import { Session, Sentence, Character, CharacterSet } from "@dakenjin/core";
+import { Session, Sentence, Character } from "@dakenjin/core";
 
 describe("useTypingStats", () => {
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe("useTypingStats", () => {
       new Character({ label: "い", inputPatterns: ["i"] }),
       new Character({ label: "う", inputPatterns: ["u"] }),
     ];
-    const sentence = new Sentence(new CharacterSet(characters), "あいう");
+    const sentence = new Sentence(characters, "あいう");
     return new Session([sentence]);
   };
 

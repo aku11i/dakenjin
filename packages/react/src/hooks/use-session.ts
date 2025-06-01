@@ -95,7 +95,7 @@ export function useSession({ sentences }: UseSessionParams): UseSessionReturn {
     const completedSentences = session.completedSentences.length;
     const currentSentenceProgress = sessionSnapshot.currentSentence
       ? sessionSnapshot.completedCharacters.length /
-        sessionSnapshot.currentSentence.characterSet.characters.length
+        sessionSnapshot.currentSentence.characters.length
       : 0;
 
     return (
