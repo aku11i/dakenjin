@@ -32,12 +32,10 @@ const createSmallTsuInputPatternResolver = (): InputPatternResolver => {
       // または ch, sh, ts などの2文字子音を抽出
       if (pattern.match(/^k/)) consonants.add("k");
       if (pattern.match(/^g/)) consonants.add("g");
-      if (pattern.match(/^s(?!h)/)) consonants.add("s");
-      if (pattern.match(/^sh/)) consonants.add("s");
+      if (pattern.match(/^s/)) consonants.add("s");
       if (pattern.match(/^z/)) consonants.add("z");
-      if (pattern.match(/^t(?!s)/)) consonants.add("t");
-      if (pattern.match(/^ts/)) consonants.add("t");
-      if (pattern.match(/^ch/)) consonants.add("t");
+      if (pattern.match(/^t/)) consonants.add("t");
+      if (pattern.match(/^c/)) consonants.add("c");
       if (pattern.match(/^d/)) consonants.add("d");
       if (pattern.match(/^h/)) consonants.add("h");
       if (pattern.match(/^b/)) consonants.add("b");
