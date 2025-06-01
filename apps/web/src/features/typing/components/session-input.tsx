@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Progress, Button } from "../../../ui/components";
 import { Sentence } from "@dakenjin/core";
 import { useSession } from "@dakenjin/react";
@@ -42,6 +42,25 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
 
   const currentSentenceIndex = completedSentences.length;
 
+  useEffect(() => {
+    if (session.isStarted) {
+      return;
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === "Space") {
+        e.preventDefault();
+        start();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [session.isStarted, start]);
+
   if (!session.isStarted) {
     return (
       <div className="w-full max-w-3xl">
@@ -57,6 +76,10 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
           <Button onClick={start} size="lg" className="mt-6">
             タイピングを開始
           </Button>
+
+          <p className="text-sm text-muted-foreground mt-4">
+            スペースキーを押しても開始できます
+          </p>
 
           <div className="mt-6">
             <BetaNotice />
