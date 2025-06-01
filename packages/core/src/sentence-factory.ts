@@ -20,7 +20,7 @@ export class SentenceFactory {
     this._characters = characters;
   }
 
-  fromText(text: string): Sentence {
+  fromText(text: string, label?: string): Sentence {
     const characters: Character[] = [];
     let i = 0;
 
@@ -47,6 +47,6 @@ export class SentenceFactory {
       }
     }
 
-    return new Sentence(characters, text);
+    return new Sentence(characters, label ?? text);
   }
 }
