@@ -2,7 +2,7 @@ import { AlertTriangle, ExternalLink } from "lucide-react";
 
 export function BetaNotice() {
   return (
-    <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-3 sm:p-4 max-w-md mx-auto">
+    <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-3 sm:p-4 max-w-lg mx-auto">
       <div className="flex items-start gap-2 sm:gap-3">
         <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 dark:text-amber-500 shrink-0 mt-0.5" />
         <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
