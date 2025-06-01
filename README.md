@@ -1,78 +1,155 @@
-# 打鍵人（Dakenjin）
+<div align="center">
+  <h1>⌨️ 打鍵人（だけんちゅ）</h1>
+  <p>
+    <strong>シンプルに、ただタイピングを楽しむために。</strong>
+  </p>
+  <p>
+    <a href="https://dakenjin.com">
+      <strong>🌐 dakenjin.com で今すぐ試す</strong>
+    </a>
+  </p>
+  <p>
+    打鍵人は、余計なものを削ぎ落とした日本語タイピング練習サービスです。<br>
+    ゲーム要素がないため、タイピングそのものに集中できます。
+  </p>
+  <p>
+    <a href="https://github.com/aku11i/dakenjin/actions/workflows/ci.yml">
+      <img src="https://github.com/aku11i/dakenjin/actions/workflows/ci.yml/badge.svg" alt="CI" />
+    </a>
+    <a href="https://github.com/aku11i/dakenjin/blob/main/LICENSE">
+      <img src="https://img.shields.io/github/license/aku11i/dakenjin" alt="License" />
+    </a>
+    <a href="https://github.com/aku11i/dakenjin/stargazers">
+      <img src="https://img.shields.io/github/stars/aku11i/dakenjin" alt="Stars" />
+    </a>
+  </p>
+  <p>
+    <a href="#-特徴">特徴</a> •
+    <a href="#-なぜ打鍵人">なぜ打鍵人？</a> •
+    <a href="#-はじめ方">はじめ方</a> •
+    <a href="#-コントリビューション">コントリビューション</a> •
+    <a href="#-ライセンス">ライセンス</a>
+  </p>
+</div>
 
-打鍵人（だけんちゅ） は、シンプルなタイピング計測ができるWebサービスです。
-ゲーム性を排した設計で、純粋に「打鍵」の感触や速度を確かめたい人のために作られました。
+---
 
-## 特徴
+## ✨ 特徴
 
-- シンプルなUIでタイピングに集中できる
-- 心地よいアニメーションエフェクトで打鍵感を演出
-- 正確な入力判定、タイム計測、ログデータのダウンロード
+🎯 **純粋なタイピング体験**
+- ゲーム要素なし、邪魔なし - あなたとキーボードだけ
+- 集中できるクリーンでミニマルなインターフェース
+- タイピングの感触を高める滑らかなアニメーション
 
-## 想定用途
+📊 **詳細な分析機能**
+- KPS（秒間打鍵数）測定
+- 正確率とエラー分析
+- 詳細な分析のためのセッションログダウンロード機能
 
-- タイピングの速度や精度の測定
-- 新しいキーボードや配列の試し打ち
-- 競技タイピングでのトレーニングや分析（※今後の機能拡張予定）
+🚀 **モダンな技術スタック**
+- Next.js 15とReact 19で構築
+- TypeScriptによる型安全性
+- Turborepoによる効率的なモノレポ管理
 
-## 技術スタック
+## 🤔 なぜ打鍵人？
 
-- フロントエンド：Next.js（App Router）
-- UIライブラリ：HeroUI（旧 NextUI）
-- デプロイ先：Vercel
+ゲーム化されたタイピングアプリが溢れる中、**打鍵人**は異なるアプローチを取ります。時には、思考と指とキーボードの純粋なつながりを感じたいときがあるはずです。
 
-## 開発環境のセットアップ
+こんな方におすすめ：
+- 🎹 新しいキーボードや配列を試したい
+- 📈 タイピングの上達を記録したい
+- 🏃‍♂️ コーディング前のウォームアップに
+- 🎯 邪魔されずに集中して練習したい
+
+## 🚀 はじめ方
 
 ### 必要な環境
 
-- Node.js 24 以上
-- pnpm 10.6.3
+- Node.js 24以上
+- pnpm 10.6.3以上
 
 ### インストール
 
 ```bash
+# リポジトリをクローン
+git clone https://github.com/aku11i/dakenjin.git
+cd dakenjin
+
+# 依存関係をインストール
 pnpm install
-```
 
-## 開発コマンド
-
-### 開発サーバーの起動
-
-```bash
+# 開発サーバーを起動
 pnpm dev
 ```
 
-開発サーバーを起動します。Turbo を使用して、モノレポ内のすべてのパッケージで開発サーバーが起動されます。
+`http://localhost:3000`にアクセスしてタイピングを始めましょう！
 
-### コード品質チェック
+## 🛠️ 開発
 
-```bash
-# Lintとフォーマットチェックを実行
-pnpm lint
+### プロジェクト構成
+
+```
+dakenjin/
+├── apps/
+│   └── web/          # Next.js Webアプリケーション
+├── packages/
+│   ├── core/         # コアタイピングロジック
+│   └── react/        # ReactフックとComponent
+└── turbo.json        # Turborepo設定
 ```
 
-```bash
-# Lintエラーとフォーマットを自動修正
-pnpm fix
-```
+### 利用可能なコマンド
 
 ```bash
-# 型チェックを実行
-pnpm type-check
+# 開発
+pnpm dev              # 開発サーバーを起動
+pnpm build            # プロダクションビルド
+
+# コード品質
+pnpm lint             # ESLintを実行
+pnpm fix              # Lintエラーを修正
+pnpm type-check       # TypeScriptの型チェック
+pnpm test             # テストを実行
+
+# コミット前
+pnpm ready            # すべてのチェックを実行（修正あり）
+pnpm ready:check      # すべてのチェックを実行（修正なし）
 ```
 
-```bash
-# テストを実行
-pnpm test
-```
+## 🤝 コントリビューション
 
-### コミット前の確認
+コミュニティからの貢献を歓迎します！バグ修正、新機能、ドキュメントの改善など、どんな貢献も打鍵人をより良くします。
 
-```bash
-# fix、型チェック、テストをまとめて実行
-pnpm ready
+### 貢献方法
 
-# lint、型チェック、テストをまとめて実行（修正なし）
-pnpm ready:check
-```
+1. リポジトリをフォーク
+2. フィーチャーブランチを作成 (`git checkout -b feature/amazing-feature`)
+3. 変更をコミット (`git commit -m 'Add some amazing feature'`)
+4. ブランチにプッシュ (`git push origin feature/amazing-feature`)
+5. プルリクエストを作成
+
+詳細は[コントリビューションガイドライン](CONTRIBUTING.md)をご覧ください。
+
+### 開発哲学
+
+- **シンプルさ優先**: 機能はタイピング体験を向上させるものであり、複雑にしないこと
+- **パフォーマンス重視**: タイピングのフィードバックではミリ秒単位が重要
+- **アクセシビリティ**: 誰もが快適に打鍵人を使えること
+
+## 📝 ライセンス
+
+このプロジェクトはMITライセンスの下で公開されています。詳細は[LICENSE](LICENSE)ファイルをご覧ください。
+
+---
+
+<div align="center">
+  <p>
+    <strong>タイピングスキルを向上させる準備はできましたか？</strong>
+  </p>
+  <p>
+    <a href="https://dakenjin.com">
+      🚀 今すぐ打鍵人を試す
+    </a>
+  </p>
+</div>
 
