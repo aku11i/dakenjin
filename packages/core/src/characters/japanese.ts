@@ -316,8 +316,9 @@ export const KATAKANA_CHARACTERS = [
 ] as const;
 
 export const PUNCTUATION_CHARACTERS = [
-  { label: "。", inputPatterns: ["."] },
   { label: "、", inputPatterns: [","] },
+  { label: "！", inputPatterns: ["!"] },
+  { label: "？", inputPatterns: ["?"] },
   { label: "ー", inputPatterns: ["-"] },
   { label: "〜", inputPatterns: ["~"] },
 ] as const;

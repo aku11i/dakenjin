@@ -1,0 +1,90 @@
+import { SentenceCollection, createSentenceFactory } from "@dakenjin/core";
+
+const factory = createSentenceFactory();
+
+export const generalConversation = new SentenceCollection({
+  name: "一般会話",
+  description: "様々な場面で使われる一般的な会話表現",
+  sentences: [
+    factory.fromText(
+      "あたらしいカフェがオープンしたらしいよ",
+      "新しいカフェがオープンしたらしいよ",
+    ),
+    factory.fromText(
+      "らいしゅうのかいぎにはさんかできそうですか",
+      "来週の会議には参加できそうですか",
+    ),
+    factory.fromText(
+      "そのアイデアはとてもおもしろいとおもいます",
+      "そのアイデアはとても面白いと思います",
+    ),
+    factory.fromText(
+      "でんしゃがちこくしてたいへんでした",
+      "電車が遅刻して大変でした",
+    ),
+    factory.fromText(
+      "きのうのえいがはかんどうてきでしたね",
+      "昨日の映画は感動的でしたね",
+    ),
+    factory.fromText(
+      "しゅうまつはどこかへでかけるよていですか",
+      "週末はどこかへ出かける予定ですか",
+    ),
+    factory.fromText(
+      "このりょうりのレシピをおしえてもらえますか",
+      "この料理のレシピを教えてもらえますか",
+    ),
+    factory.fromText(
+      "さいきんあたらしいしゅみをはじめました",
+      "最近新しい趣味を始めました",
+    ),
+    factory.fromText(
+      "そのふくはとてもよくにあっていますね",
+      "その服はとてもよく似合っていますね",
+    ),
+    factory.fromText(
+      "にほんごのべんきょうはじゅんちょうですか",
+      "日本語の勉強は順調ですか",
+    ),
+    factory.fromText(
+      "このアプリのつかいかたがよくわかりません",
+      "このアプリの使い方がよくわかりません",
+    ),
+    factory.fromText(
+      "らいげつりょこうにいくよていです",
+      "来月旅行に行く予定です",
+    ),
+    factory.fromText(
+      "けんこうのためにまいにちあるいています",
+      "健康のために毎日歩いています",
+    ),
+    factory.fromText(
+      "そのほんはもうよみおわりましたか",
+      "その本はもう読み終わりましたか",
+    ),
+    factory.fromText(
+      "きょうはとくべつなひなんですか",
+      "今日は特別な日なんですか",
+    ),
+    factory.fromText(
+      "このみせのコーヒーはおいしいですよ",
+      "この店のコーヒーは美味しいですよ",
+    ),
+    factory.fromText(
+      "てんきよほうによるとあしたはあめだそうです",
+      "天気予報によると明日は雨だそうです",
+    ),
+    factory.fromText(
+      "そのドラマのけつまつがきになります",
+      "そのドラマの結末が気になります",
+    ),
+    factory.fromText(
+      "あたらしいスマホにきかえようかまよっています",
+      "新しいスマホに機変えようか迷っています",
+    ),
+    factory.fromText(
+      "このもんだいについてどうおもいますか",
+      "この問題についてどう思いますか",
+    ),
+  ],
+});
