@@ -59,5 +59,24 @@ describe("SentenceFactory", () => {
       expect(sentence.characters[0].label).toBe("きゃ");
       expect(sentence.characters[0].inputPatterns).toContain("kya");
     });
+
+    it("should use provided label when given", () => {
+      const characters = createJapaneseCharacters();
+      const factory = new SentenceFactory(characters);
+      const sentence = factory.fromText("こんにちは", "Hello");
+
+      expect(sentence.label).toBe("Hello");
+      expect(sentence.characters).toHaveLength(5);
+      expect(sentence.characters[0].label).toBe("こ");
+    });
+
+    it("should use text as label when label not provided", () => {
+      const characters = createJapaneseCharacters();
+      const factory = new SentenceFactory(characters);
+      const sentence = factory.fromText("こんにちは");
+
+      expect(sentence.label).toBe("こんにちは");
+      expect(sentence.characters).toHaveLength(5);
+    });
   });
 });
