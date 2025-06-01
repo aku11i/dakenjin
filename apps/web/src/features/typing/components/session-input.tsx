@@ -8,6 +8,7 @@ import { TypingDisplay } from "./typing-display";
 import { SentenceDisplay } from "./sentence-display";
 import { TypingInput } from "./typing-input";
 import { TypingStatsDisplay } from "./typing-stats";
+import { BetaNotice } from "./beta-notice";
 
 type SessionInputProps = {
   sentences: Sentence[];
@@ -73,6 +74,10 @@ export function SessionInput({ sentences, onComplete }: SessionInputProps) {
           <Button onClick={start} size="lg" className="mt-6">
             タイピングを開始
           </Button>
+
+          <div className="mt-6">
+            <BetaNotice />
+          </div>
         </div>
       </div>
     );
