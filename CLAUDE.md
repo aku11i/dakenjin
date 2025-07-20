@@ -1,4 +1,89 @@
-# 開発ガイドライン
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## 開発コマンド
+
+### 基本コマンド
+```bash
+# 開発サーバーを起動
+pnpm dev
+
+# プロダクションビルド
+pnpm build
+
+# テストを実行
+pnpm test
+
+# 特定のテストファイルを実行
+pnpm vitest run [ファイルパス]
+
+# リント・型チェック・テストを実行（修正あり）
+pnpm ready
+
+# リント・型チェック・テストを実行（修正なし）
+pnpm ready:check
+
+# リントエラーを修正
+pnpm fix
+
+# 型チェック
+pnpm type-check
+
+# Storybookを起動
+pnpm storybook
+```
+
+### 個別ワークスペースのテスト実行
+```bash
+# coreパッケージのテストを実行
+pnpm vitest run packages/core
+
+# reactパッケージのテストを実行
+pnpm vitest run packages/react
+
+# webアプリのテストを実行
+pnpm vitest run apps/web
+```
+
+## アーキテクチャ概要
+
+### コア設計思想
+- **関心の分離**: タイピングロジック（core）とUI（react/web）を完全に分離
+- **イミュータブル**: 状態変更は新しいオブジェクトを作成
+- **型安全性**: TypeScript による厳密な型付け
+
+### パッケージ構成
+
+#### `packages/core` - タイピングエンジン
+- **Character**: 単一文字の入力管理（複数の入力パターン対応）
+- **Sentence**: 文章単位の管理（文字の連続、進捗管理）
+- **Session**: セッション全体の管理（複数文章、統計情報）
+- **SentenceFactory**: 日本語からローマ字入力パターンへの変換
+- **ContextualInputPatternResolver**: 文脈依存の入力パターン解決（「ん」「っ」など）
+
+#### `packages/react` - React統合
+- **useSession**: セッション管理のReactフック
+- **useTypingStats**: タイピング統計のReactフック
+- **SessionSnapshot**: Reactレンダリング用の不変スナップショット
+
+#### `apps/web` - Webアプリケーション
+- **features/typing**: タイピング機能のコンポーネント群
+  - SessionInput: メインコントローラー
+  - TypingDisplay: 入力表示（視覚的フィードバック付き）
+  - TypingStats: 統計表示
+- **ui/components**: 汎用UIコンポーネント
+
+### 重要な実装詳細
+
+#### 文脈依存の入力パターン
+- 「ん」は次の文字によって入力パターンが変化（母音の前では「nn」必須）
+- 「っ」は次の文字の子音を重ねる
+
+#### テスト構造
+- `.test.ts`: 単体テスト（Vitest）
+- `.dom.test.ts`: DOM環境でのテスト
+- `.stories.tsx`: Storybookストーリー
 
 ## プロジェクト概要
 
